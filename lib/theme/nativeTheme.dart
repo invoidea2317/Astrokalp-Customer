@@ -15,6 +15,7 @@ Map<int, Color> color = {
   800: const Color.fromRGBO(198, 29, 36, .9),
   900: const Color.fromRGBO(198, 29, 36, 1),
 };
+
 ThemeController themeController = Get.find<ThemeController>();
 ThemeData nativeTheme({bool? darkModeEnabled}) {
   if (darkModeEnabled == null) {
@@ -40,7 +41,7 @@ ThemeData nativeTheme({bool? darkModeEnabled}) {
         bodyLarge: TextStyle(color: Colors.white),
         bodyMedium: TextStyle(color: Colors.white),
       ),
-      primaryTextTheme: TextTheme(
+        primaryTextTheme: TextTheme(
         displayLarge: TextStyle(color: Colors.white),
         displayMedium: TextStyle(color: Colors.white),
         displaySmall: TextStyle(color: Colors.white),
@@ -60,7 +61,6 @@ ThemeData nativeTheme({bool? darkModeEnabled}) {
       appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Color(0xffF4CF09),
-          // statusBarColor: themeController.pickColor,
           statusBarIconBrightness: Brightness.light,
         ),
       ),
