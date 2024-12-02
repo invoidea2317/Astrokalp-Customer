@@ -1,5 +1,5 @@
-class Images {
-  static const String icSplash = "assets/images/ic_splash.png";
+class Strings {
+  static const String appName = "Astrokalp";
   static const String icLogo = "assets/images/ic_logo.png";
   static const String review = "assets/images/review.png";
   static const String confidential = "assets/images/confidential.png";

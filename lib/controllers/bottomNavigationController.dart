@@ -79,14 +79,14 @@ class BottomNavigationController extends GetxController {
   bool isCallAstroDataLoadedOnce = false;
   bool isChatAstroDataLoadedOnce = false;
   List<Widget> screens() => [
-        HomeScreen(userDetails: userModel),
-        ChatScreen(),
-        LiveAstrologerListScreen(isFromBottom: true),
-        CallScreen(flag: 0,),
-        HistoryScreen(
-          currentIndex: historyIndex,
-        ),
-      ];
+    HomeScreen(userDetails: userModel),
+    ChatScreen(),
+    // LiveAstrologerListScreen(isFromBottom: true),
+    CallScreen(flag: 0,),
+    HistoryScreen(
+      currentIndex: historyIndex,
+    ),
+  ];
   // final HomeController homeController = Get.find<HomeController>();
   @override
   void onInit() {
@@ -102,7 +102,7 @@ class BottomNavigationController extends GetxController {
   void paginateTask() {
     scrollController.addListener(() async {
       if (scrollController.position.pixels ==
-              scrollController.position.maxScrollExtent &&
+          scrollController.position.maxScrollExtent &&
           !isAllDataLoaded) {
         isMoreDataAvailable = true;
         update();
@@ -127,7 +127,7 @@ class BottomNavigationController extends GetxController {
 
     getReportscrollController.addListener(() async {
       if (getReportscrollController.position.pixels ==
-              getReportscrollController.position.maxScrollExtent &&
+          getReportscrollController.position.maxScrollExtent &&
           !isAllDataLoaded) {
         isMoreDataAvailable = true;
         update();
@@ -613,7 +613,7 @@ class BottomNavigationController extends GetxController {
                         decoration: BoxDecoration(
                             color: Colors.grey[300],
                             borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
+                            BorderRadius.all(Radius.circular(10))),
                         child: Text(
                           "OK",
                           style: TextStyle(color: Colors.black),
@@ -630,12 +630,12 @@ class BottomNavigationController extends GetxController {
 
   Future<void> bindLiveAstroInfo(
       {String? token,
-      String? astroName,
-      String? astroProfile,
-      int? astrologerId,
-      String? chatToken,
-      double? charge2,
-      String? channelName2}) async {
+        String? astroName,
+        String? astroProfile,
+        int? astrologerId,
+        String? chatToken,
+        double? charge2,
+        String? channelName2}) async {
     liveToken = token!;
     liveChannel = channelName2!;
     astrologerName = astroName!;
@@ -694,7 +694,7 @@ class BottomNavigationController extends GetxController {
       videoCallCharge = liveAstrologer[0].videoCallRate;
       anotherLiveAstrologers = liveAstrologer
           .where((element) =>
-              element.astrologerId != liveAstrologer[0].astrologerId)
+      element.astrologerId != liveAstrologer[0].astrologerId)
           .toList();
       update();
     }
@@ -717,7 +717,7 @@ class BottomNavigationController extends GetxController {
         videoCallCharge = liveAstrologer[0].videoCallRate;
         anotherLiveAstrologers = liveAstrologer
             .where((element) =>
-                element.astrologerId != liveAstrologer[0].astrologerId)
+        element.astrologerId != liveAstrologer[0].astrologerId)
             .toList();
         update();
       }
@@ -734,7 +734,7 @@ class BottomNavigationController extends GetxController {
         if (liveAstrologer.isNotEmpty) {
           anotherLiveAstrologers = liveAstrologer
               .where((element) =>
-                  element.astrologerId != liveAstrologer[index].astrologerId)
+          element.astrologerId != liveAstrologer[index].astrologerId)
               .toList();
           update();
         }
@@ -749,10 +749,10 @@ class BottomNavigationController extends GetxController {
 
   Future<dynamic> getAstrologerList(
       {List<int>? skills,
-      List<int>? language,
-      List<String>? gender,
-      String? sortBy,
-      bool isLazyLoading = false}) async {
+        List<int>? language,
+        List<String>? gender,
+        String? sortBy,
+        bool isLazyLoading = false}) async {
     try {
       startIndex = 0;
       if (astrologerList.isNotEmpty) {
@@ -765,12 +765,12 @@ class BottomNavigationController extends GetxController {
         if (result) {
           await apiHelper
               .getAstrologer(
-                  sortingKey: sortBy,
-                  skills: skills,
-                  language: language,
-                  gender: gender,
-                  startIndex: startIndex,
-                  fetchRecords: fetchRecord)
+              sortingKey: sortBy,
+              skills: skills,
+              language: language,
+              gender: gender,
+              startIndex: startIndex,
+              fetchRecords: fetchRecord)
               .then((result) {
             if (result.status == "200") {
               astrologerList.addAll(result.recordList);
@@ -871,11 +871,11 @@ class BottomNavigationController extends GetxController {
 
   astroCat(
       {int? id,
-      List<int>? skills,
-      List<int>? language,
-      List<String>? gender,
-      String? sortBy,
-      bool isLazyLoading = false}) async {
+        List<int>? skills,
+        List<int>? language,
+        List<String>? gender,
+        String? sortBy,
+        bool isLazyLoading = false}) async {
     try {
       startIndex = 0;
       if (astrologerList.isNotEmpty) {
@@ -888,13 +888,13 @@ class BottomNavigationController extends GetxController {
         if (result) {
           await apiHelper
               .getAstrologer(
-                  sortingKey: sortBy,
-                  skills: skills,
-                  language: language,
-                  gender: gender,
-                  catId: id,
-                  startIndex: startIndex,
-                  fetchRecords: fetchRecord)
+              sortingKey: sortBy,
+              skills: skills,
+              language: language,
+              gender: gender,
+              catId: id,
+              startIndex: startIndex,
+              fetchRecords: fetchRecord)
               .then((result) {
             if (result.status == "200") {
               astrologerList.addAll(result.recordList);
@@ -1002,7 +1002,7 @@ class BottomNavigationController extends GetxController {
         if (result) {
           await apiHelper
               .reportAndBlockAstrologer(
-                  astrologerId, blockAstrologerController.text)
+              astrologerId, blockAstrologerController.text)
               .then((result) async {
             if (result.status == "200") {
               global.showToast(

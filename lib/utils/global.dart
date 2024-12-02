@@ -56,8 +56,8 @@ final DateFormat formatter = DateFormat("dd MMM yy, hh:mm a");
 
 String stripeBaseApi = 'https://api.stripe.com/v1';
 // String baseUrl = "https://astroway.diploy.in/api";
-String baseUrl = "https://lab5.invoidea.in/goodpandit/api";
-String imgBaseurl = "https://lab5.invoidea.in/goodpandit/";
+String baseUrl = "https://invoidea.work/goodpandit/api";
+String imgBaseurl = "https://invoidea.work/goodpandit/";
 String webBaseUrl = "https://astroway.diploy.in/api/";
 String appMode = "LIVE";
 Map<String, dynamic> appParameters = {
@@ -70,6 +70,7 @@ Map<String, dynamic> appParameters = {
     "imageBaseurl": "http://192.168.29.223:8001/",
   }
 };
+
 // Map<String, dynamic> appParameters = {
 //   "LIVE": {
 //     "apiUrl": "https://astroway.diploy.in/api",
@@ -80,12 +81,13 @@ Map<String, dynamic> appParameters = {
 //     "imageBaseurl": "http://192.168.29.223:8001/",
 //   }
 // };
+
 String agoraChannelName = ""; //valid 24hr
 String agoraToken = "967ffdf4a9be41169ffdc0d52bd66cf5";
-String channelName = "astrowayLive";
+String channelName = "goodpanditLive";
 String agoraLiveToken = "";
-String liveChannelName = "astrowayLive";
-String agoraChatUserId = "astrowayLive";
+String liveChannelName = "goodpanditLive";
+String agoraChatUserId = "goodpanditLive";
 String chatChannelName = "astrowayLive";
 String agoraChatToken = "967ffdf4a9be41169ffdc0d52bd66cf5";
 String encodedString = "&&";

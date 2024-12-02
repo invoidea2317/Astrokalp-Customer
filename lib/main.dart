@@ -730,10 +730,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 Locale('gu', 'IN'),
                 Locale('kn', 'IN'),
                 Locale('ml', 'IN'),
-                Locale('mr', 'IN'), //marathi
+                Locale('mr', 'IN'),
                 Locale('ta', 'IN'),
               ],
-              title: 'Astroway CustomerApp',
+              title: 'Atrokalp CustomerApp',
               initialRoute: "SplashScreen",
               home: SplashScreen(),
             );

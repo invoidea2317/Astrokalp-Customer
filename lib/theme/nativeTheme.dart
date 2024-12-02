@@ -24,8 +24,8 @@ ThemeData nativeTheme({bool? darkModeEnabled}) {
   if (darkModeEnabled) {
     return ThemeData(
       appBarTheme: AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent)),
-      fontFamily: 'Roboto',
-      primaryColor: Color(0xffF4CF09),
+      fontFamily: 'OpenSans',
+      primaryColor: Color(0xffF1D900),
       primaryColorLight: Colors.black,
       primarySwatch: MaterialColor(themeController.pickColorInt, color),
       textTheme: TextTheme(
@@ -60,15 +60,16 @@ ThemeData nativeTheme({bool? darkModeEnabled}) {
     return ThemeData(
       appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Color(0xffF4CF09),
+          statusBarColor: Color(0xffF1D900),
           statusBarIconBrightness: Brightness.light,
         ),
       ),
-      fontFamily: 'Poppins',
+      fontFamily: 'OpenSans',
+      disabledColor: Colors.black.withOpacity(0.70),
       hoverColor: Color(0xff4D2A7C),
-      primaryColor: Color(0xffF4CF09),
+      primaryColor: Color(0xffF1D900),
       cardColor: Colors.white,
-      primaryColorDark: Color(0xffC84141),
+      primaryColorDark: Color(0xffBD7A2C),
       hintColor: Color(0xff4D2A7C).withOpacity(0.15),
       highlightColor: Color(0xffF4CF09),
       primaryColorLight: themeController.pickColor,

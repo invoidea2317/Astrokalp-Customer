@@ -1,4 +1,5 @@
 class AppConstants {
+  static const String fontFamily = "OpenSans";
   static const String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
   static const String LOADING_MESSAGE = " Wait data will be here.";
   static const String NO_INTERNET = "No Internet Available.";
