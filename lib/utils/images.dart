@@ -2,7 +2,7 @@ class Images {
   static const String icSplash = "assets/images/ic_splash.png";
   static const String icLogo = "assets/images/ic_logo.png";
   static const String review = "assets/images/review.png";
-  static const String confidential = "assets/images/confidential.png";
+  static const String confidential = "assets/images/ic_confidential.png";
   static const String verifiedAccount = "assets/images/verified-account.png";
   static const String payment = "assets/images/payment.png";
   static const String wallet = "assets/images/wallet.png";
@@ -25,7 +25,7 @@ class Images {
   static const String noData = "assets/images/nodata.png";
   static const String noDataFound = "assets/images/noDataFound.png";
   static const String right = "assets/images/right.png";
-  static const String translation = "assets/images/translation.png";
+  static const String translation = "assets/images/ic_language.png";
   static const String astrologerImage = "assets/images/astrologerImage.png";
   static const String vedicAstro = "assets/images/vedicAstro.jpg";
   static const String icOfferTag = "assets/images/ic_offer_tag.png";

@@ -1,7 +1,6 @@
 //flutter
 
 import 'dart:developer';
-
 import 'package:AstrowayCustomer/controllers/liveController.dart';
 import 'package:AstrowayCustomer/controllers/splashController.dart';
 import 'package:AstrowayCustomer/model/astrologer_model.dart';
@@ -21,7 +20,7 @@ import '../utils/images.dart';
 import '../views/callScreen.dart';
 import '../views/historyScreen.dart';
 import '../views/homeScreen.dart';
-import '../views/liveAstrologerList.dart';
+// import '../views/liveAstrologerList.dart';
 //views
 
 class BottomNavigationController extends GetxController {

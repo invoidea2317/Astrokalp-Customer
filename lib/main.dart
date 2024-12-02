@@ -119,7 +119,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
             message.data['fcmToken'] != null ? message.data['fcmToken'] : "";
         await bottomController.getAstrologerbyId(astroId);
         bool isFollow = bottomController.astrologerbyId[0].isFollow!;
-        // not show notification just show dialog for accept/reject for live stream
         liveController.accpetDeclineContfirmationDialogForLiveStreaming(
           astroId: astroId,
           astroName: astroName,
@@ -472,17 +471,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                                         await chatController.rejectedChat(
                                             messageData["chatId"].toString());
                                         global.hideLoader();
-                                        global
-                                            .callOnFcmApiSendPushNotifications(
+                                        global .callOnFcmApiSendPushNotifications(
                                                 fcmTokem: [
                                               messageData["fcmToken"]
-                                            ],
-                                                title:
-                                                    'End chat from customer');
+                                              ],
+                                                title: 'End chat from customer');
                                         BottomNavigationController
-                                            bottomNavigationController =
-                                            Get.find<
-                                                BottomNavigationController>();
+                                            bottomNavigationController =Get.find<   BottomNavigationController>();
                                         bottomNavigationController.setIndex(
                                             0, 0);
                                         Get.back();

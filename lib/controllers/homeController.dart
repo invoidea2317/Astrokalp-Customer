@@ -71,6 +71,13 @@ class HomeController extends GetxController {
     }
   }
 
+  int activeBannerIndex = 0;
+
+  void setActiveBannerIndex(int index) {
+    activeBannerIndex = index;
+    update(); // Notify listeners
+  }
+
   DateTime? currentBackPressTime;
   Future<bool> onBackPressed() {
     DateTime now = DateTime.now();

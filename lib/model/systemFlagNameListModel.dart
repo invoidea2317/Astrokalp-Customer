@@ -84,3 +84,4 @@ class SystemFlagNameList {
     TopBanner = 'TopBanner';
   }
 }
+

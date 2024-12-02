@@ -50,7 +50,7 @@ class SplashController extends GetxController {
     print("currentLanguageinSplash");
     print("${global.sp!.getString('currentLanguage')}");
     update();
-    Timer(const Duration(seconds: 5), () async {
+    Timer(const Duration(seconds: 2), () async {
       try {
         bool isLogin = await global.isLogin();
 

@@ -65,6 +65,7 @@ ThemeData nativeTheme({bool? darkModeEnabled}) {
         ),
       ),
       fontFamily: 'OpenSans',
+      dividerColor: Colors.black,
       disabledColor: Colors.black.withOpacity(0.70),
       hoverColor: Color(0xff4D2A7C),
       primaryColor: Color(0xffF1D900),
