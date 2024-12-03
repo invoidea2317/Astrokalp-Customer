@@ -1,36 +1,13 @@
 {
   "project_info": {
-    "project_number": "381086206621",
-    "firebase_url": "https://astroway-diploy-default-rtdb.firebaseio.com",
-    "project_id": "astroway-diploy",
-    "storage_bucket": "astroway-diploy.appspot.com"
+    "project_number": "795379324876",
+    "project_id": "astro-be602",
+    "storage_bucket": "astro-be602.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:381086206621:android:f21e5cf69a3fbcc632e274",
-        "android_client_info": {
-          "package_name": "com.astrowaydiploy.astrologer"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAyiZi-oi6QilI2X-7hNcCgtbmRT2WLAhs"
-        },
-        {
-          "current_key": "AIzaSyBNWnN2vKDFSOtxh3eTwa1L5yiFxaYsxts"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:381086206621:android:f82a6af18b824fbd32e274",
+        "mobilesdk_app_id": "1:795379324876:android:542383fc846ebb0a61af69",
         "android_client_info": {
           "package_name": "com.astrowaydiploy.user"
         }
@@ -38,10 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAyiZi-oi6QilI2X-7hNcCgtbmRT2WLAhs"
-        },
-        {
-          "current_key": "AIzaSyBNWnN2vKDFSOtxh3eTwa1L5yiFxaYsxts"
+          "current_key": "AIzaSyAO4y1beAbkcAyEKUVKXxP8akJbbclpkiM"
         }
       ],
       "services": {

@@ -94,14 +94,14 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: Get.height * 0.06,
+                        height: Get.height * 0.03,
                       ),
                       Image.asset(
                         Images.icOfferTag,
                         width: 200,
                       ),
                       SizedBox(
-                        height: Get.height * 0.06,
+                        height: Get.height * 0.04,
                       ),
                       Center(
                         child: AnimatedBuilder(
@@ -284,7 +284,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                       if (isValid) {
                                         global.showOnlyLoaderDialog(context);
                                         loginController
-                                            .startHeadlessWithWhatsapp('phone');
+                                            .verifyOTP(context);
+                                        // loginController
+                                        //     .startHeadlessWithWhatsapp('phone');
                                       } else {
                                         global.showToast(
                                           message: loginController.errorText!,
@@ -379,8 +381,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
-                        // height: 19.h,
+                        margin: EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -507,6 +508,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           ],
                         ),
                       ),
+                      sizedBoxDefault(),
                     ],
                   ),
                 ],

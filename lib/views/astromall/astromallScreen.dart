@@ -16,6 +16,7 @@ class AstromallScreen extends StatelessWidget {
   final AstromallController astromallController = Get.find<AstromallController>();
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(

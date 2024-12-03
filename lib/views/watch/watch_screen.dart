@@ -346,10 +346,8 @@ class WatchScreen extends StatelessWidget {
                   : AstrologyVideoWidget(title: 'Astrology Latest',
                 videoDataList: homeController.astrologyVideo,
                 onSeeAllTap: () {
-                  // Get.to(() => AstrologerVideoScreen());
+                  Get.to(() => AstrologerVideoScreen());
                   }, );
-
-
 
               // SizedBox(
               //   height: 300,
@@ -617,6 +615,45 @@ class WatchScreen extends StatelessWidget {
               //     ),
               //   ),
               // );
+            }),
+            GetBuilder<HomeController>(builder: (homeController) {
+              return homeController.astrologyVideo.length == 0
+                  ? SizedBox()
+                  : AstrologyVideoWidget(title: 'Trending Reels',
+                                  videoDataList: homeController.astrologyVideo,
+                                  onSeeAllTap: () {
+                  Get.to(() => AstrologerVideoScreen());
+                                  },
+                isColor: true,
+              );
+            }),
+            GetBuilder<HomeController>(builder: (homeController) {
+              return homeController.astrologyVideo.length == 0
+                  ? SizedBox()
+                  : AstrologyVideoWidget(title: 'Daily Horoscope',
+                videoDataList: homeController.astrologyVideo,
+                onSeeAllTap: () {
+                  Get.to(() => AstrologerVideoScreen());
+                }, );
+            }),
+            GetBuilder<HomeController>(builder: (homeController) {
+              return homeController.astrologyVideo.length == 0
+                  ? SizedBox()
+                  : AstrologyVideoWidget(title: 'Monthly Horoscope',
+                videoDataList: homeController.astrologyVideo,
+                isColor: true,
+                onSeeAllTap: () {
+                  Get.to(() => AstrologerVideoScreen());
+                }, );
+            }),
+            GetBuilder<HomeController>(builder: (homeController) {
+              return homeController.astrologyVideo.length == 0
+                  ? SizedBox()
+                  : AstrologyVideoWidget(title: 'Yearly Horoscope',
+                videoDataList: homeController.astrologyVideo,
+                onSeeAllTap: () {
+                  Get.to(() => AstrologerVideoScreen());
+                }, );
             }),
           ],
         ),

@@ -62,6 +62,7 @@ class APIHelper {
         body: json.encode(loginModel),
         headers: await global.getApiHeaders(false),
       );
+      print("===>> respeonse ${response}");
       dynamic recordList;
       if (response.statusCode == 200) {
         recordList = json.decode(response.body);

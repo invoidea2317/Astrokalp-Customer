@@ -1,25 +1,25 @@
-//buildscript {
-////    ext.kotlin_version = '1.6.20'
-//    //ext.kotlin_version = '1.8.20'
-//    ext.kotlin_version = '1.9.21'
-//    repositories {
-//        google()
-////        mavenCentral()  // Maven Central repository
-////        jcenter()
-//        mavenCentral()
-//        maven {
-//            url = uri("https://storage.googleapis.com/r8-releases/raw")
-//        }
-//
-//    }
-//
-//    dependencies {
-//        classpath 'com.android.tools.build:gradle:7.2.1'
-//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-//        classpath 'com.google.gms:google-services:4.3.13'
-//        classpath("com.android.tools:r8:8.2.24")
-//    }
-//}
+buildscript {
+//    ext.kotlin_version = '1.6.20'
+    //ext.kotlin_version = '1.8.20'
+    ext.kotlin_version = '1.9.21'
+    repositories {
+        google()
+//        mavenCentral()  // Maven Central repository
+//        jcenter()
+        mavenCentral()
+        maven {
+            url = uri("https://storage.googleapis.com/r8-releases/raw")
+        }
+
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.13'
+        classpath("com.android.tools:r8:8.2.24")
+    }
+}
 
 allprojects {
     repositories {

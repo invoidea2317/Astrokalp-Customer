@@ -11,14 +11,15 @@ import 'package:get/get.dart';
 import 'package:AstrowayCustomer/utils/global.dart' as global;
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 class VerifyPhoneScreen extends StatelessWidget {
   final String phoneNumber;
   VerifyPhoneScreen(
       {Key? key, required this.phoneNumber,})
       : super(key: key);
   final LoginController loginController = Get.find<LoginController>();
-  // final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final pinEditingControllerlogin = TextEditingController(text: '');
   @override
   Widget build(BuildContext context) {
@@ -146,16 +147,19 @@ class VerifyPhoneScreen extends StatelessWidget {
                         arg["countryCode"] = "+91";
                         arg["otp"] = "${loginController.smsCode}";
                         global.showOnlyLoaderDialog(context);
-                        loginController.otplessFlutterPlugin.startHeadless(loginController.onHeadlessResultVerify, arg);
-                        // PhoneAuthCredential credential =
-                        // PhoneAuthProvider.credential(
-                        //   verificationId: verificationId,
-                        //   smsCode: loginController.smsCode,
-                        // );
-                        // global.showOnlyLoaderDialog(context);
-                        // await auth.signInWithCredential(credential);
-                        // await loginController
-                        //     .loginAndSignupUser(int.parse(phoneNumber));
+                        print('verificationId : ${loginController.verificationIdBySentOtp}');
+                        PhoneAuthCredential credential =
+                        PhoneAuthProvider.credential(
+                          verificationId: loginController.verificationIdBySentOtp,smsCode: loginController.smsCode,
+                        );
+                        print('Check signInWithCredential');
+                        global.showOnlyLoaderDialog(context);
+                        await auth.signInWithCredential(credential);
+                        print('Check Credientials');
+                        print(credential);
+                        print(credential.verificationId);
+                        await loginController
+                            .loginUser(int.parse(phoneNumber),);
                       } catch (e) {
                         global.hideLoader();
 

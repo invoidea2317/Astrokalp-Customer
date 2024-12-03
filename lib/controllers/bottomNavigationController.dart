@@ -18,6 +18,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../model/astrologer_availability_model.dart';
 import '../utils/global.dart' as global;
 import '../utils/images.dart';
+import '../views/astromall/astromallScreen.dart';
 import '../views/callScreen.dart';
 import '../views/historyScreen.dart';
 import '../views/homeScreen.dart';
@@ -84,12 +85,14 @@ class BottomNavigationController extends GetxController {
     // LiveAstrologerListScreen(isFromBottom: true),
     CallScreen(flag: 0,),
     WatchScreen(),
+    // AstromallScreen()
     HistoryScreen(currentIndex: historyIndex,),
   ];
   // final HomeController homeController = Get.find<HomeController>();
   @override
   void onInit() {
     _init();
+
     super.onInit();
   }
 

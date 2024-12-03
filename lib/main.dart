@@ -62,11 +62,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log("_firebaseMessagingBackgroundHandler a background message: ${message.messageId}");
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(name: 'Astro');
   await GetStorage.init();
   global.sp = await SharedPreferences.getInstance();
   if (global.sp!.getString("currentUser") != null) {
-    await Firebase.initializeApp(
+    await Firebase.initializeApp( name: 'Astro',
         options: DefaultFirebaseOptions.currentPlatform);
     global.generalPayload = json.encode(message.data['body']);
     var messageData;
@@ -242,6 +242,7 @@ void main() async {
   }
 
   await Firebase.initializeApp(
+    name: 'Astro',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 

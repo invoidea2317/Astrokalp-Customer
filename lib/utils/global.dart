@@ -56,13 +56,16 @@ final DateFormat formatter = DateFormat("dd MMM yy, hh:mm a");
 
 String stripeBaseApi = 'https://api.stripe.com/v1';
 // String baseUrl = "https://astroway.diploy.in/api";
-String baseUrl = "https://invoidea.work/goodpandit/api";
-String imgBaseurl = "https://invoidea.work/goodpandit/";
+// String baseUrl = "https://invoidea.work/goodpandit/api";
+// String baseUrl = "https://lab5.invoidea.in/goodpandit/api";
+// String imgBaseurl = "https://lab5.invoidea.in/goodpandit/api";
+String baseUrl = "https://lab5.invoidea.in/astrokalp/api";
+String imgBaseurl = "https://lab5.invoidea.in/astrokalp/";
 String webBaseUrl = "https://astroway.diploy.in/api/";
 String appMode = "LIVE";
 Map<String, dynamic> appParameters = {
   "LIVE": {
-    "apiUrl": "https://lab5.invoidea.in/goodpandit/api",
+    "apiUrl": "https://lab5.invoidea.in/goodpandit/api/",
     "imageBaseurl": "https://astroway.diploy.in/",
   },
   "DEV": {

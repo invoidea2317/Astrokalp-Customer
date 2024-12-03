@@ -27,7 +27,9 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controllers/bottomNavigationController.dart';
+import '../controllers/homeController.dart';
 import '../controllers/walletController.dart';
+import '../utils/sizedboxes.dart';
 import 'settings/notificationScreen.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -53,7 +55,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   ScrollController chatScrollController = ScrollController();
   bool isWalletDataLoadedOnce = false;
   final WalletController walletcontroller = Get.find<WalletController>();
-
+  final homeController = Get.find<HomeController>();
   int index = 0;
   @override
   void initState() {
@@ -156,32 +158,311 @@ class _HistoryScreenState extends State<HistoryScreen> {
           backgroundColor: Colors.white,
           key: drawerKey,
           drawer: DrawerWidget(),
-          appBar: CustomAppBar(
-            onBackPressed: () {},
-            scaffoldKey: drawerKey,
-            title: 'History',
-            titleStyle: Get.theme.primaryTextTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.normal,
-                color: Colors.black),
-            bgColor: Get.theme.primaryColor,
-            actions: [
-              GetBuilder<SettingsController>(builder: (settingsController) {
-                return InkWell(
-                  onTap: () async {
-                    global.showOnlyLoaderDialog(context);
-                    await settingsController.getNotification();
-                    global.hideLoader();
-                    Get.to(() => const NotificationScreen());
-                  },
-                  child: Icon(
-                    Icons.notifications_none,
-                    size: 30,
-                  ),
-                );
-              }),
-              SizedBox(width: 15,)
+          appBar: CustomApp(title: 'History',menuWidget: Row(
+            children: [
+              InkWell(
+                onTap: () async {
+                  homeController.lan = [];
+                  await Future.wait([
+                    homeController.getLanguages(),
+                    homeController.updateLanIndex()
+                  ]);
+                  //LANGUAGE DIALOG
+                  print(homeController.lan);
+                  global.checkBody().then((result) {
+                    if (result) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return GetBuilder<HomeController>(builder: (h) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white,
+                                contentPadding: EdgeInsets.zero,
+                                content: GetBuilder<HomeController>(builder: (h) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      sizedBoxDefault(),
+                                      InkWell(
+                                        onTap: () => Get.back(),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            right: 2.w,
+                                            top: 2.w,
+                                          ),
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: const Icon(Icons.close),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                          padding: EdgeInsets.all(6),
+                                          child: Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Choose your app language',
+                                                  style: Get
+                                                      .textTheme.titleMedium!
+                                                      .copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ).tr(),
+                                                GetBuilder<HomeController>(
+                                                    builder: (home) {
+                                                      return Padding(
+                                                        padding:
+                                                        EdgeInsets.only(top: 15),
+                                                        child: Wrap(
+                                                            children: List.generate(
+                                                                homeController.lan
+                                                                    .length, (index) {
+                                                              return InkWell(
+                                                                onTap: () {
+                                                                  //! LANGUAGE SET DILAOG
+                                                                  homeController
+                                                                      .updateLan(index);
+                                                                  switch (index) {
+                                                                    case 0:
+                                                                      var newLocale =
+                                                                      const Locale(
+                                                                          'en',
+                                                                          'US'); //ENGLISH
+
+                                                                      context.setLocale(
+                                                                          newLocale);
+                                                                      Get.updateLocale(
+                                                                          newLocale);
+                                                                      homeController.refreshIt();
+
+                                                                      break;
+                                                                    case 1:
+                                                                      var newLocale =
+                                                                      const Locale(
+                                                                          'gu', 'IN');
+                                                                      context.setLocale(
+                                                                          newLocale);
+                                                                      Get.updateLocale(
+                                                                          newLocale);
+                                                                      homeController.refreshIt();
+
+                                                                      break;
+                                                                    case 2:
+                                                                      var newLocale =
+                                                                      const Locale(
+                                                                          'hi',
+                                                                          'IN'); //HINDI
+                                                                      context.setLocale(
+                                                                          newLocale);
+                                                                      Get.updateLocale(
+                                                                          newLocale);
+                                                                      homeController.refreshIt();
+
+                                                                      break;
+                                                                    case 3:
+                                                                      var newLocale =
+                                                                      const Locale(
+                                                                          'es',
+                                                                          'ES'); //Spanish
+                                                                      context.setLocale(
+                                                                          newLocale);
+                                                                      Get.updateLocale(
+                                                                          newLocale);
+                                                                      homeController.refreshIt();
+
+                                                                      break;
+                                                                    case 4:
+                                                                      var newLocale =
+                                                                      const Locale(
+                                                                          'mr',
+                                                                          'IN'); //marathi
+                                                                      context.setLocale(
+                                                                          newLocale);
+                                                                      Get.updateLocale(
+                                                                          newLocale);
+                                                                      homeController.refreshIt();
+
+                                                                      break;
+                                                                    case 5:
+                                                                      var newLocale =
+                                                                      const Locale(
+                                                                          'bn',
+                                                                          'IN'); //bengali
+                                                                      context.setLocale(
+                                                                          newLocale);
+                                                                      Get.updateLocale(
+                                                                          newLocale);
+                                                                      homeController.refreshIt();
+
+                                                                      break;
+
+                                                                    case 6:
+                                                                      var newLocale =
+                                                                      const Locale(
+                                                                          'kn',
+                                                                          'IN'); //kannad
+                                                                      context.setLocale(
+                                                                          newLocale);
+                                                                      Get.updateLocale(
+                                                                          newLocale);
+                                                                      homeController.refreshIt();
+
+                                                                      break;
+
+                                                                    case 7:
+                                                                      var newLocale =
+                                                                      const Locale(
+                                                                          'ml',
+                                                                          'IN'); //malayalam
+                                                                      context.setLocale(
+                                                                          newLocale);
+                                                                      Get.updateLocale(
+                                                                          newLocale);
+                                                                      homeController.refreshIt();
+
+                                                                      break;
+
+                                                                    case 8:
+                                                                      var newLocale =
+                                                                      const Locale(
+                                                                          'ta',
+                                                                          'IN'); //tamil
+                                                                      context.setLocale(
+                                                                          newLocale);
+                                                                      Get.updateLocale(
+                                                                          newLocale);
+                                                                      homeController.refreshIt();
+
+                                                                      break;
+                                                                  }
+                                                                },
+                                                                child: GetBuilder<
+                                                                    HomeController>(
+                                                                    builder: (h) {
+                                                                      return Container(
+                                                                        height: 80,
+                                                                        alignment:
+                                                                        Alignment.center,
+                                                                        margin:
+                                                                        EdgeInsets.only(
+                                                                            left: 7,
+                                                                            right: 7,
+                                                                            top: 10),
+                                                                        width: 75,
+                                                                        padding: EdgeInsets
+                                                                            .symmetric(
+                                                                            horizontal: 8,
+                                                                            vertical: 8),
+                                                                        decoration:
+                                                                        BoxDecoration(
+                                                                          color: homeController
+                                                                              .lan[index]
+                                                                              .isSelected
+                                                                              ? Color
+                                                                              .fromARGB(
+                                                                              255,
+                                                                              228,
+                                                                              217,
+                                                                              185)
+                                                                              : Colors
+                                                                              .transparent,
+                                                                          border: Border.all(
+                                                                              color: homeController
+                                                                                  .lan[
+                                                                              index]
+                                                                                  .isSelected
+                                                                                  ? Get.theme
+                                                                                  .primaryColor
+                                                                                  : Colors
+                                                                                  .black),
+                                                                          borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                              10),
+                                                                        ),
+                                                                        child: Column(
+                                                                            mainAxisSize:
+                                                                            MainAxisSize
+                                                                                .min,
+                                                                            children: [
+                                                                              Text(
+                                                                                homeController
+                                                                                    .lan[
+                                                                                index]
+                                                                                    .title,
+                                                                                style: Get
+                                                                                    .textTheme
+                                                                                    .bodyMedium,
+                                                                              ),
+                                                                              Text(
+                                                                                homeController
+                                                                                    .lan[
+                                                                                index]
+                                                                                    .subTitle,
+                                                                                style: Get
+                                                                                    .textTheme
+                                                                                    .bodyMedium!
+                                                                                    .copyWith(
+                                                                                    fontSize:
+                                                                                    12),
+                                                                              )
+                                                                            ]),
+                                                                      );
+                                                                    }),
+                                                              );
+                                                            })),
+                                                      );
+                                                    }),
+                                              ])),
+                                      sizedBoxDefault(),
+                                    ],
+                                  );
+                                }),
+                              );
+                            });
+                          });
+                    }
+                  });
+                },
+                child: Image.asset(
+                  height: 32,
+                  width: 32,
+                  Images.translation,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
             ],
-          ),
+          ),),
+          // appBar: CustomAppBar(
+          //   onBackPressed: () {},
+          //   scaffoldKey: drawerKey,
+          //   title: 'History',
+          //   titleStyle: Get.theme.primaryTextTheme.titleMedium!.copyWith(
+          //       fontWeight: FontWeight.normal,
+          //       color: Colors.black),
+          //   bgColor: Get.theme.primaryColor,
+          //   actions: [
+          //     GetBuilder<SettingsController>(builder: (settingsController) {
+          //       return InkWell(
+          //         onTap: () async {
+          //           global.showOnlyLoaderDialog(context);
+          //           await settingsController.getNotification();
+          //           global.hideLoader();
+          //           Get.to(() => const NotificationScreen());
+          //         },
+          //         child: Icon(
+          //           Icons.notifications_none,
+          //           size: 30,
+          //         ),
+          //       );
+          //     }),
+          //     SizedBox(width: 15,)
+          //   ],
+          // ),
           body: SingleChildScrollView(
             child: Column(
               children: [

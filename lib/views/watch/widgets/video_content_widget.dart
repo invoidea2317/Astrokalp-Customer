@@ -15,19 +15,21 @@ class AstrologyVideoWidget extends StatelessWidget {
   final String title;
   final List<AstrologyVideo> videoDataList;
   final Function() onSeeAllTap;
+  final bool? isColor;
 
    AstrologyVideoWidget({
     Key? key,
     required this.title,
     required this.videoDataList,
-     required this.onSeeAllTap,
+     required this.onSeeAllTap, this.isColor = false,
   }) : super(key: key);
   final homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 250,
       child: Card(
+        color : isColor == true ?  Theme.of(context).primaryColor.withOpacity(0.20) : Colors.transparent,
         elevation: 0,
         margin: EdgeInsets.only(top: 6),
         shape: RoundedRectangleBorder(
@@ -47,8 +49,7 @@ class AstrologyVideoWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                              title,
+                          Text(title,
                               style: openSansSemiBold.copyWith(
                                   fontSize: Dimensions.fontSizeDefault,
                                   color: Theme.of(context).dividerColor

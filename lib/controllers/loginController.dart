@@ -7,7 +7,7 @@ import 'package:AstrowayCustomer/controllers/splashController.dart';
 import 'package:AstrowayCustomer/main.dart';
 import 'package:AstrowayCustomer/model/login_model.dart';
 import 'package:AstrowayCustomer/utils/services/api_helper.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -24,6 +24,7 @@ class LoginController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   SplashController splashController = Get.find<SplashController>();
   String validationId = "";
+  String verificationIdBySentOtp = "";
   double second = 0;
   var maxSecond;
   String countryCode = "+91";
@@ -260,70 +261,73 @@ class LoginController extends GetxController {
   //   });
   // }
 
-  // verifyOTP(context) async {
-  //   try {
-  //     global.showOnlyLoaderDialog(context);
-  //     //  FirebaseAuth _auth = FirebaseAuth.instance;
-  //     await FirebaseAuth.instance.verifyPhoneNumber(
-  //       phoneNumber: '${countryCode + phoneController.text.trim()}',
-  //       verificationCompleted: (PhoneAuthCredential credential) {},
-  //       verificationFailed: (FirebaseAuthException e) {
-  //         global.hideLoader();
-  //         print('exceptionlogin $e');
-  //         global.showToast(
-  //           message: '$e',
-  //           textColor: global.textColor,
-  //           bgColor: global.toastBackGoundColor,
-  //         );
-  //       },
-  //       codeSent: (String verificationId, int? resendToken) {
-  //         print("codeSent");
-  //         //validationId = verificationId;
-  //         update();
-  //         //timer();
-  //         global.hideLoader();
-  //         Get.to(() => VerifyPhoneScreen(
-  //               phoneNumber: phoneController.text.trim(),
-  //
-  //             ));
-  //       },
-  //       codeAutoRetrievalTimeout: (String verificationId) {},
-  //     );
-  //
-  //     log("mobile numeber");
-  //     log("${countryCode + phoneController.text.trim()}");
-  //   } on Exception catch (e) {
-  //     String errorMessage = 'An error occurred, please try again later.';
-  //     if (e is FirebaseAuthException) {
-  //       String errorCode = e.code;
-  //       switch (errorCode) {
-  //         case 'invalid-verification-code':
-  //           errorMessage = 'The verification code entered is incorrect.';
-  //           break;
-  //         case 'invalid-verification-id':
-  //           errorMessage = 'The verification ID is invalid.';
-  //           break;
-  //         case 'invalid-phone-number':
-  //           errorMessage = 'The phone number is invalid.';
-  //           break;
-  //         case 'too-many-requests':
-  //           errorMessage = 'Too many requests, please try again later.';
-  //           break;
-  //         default:
-  //           // Handle other Firebase authentication errors
-  //           errorMessage =
-  //               'An unexpected error occurred, please try again later.';
-  //       }
-  //       global.showToast(
-  //           message: errorMessage,
-  //           textColor: Colors.white,
-  //           bgColor: Colors.black);
-  //       debugPrint('Fail: $errorMessage');
-  //     }
-  //   }
-  // }
+  verifyOTP(context) async {
+    try {
+      print(countryCode + phoneController.text.trim());
+      global.showOnlyLoaderDialog(context);
+       // FirebaseAuth _auth = FirebaseAuth.instance;
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: '${countryCode + phoneController.text.trim()}',
+        verificationCompleted: (PhoneAuthCredential credential) {},
+        verificationFailed: (FirebaseAuthException e) {
+          global.hideLoader();
+          print('exceptionlogin $e');
+          global.showToast(
+            message: '$e',
+            textColor: global.textColor,
+            bgColor: global.toastBackGoundColor,
+          );
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          print("codeSent");
+          print(verificationId);
+          verificationIdBySentOtp = verificationId;
+          update();
+          //timer();
+          global.hideLoader();
+          Get.to(() => VerifyPhoneScreen(
+                phoneNumber: phoneController.text.trim(),
+
+              ));
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+
+      log("mobile numeber");
+      log("${countryCode + phoneController.text.trim()}");
+    } on Exception catch (e) {
+      String errorMessage = 'An error occurred, please try again later.';
+      if (e is FirebaseAuthException) {
+        String errorCode = e.code;
+        switch (errorCode) {
+          case 'invalid-verification-code':
+            errorMessage = 'The verification code entered is incorrect.';
+            break;
+          case 'invalid-verification-id':
+            errorMessage = 'The verification ID is invalid.';
+            break;
+          case 'invalid-phone-number':
+            errorMessage = 'The phone number is invalid.';
+            break;
+          case 'too-many-requests':
+            errorMessage = 'Too many requests, please try again later.';
+            break;
+          default:
+            // Handle other Firebase authentication errors
+            errorMessage =
+                'An unexpected error occurred, please try again later.';
+        }
+        global.showToast(
+            message: errorMessage,
+            textColor: Colors.white,
+            bgColor: Colors.black);
+        debugPrint('Fail: $errorMessage');
+      }
+    }
+  }
 
   loginAndSignupUser(int? phoneNumber, String email) async {
+    print('check loginAndSignupUser');
     try {
       await global.getDeviceData();
       LoginModel loginModel = LoginModel();// loginModel.contactNo==null || loginModel.contactNo=="null"?loginModel.contactNo=null:
@@ -358,6 +362,62 @@ class LoginController extends GetxController {
           // bottomController.astrologerList.clear();
           // bottomController.getAstrologerList(isLazyLoading: false);
           bottomController.setIndex(0, 0);
+          print('check BottomNavigationBarScreen');
+          Get.off(() => BottomNavigationBarScreen(index: 0));
+        } else {
+          global.hideLoader();
+          // global.hideLoader();
+          global.showToast(
+            message: 'Failed to sign in',
+            textColor: global.textColor,
+            bgColor: global.toastBackGoundColor,
+          );
+        }
+      });
+    } catch (e) {
+      global.hideLoader();
+      print("Exception in loginAndSignupUser():-" + e.toString());
+    }
+  }
+
+  loginUser(int? phoneNumber, ) async {
+    print('check loginAndSignupUser');
+    try {
+      await global.getDeviceData();
+      LoginModel loginModel = LoginModel();// loginModel.contactNo==null || loginModel.contactNo=="null"?loginModel.contactNo=null:
+      // email.toString() != "" ? loginModel.contactNo=null:loginModel.contactNo = phoneNumber.toString();
+      // email.toString() == "" ? null : loginModel.email = email.toString();
+      loginModel.countryCode = countryCode.toString();
+      loginModel.deviceInfo = DeviceInfoLoginModel();
+      loginModel.deviceInfo?.appId = global.appId;
+      loginModel.deviceInfo?.appVersion = global.appVersion;
+      loginModel.deviceInfo?.deviceId = global.deviceId;
+      loginModel.deviceInfo?.deviceLocation = global.deviceLocation ?? "";
+      loginModel.deviceInfo?.deviceManufacturer = global.deviceManufacturer;
+      loginModel.deviceInfo?.deviceModel = global.deviceManufacturer;
+      loginModel.deviceInfo?.fcmToken = global.fcmToken;
+      loginModel.deviceInfo?.appVersion = global.appVersion;
+
+      await apiHelper.loginSignUp(loginModel).then((result) async {
+        print('=====> result ${result}');
+        if (result.status == "200") {
+          var recordId = result.recordList["recordList"];
+          var token = result.recordList["token"];
+          var tokenType = result.recordList["token_type"];
+          await global.saveCurrentUser(recordId["id"], token, tokenType);
+          await splashController.getCurrentUserData();
+          await global.getCurrentUser();
+          // global.hideLoader();
+          final homeController = Get.find<HomeController>();
+          homeController.myOrders.clear();
+          time?.cancel();
+          update();
+
+          global.hideLoader();
+          bottomController.astrologerList.clear();
+          bottomController.getAstrologerList(isLazyLoading: false);
+          bottomController.setIndex(0, 0);
+          print('check BottomNavigationBarScreen');
           Get.off(() => BottomNavigationBarScreen(index: 0));
         } else {
           global.hideLoader();

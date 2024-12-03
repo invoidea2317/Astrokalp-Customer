@@ -60,7 +60,7 @@ ThemeData nativeTheme({bool? darkModeEnabled}) {
     return ThemeData(
       appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Color(0xffF1D900),
+          statusBarColor: Colors.black,
           statusBarIconBrightness: Brightness.light,
         ),
       ),

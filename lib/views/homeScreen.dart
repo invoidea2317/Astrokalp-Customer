@@ -2145,10 +2145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           ),
                                                         ),
                                                       )),
-                                                  SizedBox(
-                                                    width: FontSizes(context)
-                                                        .width2(),
-                                                  ),
+                                                  SizedBox(width: FontSizes(context).width2(),),
                                                   Expanded(
                                                     child: Column(
                                                       crossAxisAlignment:
@@ -2940,7 +2937,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         : SizedBox(),
                                   ],
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),
@@ -2949,220 +2946,220 @@ class _HomeScreenState extends State<HomeScreen> {
                   }),
 
                   ///Customer experience
-                  GetBuilder<HomeController>(builder: (homeController) {
-                    return homeController.clientReviews.length == 0
-                        ? SizedBox()
-                        : Container(
-                            // height: 50.h,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Customer's Experience",
-                                        style: Get
-                                            .theme.primaryTextTheme.titleMedium!
-                                            .copyWith(
-                                                fontWeight: FontWeight.w500),
-                                      ).tr(),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: FontSizes(context).width3()),
-                                  height: FontSizes(context).height37(),
-                                  child: GridView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      itemCount:
-                                          homeController.clientReviews.length,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisSpacing:
-                                            FontSizes(context).height01(),
-                                        mainAxisSpacing:
-                                            FontSizes(context).width2(),
-                                        mainAxisExtent:
-                                            FontSizes(context).width70(),
-                                        crossAxisCount: 2,
-                                      ),
-                                      itemBuilder: (context, index) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                            top: FontSizes(context).height01(),
-                                            bottom:
-                                                FontSizes(context).height01(),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  FontSizes(context).width2(),
-                                              vertical:
-                                                  FontSizes(context).height1()),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      FontSizes(context)
-                                                          .width4()),
-                                              color: whiteColor,
-                                              border: Border.all(
-                                                  color: Get.theme.primaryColor,
-                                                  width: 0.1),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Get
-                                                        .theme.primaryColor
-                                                        .withOpacity(0.7),
-                                                    offset: Offset(
-                                                      0.1,
-                                                      0.1,
-                                                    ),
-                                                    blurRadius: 0.1,
-                                                    spreadRadius: 0.1),
-                                              ]),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  homeController
-                                                                  .clientReviews[
-                                                                      index]
-                                                                  .profile
-                                                                  .toString() ==
-                                                              "" ||
-                                                          homeController
-                                                                  .clientReviews[
-                                                                      index]
-                                                                  .profile
-                                                                  .toString() ==
-                                                              "null"
-                                                      ? CircleAvatar(
-                                                          radius:
-                                                              FontSizes(context)
-                                                                  .width10(),
-                                                          backgroundImage:
-                                                              AssetImage(Images
-                                                                  .deafultUser))
-                                                      : CircleAvatar(
-                                                          radius:
-                                                              FontSizes(context)
-                                                                  .width10(),
-                                                          backgroundImage: CachedNetworkImageProvider(
-                                                              "${global.imgBaseurl}${homeController.clientReviews[index].profile}",
-                                                              errorListener: (e) =>
-                                                                  AssetImage(Images
-                                                                      .deafultUser)),
-                                                        ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                width:
-                                                    FontSizes(context).width2(),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        CustomText(
-                                                          text:
-                                                              "${homeController.clientReviews[index].name}",
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          color: blackColor,
-                                                          fontsize:
-                                                              FontSizes(context)
-                                                                  .font04(),
-                                                          maxLine: 1,
-                                                        ),
-                                                        Icon(
-                                                          Icons.more_vert,
-                                                          color: blackColor,
-                                                          size:
-                                                              FontSizes(context)
-                                                                  .width4(),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: FontSizes(context)
-                                                          .height1(),
-                                                    ),
-                                                    CustomText(
-                                                      text:
-                                                          "${homeController.clientReviews[index].review}",
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: blackColor,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      fontsize:
-                                                          FontSizes(context)
-                                                              .font04(),
-                                                      maxLine: 2,
-                                                    ),
-                                                    SizedBox(
-                                                      height: FontSizes(context)
-                                                          .height1(),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () async {
-                                                        global
-                                                            .showOnlyLoaderDialog(
-                                                                context);
-                                                        await homeController
-                                                            .getClientsTestimonals();
-                                                        global.hideLoader();
-                                                        Get.to(() =>
-                                                            ClientsReviewScreen());
-                                                      },
-                                                      child: CustomText(
-                                                        text: "More",
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline,
-                                                        decorationColor:
-                                                            orangeColor,
-                                                        color: Get
-                                                            .theme.primaryColor,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        fontsize:
-                                                            FontSizes(context)
-                                                                .font04(),
-                                                        maxLine: 2,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }),
-                                ),
-                              ],
-                            ),
-                          );
-                  }),
+                  // GetBuilder<HomeController>(builder: (homeController) {
+                  //   return homeController.clientReviews.length == 0
+                  //       ? SizedBox()
+                  //       : Container(
+                  //           // height: 50.h,
+                  //           child: Column(
+                  //             crossAxisAlignment: CrossAxisAlignment.start,
+                  //             children: [
+                  //               Container(
+                  //                 margin: EdgeInsets.symmetric(
+                  //                   horizontal: 20,
+                  //                 ),
+                  //                 child: Column(
+                  //                   crossAxisAlignment:
+                  //                       CrossAxisAlignment.start,
+                  //                   children: [
+                  //                     Text(
+                  //                       "Customer's Experience",
+                  //                       style: Get
+                  //                           .theme.primaryTextTheme.titleMedium!
+                  //                           .copyWith(
+                  //                               fontWeight: FontWeight.w500),
+                  //                     ).tr(),
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //               Container(
+                  //                 margin: EdgeInsets.symmetric(
+                  //                     horizontal: FontSizes(context).width3()),
+                  //                 height: FontSizes(context).height37(),
+                  //                 child: GridView.builder(
+                  //                     scrollDirection: Axis.horizontal,
+                  //                     shrinkWrap: true,
+                  //                     itemCount:
+                  //                         homeController.clientReviews.length,
+                  //                     gridDelegate:
+                  //                         SliverGridDelegateWithFixedCrossAxisCount(
+                  //                       crossAxisSpacing:
+                  //                           FontSizes(context).height01(),
+                  //                       mainAxisSpacing:
+                  //                           FontSizes(context).width2(),
+                  //                       mainAxisExtent:
+                  //                           FontSizes(context).width70(),
+                  //                       crossAxisCount: 2,
+                  //                     ),
+                  //                     itemBuilder: (context, index) {
+                  //                       return Container(
+                  //                         margin: EdgeInsets.only(
+                  //                           top: FontSizes(context).height01(),
+                  //                           bottom:
+                  //                               FontSizes(context).height01(),
+                  //                         ),
+                  //                         padding: EdgeInsets.symmetric(
+                  //                             horizontal:
+                  //                                 FontSizes(context).width2(),
+                  //                             vertical:
+                  //                                 FontSizes(context).height1()),
+                  //                         decoration: BoxDecoration(
+                  //                             borderRadius:
+                  //                                 BorderRadius.circular(
+                  //                                     FontSizes(context)
+                  //                                         .width4()),
+                  //                             color: whiteColor,
+                  //                             border: Border.all(
+                  //                                 color: Get.theme.primaryColor,
+                  //                                 width: 0.1),
+                  //                             boxShadow: [
+                  //                               BoxShadow(
+                  //                                   color: Get
+                  //                                       .theme.primaryColor
+                  //                                       .withOpacity(0.7),
+                  //                                   offset: Offset(
+                  //                                     0.1,
+                  //                                     0.1,
+                  //                                   ),
+                  //                                   blurRadius: 0.1,
+                  //                                   spreadRadius: 0.1),
+                  //                             ]),
+                  //                         child: Row(
+                  //                           crossAxisAlignment:
+                  //                               CrossAxisAlignment.start,
+                  //                           children: [
+                  //                             Column(
+                  //                               children: [
+                  //                                 homeController
+                  //                                                 .clientReviews[
+                  //                                                     index]
+                  //                                                 .profile
+                  //                                                 .toString() ==
+                  //                                             "" ||
+                  //                                         homeController
+                  //                                                 .clientReviews[
+                  //                                                     index]
+                  //                                                 .profile
+                  //                                                 .toString() ==
+                  //                                             "null"
+                  //                                     ? CircleAvatar(
+                  //                                         radius:
+                  //                                             FontSizes(context)
+                  //                                                 .width10(),
+                  //                                         backgroundImage:
+                  //                                             AssetImage(Images
+                  //                                                 .deafultUser))
+                  //                                     : CircleAvatar(
+                  //                                         radius:
+                  //                                             FontSizes(context)
+                  //                                                 .width10(),
+                  //                                         backgroundImage: CachedNetworkImageProvider(
+                  //                                             "${global.imgBaseurl}${homeController.clientReviews[index].profile}",
+                  //                                             errorListener: (e) =>
+                  //                                                 AssetImage(Images
+                  //                                                     .deafultUser)),
+                  //                                       ),
+                  //                               ],
+                  //                             ),
+                  //                             SizedBox(
+                  //                               width:
+                  //                                   FontSizes(context).width2(),
+                  //                             ),
+                  //                             Expanded(
+                  //                               child: Column(
+                  //                                 crossAxisAlignment:
+                  //                                     CrossAxisAlignment.start,
+                  //                                 children: [
+                  //                                   Row(
+                  //                                     mainAxisAlignment:
+                  //                                         MainAxisAlignment
+                  //                                             .spaceBetween,
+                  //                                     children: [
+                  //                                       CustomText(
+                  //                                         text:
+                  //                                             "${homeController.clientReviews[index].name}",
+                  //                                         fontWeight:
+                  //                                             FontWeight.w600,
+                  //                                         overflow: TextOverflow
+                  //                                             .ellipsis,
+                  //                                         color: blackColor,
+                  //                                         fontsize:
+                  //                                             FontSizes(context)
+                  //                                                 .font04(),
+                  //                                         maxLine: 1,
+                  //                                       ),
+                  //                                       Icon(
+                  //                                         Icons.more_vert,
+                  //                                         color: blackColor,
+                  //                                         size:
+                  //                                             FontSizes(context)
+                  //                                                 .width4(),
+                  //                                       )
+                  //                                     ],
+                  //                                   ),
+                  //                                   SizedBox(
+                  //                                     height: FontSizes(context)
+                  //                                         .height1(),
+                  //                                   ),
+                  //                                   CustomText(
+                  //                                     text:
+                  //                                         "${homeController.clientReviews[index].review}",
+                  //                                     fontWeight:
+                  //                                         FontWeight.w600,
+                  //                                     color: blackColor,
+                  //                                     overflow:
+                  //                                         TextOverflow.ellipsis,
+                  //                                     fontsize:
+                  //                                         FontSizes(context)
+                  //                                             .font04(),
+                  //                                     maxLine: 2,
+                  //                                   ),
+                  //                                   SizedBox(
+                  //                                     height: FontSizes(context)
+                  //                                         .height1(),
+                  //                                   ),
+                  //                                   InkWell(
+                  //                                     onTap: () async {
+                  //                                       global
+                  //                                           .showOnlyLoaderDialog(
+                  //                                               context);
+                  //                                       await homeController
+                  //                                           .getClientsTestimonals();
+                  //                                       global.hideLoader();
+                  //                                       Get.to(() =>
+                  //                                           ClientsReviewScreen());
+                  //                                     },
+                  //                                     child: CustomText(
+                  //                                       text: "More",
+                  //                                       fontWeight:
+                  //                                           FontWeight.w600,
+                  //                                       decoration:
+                  //                                           TextDecoration
+                  //                                               .underline,
+                  //                                       decorationColor:
+                  //                                           orangeColor,
+                  //                                       color: Get
+                  //                                           .theme.primaryColor,
+                  //                                       overflow: TextOverflow
+                  //                                           .ellipsis,
+                  //                                       fontsize:
+                  //                                           FontSizes(context)
+                  //                                               .font04(),
+                  //                                       maxLine: 2,
+                  //                                     ),
+                  //                                   ),
+                  //                                 ],
+                  //                               ),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                       );
+                  //                     }),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         );
+                  // }),
 
                   ///astro in news
                   GetBuilder<HomeController>(builder: (homeController) {
@@ -3196,7 +3193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  '${global.getSystemFlagValueForLogin(global.systemFlagNameList.appName)} in News',
+                                                  ' News',
                                                   style: Get
                                                       .theme
                                                       .primaryTextTheme
@@ -3527,261 +3524,261 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  GetBuilder<HomeController>(builder: (homeController) {
-                    return homeController.astrologyVideo.length == 0
-                        ? SizedBox()
-                        : SizedBox(
-                            height: 250,
-                            child: Card(
-                              elevation: 0,
-                              margin: EdgeInsets.only(top: 6),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 10, bottom: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Watch Astrology Videos',
-                                                  style: Get
-                                                      .theme
-                                                      .primaryTextTheme
-                                                      .titleMedium!
-                                                      .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                ).tr(),
-                                              ],
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Get.to(() =>
-                                                  AstrologerVideoScreen());
-                                            },
-                                            child: Text(
-                                              'View All',
-                                              style: Get.theme.primaryTextTheme
-                                                  .bodySmall!
-                                                  .copyWith(
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.blue[500],
-                                              ),
-                                            ).tr(),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                        child: ListView.builder(
-                                      itemCount:
-                                          homeController.astrologyVideo.length,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      padding: EdgeInsets.only(
-                                          top: 10, left: 10, bottom: 10),
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () async {
-                                            global
-                                                .showOnlyLoaderDialog(context);
-                                            await homeController.youtubPlay(
-                                                homeController
-                                                    .astrologyVideo[index]
-                                                    .youtubeLink);
-                                            global.hideLoader();
-                                            Get.to(() => BlogScreen(
-                                                  link: homeController
-                                                      .astrologyVideo[index]
-                                                      .youtubeLink,
-                                                  title: 'Video',
-                                                  controller: homeController
-                                                      .youtubePlayerController,
-                                                  date:
-                                                      '${DateFormat("MMM d,yyyy").format(DateTime.parse(homeController.astrologyVideo[index].createdAt))}',
-                                                  videoTitle: homeController
-                                                      .astrologyVideo[index]
-                                                      .videoTitle,
-                                                ));
-                                          },
-                                          child: Card(
-                                            elevation: 4,
-                                            margin: EdgeInsets.only(right: 12),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                            ),
-                                            child: Container(
-                                              width: 230,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Stack(
-                                                    alignment: Alignment.center,
-                                                    children: [
-                                                      ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  20),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  20),
-                                                        ),
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          imageUrl:
-                                                              '${global.imgBaseurl}${homeController.astrologyVideo[index].coverImage}',
-                                                          imageBuilder: (context,
-                                                                  imageProvider) =>
-                                                              Container(
-                                                            height: 110,
-                                                            width: Get.width,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                              image:
-                                                                  DecorationImage(
-                                                                fit:
-                                                                    BoxFit.fill,
-                                                                image:
-                                                                    imageProvider,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          placeholder: (context,
-                                                                  url) =>
-                                                              const Center(
-                                                                  child:
-                                                                      CircularProgressIndicator()),
-                                                          errorWidget: (context,
-                                                                  url, error) =>
-                                                              Image.asset(
-                                                            Images.blog,
-                                                            height: Get.height *
-                                                                0.15,
-                                                            width: Get.width,
-                                                            fit: BoxFit.fill,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        child: Image.asset(
-                                                          Images.youtube,
-                                                          height: 40,
-                                                          width: 40,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 5,
-                                                            right: 5,
-                                                            top: 3,
-                                                            bottom: 3),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Container(
-                                                          height: 43,
-                                                          child: Text(
-                                                            homeController
-                                                                .astrologyVideo[
-                                                                    index]
-                                                                .videoTitle,
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            maxLines: 2,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: Get
-                                                                .theme
-                                                                .textTheme
-                                                                .titleMedium!
-                                                                .copyWith(
-                                                              fontSize: 13,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              letterSpacing: 0,
-                                                            ),
-                                                          ).tr(),
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Text(
-                                                              "${DateFormat("MMM d, yyyy").format(DateTime.parse(homeController.astrologyVideo[index].createdAt))}",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: Get
-                                                                  .theme
-                                                                  .textTheme
-                                                                  .titleMedium!
-                                                                  .copyWith(
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color: Colors
-                                                                    .grey[700],
-                                                                letterSpacing:
-                                                                    0,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ))
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                  }),
+                  // GetBuilder<HomeController>(builder: (homeController) {
+                  //   return homeController.astrologyVideo.length == 0
+                  //       ? SizedBox()
+                  //       : SizedBox(
+                  //           height: 250,
+                  //           child: Card(
+                  //             elevation: 0,
+                  //             margin: EdgeInsets.only(top: 6),
+                  //             shape: RoundedRectangleBorder(
+                  //                 borderRadius: BorderRadius.zero),
+                  //             child: Padding(
+                  //               padding:
+                  //                   const EdgeInsets.only(top: 10, bottom: 5),
+                  //               child: Column(
+                  //                 crossAxisAlignment: CrossAxisAlignment.start,
+                  //                 children: [
+                  //                   Padding(
+                  //                     padding: const EdgeInsets.symmetric(
+                  //                         horizontal: 10),
+                  //                     child: Row(
+                  //                       mainAxisAlignment:
+                  //                           MainAxisAlignment.spaceBetween,
+                  //                       children: [
+                  //                         Container(
+                  //                           margin: EdgeInsets.symmetric(
+                  //                               horizontal: 10),
+                  //                           child: Column(
+                  //                             crossAxisAlignment:
+                  //                                 CrossAxisAlignment.start,
+                  //                             children: [
+                  //                               Text(
+                  //                                 'Watch Astrology Videos',
+                  //                                 style: Get
+                  //                                     .theme
+                  //                                     .primaryTextTheme
+                  //                                     .titleMedium!
+                  //                                     .copyWith(
+                  //                                         fontWeight:
+                  //                                             FontWeight.w500),
+                  //                               ).tr(),
+                  //                             ],
+                  //                           ),
+                  //                         ),
+                  //                         GestureDetector(
+                  //                           onTap: () {
+                  //                             Get.to(() =>
+                  //                                 AstrologerVideoScreen());
+                  //                           },
+                  //                           child: Text(
+                  //                             'View All',
+                  //                             style: Get.theme.primaryTextTheme
+                  //                                 .bodySmall!
+                  //                                 .copyWith(
+                  //                               fontWeight: FontWeight.w400,
+                  //                               color: Colors.blue[500],
+                  //                             ),
+                  //                           ).tr(),
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                   Expanded(
+                  //                       child: ListView.builder(
+                  //                     itemCount:
+                  //                         homeController.astrologyVideo.length,
+                  //                     shrinkWrap: true,
+                  //                     scrollDirection: Axis.horizontal,
+                  //                     padding: EdgeInsets.only(
+                  //                         top: 10, left: 10, bottom: 10),
+                  //                     itemBuilder: (context, index) {
+                  //                       return GestureDetector(
+                  //                         onTap: () async {
+                  //                           global
+                  //                               .showOnlyLoaderDialog(context);
+                  //                           await homeController.youtubPlay(
+                  //                               homeController
+                  //                                   .astrologyVideo[index]
+                  //                                   .youtubeLink);
+                  //                           global.hideLoader();
+                  //                           Get.to(() => BlogScreen(
+                  //                                 link: homeController
+                  //                                     .astrologyVideo[index]
+                  //                                     .youtubeLink,
+                  //                                 title: 'Video',
+                  //                                 controller: homeController
+                  //                                     .youtubePlayerController,
+                  //                                 date:
+                  //                                     '${DateFormat("MMM d,yyyy").format(DateTime.parse(homeController.astrologyVideo[index].createdAt))}',
+                  //                                 videoTitle: homeController
+                  //                                     .astrologyVideo[index]
+                  //                                     .videoTitle,
+                  //                               ));
+                  //                         },
+                  //                         child: Card(
+                  //                           elevation: 4,
+                  //                           margin: EdgeInsets.only(right: 12),
+                  //                           shape: RoundedRectangleBorder(
+                  //                             borderRadius:
+                  //                                 BorderRadius.circular(20),
+                  //                           ),
+                  //                           child: Container(
+                  //                             width: 230,
+                  //                             decoration: BoxDecoration(
+                  //                               color: Colors.white,
+                  //                               borderRadius:
+                  //                                   BorderRadius.circular(20),
+                  //                             ),
+                  //                             child: Column(
+                  //                               crossAxisAlignment:
+                  //                                   CrossAxisAlignment.start,
+                  //                               mainAxisSize: MainAxisSize.min,
+                  //                               children: [
+                  //                                 Stack(
+                  //                                   alignment: Alignment.center,
+                  //                                   children: [
+                  //                                     ClipRRect(
+                  //                                       borderRadius:
+                  //                                           BorderRadius.only(
+                  //                                         topLeft:
+                  //                                             Radius.circular(
+                  //                                                 20),
+                  //                                         topRight:
+                  //                                             Radius.circular(
+                  //                                                 20),
+                  //                                       ),
+                  //                                       child:
+                  //                                           CachedNetworkImage(
+                  //                                         imageUrl:
+                  //                                             '${global.imgBaseurl}${homeController.astrologyVideo[index].coverImage}',
+                  //                                         imageBuilder: (context,
+                  //                                                 imageProvider) =>
+                  //                                             Container(
+                  //                                           height: 110,
+                  //                                           width: Get.width,
+                  //                                           decoration:
+                  //                                               BoxDecoration(
+                  //                                             borderRadius:
+                  //                                                 BorderRadius
+                  //                                                     .circular(
+                  //                                                         10),
+                  //                                             image:
+                  //                                                 DecorationImage(
+                  //                                               fit:
+                  //                                                   BoxFit.fill,
+                  //                                               image:
+                  //                                                   imageProvider,
+                  //                                             ),
+                  //                                           ),
+                  //                                         ),
+                  //                                         placeholder: (context,
+                  //                                                 url) =>
+                  //                                             const Center(
+                  //                                                 child:
+                  //                                                     CircularProgressIndicator()),
+                  //                                         errorWidget: (context,
+                  //                                                 url, error) =>
+                  //                                             Image.asset(
+                  //                                           Images.blog,
+                  //                                           height: Get.height *
+                  //                                               0.15,
+                  //                                           width: Get.width,
+                  //                                           fit: BoxFit.fill,
+                  //                                         ),
+                  //                                       ),
+                  //                                     ),
+                  //                                     Positioned(
+                  //                                       child: Image.asset(
+                  //                                         Images.youtube,
+                  //                                         height: 40,
+                  //                                         width: 40,
+                  //                                       ),
+                  //                                     )
+                  //                                   ],
+                  //                                 ),
+                  //                                 Padding(
+                  //                                   padding:
+                  //                                       const EdgeInsets.only(
+                  //                                           left: 5,
+                  //                                           right: 5,
+                  //                                           top: 3,
+                  //                                           bottom: 3),
+                  //                                   child: Column(
+                  //                                     crossAxisAlignment:
+                  //                                         CrossAxisAlignment
+                  //                                             .start,
+                  //                                     children: [
+                  //                                       Container(
+                  //                                         height: 43,
+                  //                                         child: Text(
+                  //                                           homeController
+                  //                                               .astrologyVideo[
+                  //                                                   index]
+                  //                                               .videoTitle,
+                  //                                           textAlign:
+                  //                                               TextAlign.start,
+                  //                                           maxLines: 2,
+                  //                                           overflow:
+                  //                                               TextOverflow
+                  //                                                   .ellipsis,
+                  //                                           style: Get
+                  //                                               .theme
+                  //                                               .textTheme
+                  //                                               .titleMedium!
+                  //                                               .copyWith(
+                  //                                             fontSize: 13,
+                  //                                             fontWeight:
+                  //                                                 FontWeight
+                  //                                                     .w500,
+                  //                                             letterSpacing: 0,
+                  //                                           ),
+                  //                                         ).tr(),
+                  //                                       ),
+                  //                                       Row(
+                  //                                         mainAxisAlignment:
+                  //                                             MainAxisAlignment
+                  //                                                 .end,
+                  //                                         children: [
+                  //                                           Text(
+                  //                                             "${DateFormat("MMM d, yyyy").format(DateTime.parse(homeController.astrologyVideo[index].createdAt))}",
+                  //                                             textAlign:
+                  //                                                 TextAlign
+                  //                                                     .center,
+                  //                                             style: Get
+                  //                                                 .theme
+                  //                                                 .textTheme
+                  //                                                 .titleMedium!
+                  //                                                 .copyWith(
+                  //                                               fontSize: 10,
+                  //                                               fontWeight:
+                  //                                                   FontWeight
+                  //                                                       .w500,
+                  //                                               color: Colors
+                  //                                                   .grey[700],
+                  //                                               letterSpacing:
+                  //                                                   0,
+                  //                                             ),
+                  //                                           ),
+                  //                                         ],
+                  //                                       ),
+                  //                                     ],
+                  //                                   ),
+                  //                                 ),
+                  //                               ],
+                  //                             ),
+                  //                           ),
+                  //                         ),
+                  //                       );
+                  //                     },
+                  //                   ))
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         );
+                  // }),
                   GetBuilder<HomeController>(builder: (homeController) {
                     return Card(
                       elevation: 0,
