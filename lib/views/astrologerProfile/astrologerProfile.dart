@@ -2405,7 +2405,7 @@ class _AstrologerProfileState extends State<AstrologerProfile> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Icon(
-                                  CupertinoIcons.chat_bubble_2,
+                                  CupertinoIcons.chat_bubble_text_fill,
                                   color: Colors.white
                               ),
                               Center(

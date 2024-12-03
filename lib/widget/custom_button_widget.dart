@@ -17,6 +17,7 @@ class CustomButtonWidget extends StatelessWidget {
   final IconData? suffixIcon; // New suffixIcon parameter
   final Color? color;
   final Color? textColor;
+  final Color? iconColor;
   final bool isLoading;
   final bool isBold;
   final Color? borderSideColor;
@@ -37,7 +38,7 @@ class CustomButtonWidget extends StatelessWidget {
     this.textColor,
     this.isLoading = false,
     this.isBold = true,
-    this.borderSideColor,
+    this.borderSideColor, this.iconColor,
   });
 
   @override
@@ -93,9 +94,8 @@ class CustomButtonWidget extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 0),
                           child: Icon(
                             icon,
-                            color: transparent
-                                ? Theme.of(context).primaryColor
-                                : Theme.of(context).cardColor,
+                            color: iconColor?? Theme.of(context).dividerColor,
+
                             size: Dimensions.fontSizeDefault,
                           ),
                         ),

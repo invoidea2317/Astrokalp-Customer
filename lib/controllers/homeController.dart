@@ -459,5 +459,15 @@ class HomeController extends GetxController {
       print("Exception in  storyViewed:-" + e.toString());
     }
   }
+  void refreshIt() async {
+    splashController.currentLanguageCode =
+        lan[selectedIndex].lanCode;
+    splashController.update();
+    global.spLanguage = await SharedPreferences.getInstance();
+    global.spLanguage!
+        .setString('currentLanguage', splashController.currentLanguageCode);
+    refresh();
+    Get.back();
+  }
 
 }

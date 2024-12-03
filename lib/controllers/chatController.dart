@@ -67,7 +67,7 @@ class ChatController extends GetxController
     await _init();
     super.onInit();
     categoryTab = TabController(
-        vsync: this, length: categoryList.length, initialIndex: isSelected);
+        vsync: this, length: categoryList.length + 1, initialIndex: isSelected);
   }
 
   @override
@@ -79,7 +79,6 @@ class ChatController extends GetxController
   _init() async {
     await getAstrologerCategorys();
   }
-
   Future<void> sendReplyMessage(String message, String chatId, int partnerId,
       bool isEndMessage, String replymsg) async {
     debugPrint('chatID $chatId partnerId $partnerId');

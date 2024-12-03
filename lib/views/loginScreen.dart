@@ -295,9 +295,36 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                   },
                                   suffixIcon: Icons.arrow_forward_outlined,
                                   color: Theme.of(context).dividerColor,
-                                  textColor: Theme.of(context).primaryColor,
-                                  
-                                  ),
+                                  textColor: Theme.of(context).primaryColor),
+                                  // SizedBox(
+                                  //   height: 1.h,
+                                  // ),
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     global.showOnlyLoaderDialog(context);
+                                  //     loginController.startHeadlessWithWhatsapp("WHATSAPP");
+                                  //   },
+                                  //   child: Container(
+                                  //     alignment: Alignment.center,
+                                  //     decoration: BoxDecoration(
+                                  //         border: Border.all(
+                                  //             color: Colors.grey
+                                  //         ),
+                                  //         borderRadius: BorderRadius.circular(10.sp)
+                                  //     ),
+                                  //     width: 100.w,
+                                  //     child: Row(
+                                  //       mainAxisAlignment: MainAxisAlignment.center,
+                                  //       children: [
+                                  //         Image.asset("assets/images/whatsapp.png",
+                                  //           height:6.h,
+                                  //           width: 16.w,
+                                  //           fit: BoxFit.cover,),
+                                  //         Text('Continue with Whatsapp'),
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   SizedBox(
                                     height: 1.h,
                                   ),
@@ -314,17 +341,12 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                           onTap: () {
                                             Get.to(() => TermAndConditionScreen());
                                           },
-                                          child: Text(
-                                            ' Terms of Service',
+                                          child: Text(' Terms of Service',
                                             style: TextStyle(
                                                 overflow: TextOverflow.ellipsis,
-                                                // decoration:
-                                                //     TextDecoration.underline,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 12,
-                                                color: Theme.of(context)
-                                                    .dividerColor),
-                                          ).tr(),
+                                                color: Theme.of(context).dividerColor)).tr(),
                                         ),
                                         Text(' and ',
                                                 style: TextStyle(
@@ -352,13 +374,12 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 ],
                               );
                             }),
-                            SizedBox(
-                              height: Get.height * 0.03,
-                            ),
+                            SizedBox(height: Get.height * 0.03),
                           ],
                         ),
                       ),
                       Container(
+                        padding: EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
                         // height: 19.h,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,

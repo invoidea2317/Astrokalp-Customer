@@ -10,6 +10,7 @@ import 'package:AstrowayCustomer/controllers/skillController.dart';
 import 'package:AstrowayCustomer/controllers/walletController.dart';
 import 'package:AstrowayCustomer/utils/AppColors.dart';
 import 'package:AstrowayCustomer/utils/images.dart';
+
 // import 'package:AstrowayCustomer/views/addMoneyToWallet.dart';
 import 'package:AstrowayCustomer/views/call/incoming_call_request.dart';
 import 'package:AstrowayCustomer/views/callIntakeFormScreen.dart';
@@ -19,6 +20,7 @@ import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:AstrowayCustomer/widget/drawerWidget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -28,14 +30,22 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controllers/homeController.dart';
 import '../controllers/reviewController.dart';
+import '../theme/nativeTheme.dart';
+import '../utils/dimensions.dart';
+import '../utils/sizedboxes.dart';
+import '../utils/text_styles.dart';
+import '../widget/custom_button_widget.dart';
 import 'astrologerProfile/astrologerProfile.dart';
 import 'call/oneToOneVideo/onetooneVideo.dart';
+import 'chatScreen.dart';
 
 class CallScreen extends StatefulWidget {
   int flag;
 
   CallScreen({super.key, required this.flag});
+
   @override
   State<CallScreen> createState() => _CallScreenState();
 }
@@ -56,6 +66,8 @@ class _CallScreenState extends State<CallScreen> {
   BottomNavigationController bottomNavigationController =
       Get.find<BottomNavigationController>();
   WalletController walletController = Get.find<WalletController>();
+  final PageController pageController = PageController();
+  final homeController = Get.find<HomeController>();
 
   @override
   void initState() {
@@ -89,243 +101,641 @@ class _CallScreenState extends State<CallScreen> {
         backgroundColor: Colors.white,
         key: drawerKey,
         drawer: DrawerWidget(),
-        appBar: CustomAppBar(
-          flagforCategory: widget.flag,
-          flagId: 2,
-          onBackPressed: () {},
-          scaffoldKey: drawerKey,
-          title: 'Call with Astrologer',
-          titleStyle: Get.theme.primaryTextTheme.titleMedium!.copyWith(
-              fontWeight: FontWeight.normal,
-              color: Colors.black),
-          bgColor: Get.theme.primaryColor,
-          actions: [
-            Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // global.splashController.currentUser?.walletAmount != null
-                //     ? InkWell(
-                //         onTap: () async {
-                //           global.showOnlyLoaderDialog(context);
-                //           await walletController.getAmount();
-                //           global.hideLoader();
-                //           Get.to(() => AddmoneyToWallet());
-                //         },
-                //         child: Container(
-                //           padding: EdgeInsets.all(2),
-                //           margin: EdgeInsets.symmetric(vertical: 17),
-                //           decoration: BoxDecoration(
-                //             border: Border.all(color: Colors.white),
-                //             borderRadius: BorderRadius.circular(5),
-                //           ),
-                //           alignment: Alignment.center,
-                //           child: Text(
-                //             '${global.getSystemFlagValueForLogin(global.systemFlagNameList.currency)}${global.splashController.currentUser?.walletAmount.toString()}',
-                //             style: Get.theme.primaryTextTheme.bodySmall!
-                //                 .copyWith(color: Colors.white),
-                //           ),
-                //         ),
-                //       )
-                //     : SizedBox(),
-              ],
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.to(() => SearchAstrologerScreen(
-                      type: 'Call',
-                    ));
+        appBar: CustomApp(title: 'Chat With Astrologers',menuWidget: Row(
+          children: [
+            InkWell(
+              onTap: () async {
+                homeController.lan = [];
+                await Future.wait([
+                  homeController.getLanguages(),
+                  homeController.updateLanIndex()
+                ]);
+                print(homeController.lan);
+                global.checkBody().then((result) {
+                  if (result) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return GetBuilder<HomeController>(builder: (h) {
+                            return AlertDialog(
+                              backgroundColor: Colors.white,
+                              contentPadding: EdgeInsets.zero,
+                              content: GetBuilder<HomeController>(builder: (h) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    sizedBoxDefault(),
+                                    InkWell(
+                                      onTap: () => Get.back(),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          right: 2.w,
+                                          top: 2.w,
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: const Icon(Icons.close),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                        padding: EdgeInsets.all(6),
+                                        child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Choose your app language',
+                                                style: Get
+                                                    .textTheme.titleMedium!
+                                                    .copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ).tr(),
+                                              GetBuilder<HomeController>(
+                                                  builder: (home) {
+                                                    return Padding(
+                                                      padding:
+                                                      EdgeInsets.only(top: 15),
+                                                      child: Wrap(
+                                                          children: List.generate(
+                                                              homeController.lan
+                                                                  .length, (index) {
+                                                            return InkWell(
+                                                              onTap: () {
+                                                                //! LANGUAGE SET DILAOG
+                                                                homeController
+                                                                    .updateLan(index);
+                                                                switch (index) {
+                                                                  case 0:
+                                                                    var newLocale =
+                                                                    const Locale(
+                                                                        'en',
+                                                                        'US'); //ENGLISH
+
+                                                                    context.setLocale(
+                                                                        newLocale);
+                                                                    Get.updateLocale(
+                                                                        newLocale);
+                                                                    homeController.refreshIt();
+
+                                                                    break;
+                                                                  case 1:
+                                                                    var newLocale =
+                                                                    const Locale(
+                                                                        'gu', 'IN');
+                                                                    context.setLocale(
+                                                                        newLocale);
+                                                                    Get.updateLocale(
+                                                                        newLocale);
+                                                                    homeController.refreshIt();
+
+                                                                    break;
+                                                                  case 2:
+                                                                    var newLocale =
+                                                                    const Locale(
+                                                                        'hi',
+                                                                        'IN'); //HINDI
+                                                                    context.setLocale(
+                                                                        newLocale);
+                                                                    Get.updateLocale(
+                                                                        newLocale);
+                                                                    homeController.refreshIt();
+
+                                                                    break;
+                                                                  case 3:
+                                                                    var newLocale =
+                                                                    const Locale(
+                                                                        'es',
+                                                                        'ES'); //Spanish
+                                                                    context.setLocale(
+                                                                        newLocale);
+                                                                    Get.updateLocale(
+                                                                        newLocale);
+                                                                    homeController.refreshIt();
+
+                                                                    break;
+                                                                  case 4:
+                                                                    var newLocale =
+                                                                    const Locale(
+                                                                        'mr',
+                                                                        'IN'); //marathi
+                                                                    context.setLocale(
+                                                                        newLocale);
+                                                                    Get.updateLocale(
+                                                                        newLocale);
+                                                                    homeController.refreshIt();
+
+                                                                    break;
+                                                                  case 5:
+                                                                    var newLocale =
+                                                                    const Locale(
+                                                                        'bn',
+                                                                        'IN'); //bengali
+                                                                    context.setLocale(
+                                                                        newLocale);
+                                                                    Get.updateLocale(
+                                                                        newLocale);
+                                                                    homeController.refreshIt();
+
+                                                                    break;
+
+                                                                  case 6:
+                                                                    var newLocale =
+                                                                    const Locale(
+                                                                        'kn',
+                                                                        'IN'); //kannad
+                                                                    context.setLocale(
+                                                                        newLocale);
+                                                                    Get.updateLocale(
+                                                                        newLocale);
+                                                                    homeController.refreshIt();
+
+                                                                    break;
+
+                                                                  case 7:
+                                                                    var newLocale =
+                                                                    const Locale(
+                                                                        'ml',
+                                                                        'IN'); //malayalam
+                                                                    context.setLocale(
+                                                                        newLocale);
+                                                                    Get.updateLocale(
+                                                                        newLocale);
+                                                                    homeController.refreshIt();
+
+                                                                    break;
+
+                                                                  case 8:
+                                                                    var newLocale =
+                                                                    const Locale(
+                                                                        'ta',
+                                                                        'IN'); //tamil
+                                                                    context.setLocale(
+                                                                        newLocale);
+                                                                    Get.updateLocale(
+                                                                        newLocale);
+                                                                    homeController.refreshIt();
+
+                                                                    break;
+                                                                }
+                                                              },
+                                                              child: GetBuilder<
+                                                                  HomeController>(
+                                                                  builder: (h) {
+                                                                    return Container(
+                                                                      height: 80,
+                                                                      alignment:
+                                                                      Alignment.center,
+                                                                      margin:
+                                                                      EdgeInsets.only(
+                                                                          left: 7,
+                                                                          right: 7,
+                                                                          top: 10),
+                                                                      width: 75,
+                                                                      padding: EdgeInsets
+                                                                          .symmetric(
+                                                                          horizontal: 8,
+                                                                          vertical: 8),
+                                                                      decoration:
+                                                                      BoxDecoration(
+                                                                        color: homeController
+                                                                            .lan[index]
+                                                                            .isSelected
+                                                                            ? Color
+                                                                            .fromARGB(
+                                                                            255,
+                                                                            228,
+                                                                            217,
+                                                                            185)
+                                                                            : Colors
+                                                                            .transparent,
+                                                                        border: Border.all(
+                                                                            color: homeController
+                                                                                .lan[
+                                                                            index]
+                                                                                .isSelected
+                                                                                ? Get.theme
+                                                                                .primaryColor
+                                                                                : Colors
+                                                                                .black),
+                                                                        borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                            10),
+                                                                      ),
+                                                                      child: Column(
+                                                                          mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                          children: [
+                                                                            Text(
+                                                                              homeController
+                                                                                  .lan[
+                                                                              index]
+                                                                                  .title,
+                                                                              style: Get
+                                                                                  .textTheme
+                                                                                  .bodyMedium,
+                                                                            ),
+                                                                            Text(
+                                                                              homeController
+                                                                                  .lan[
+                                                                              index]
+                                                                                  .subTitle,
+                                                                              style: Get
+                                                                                  .textTheme
+                                                                                  .bodyMedium!
+                                                                                  .copyWith(
+                                                                                  fontSize:
+                                                                                  12),
+                                                                            )
+                                                                          ]),
+                                                                    );
+                                                                  }),
+                                                            );
+                                                          })),
+                                                    );
+                                                  }),
+                                            ])),
+                                    sizedBoxDefault(),
+                                  ],
+                                );
+                              }),
+                            );
+                          });
+                        });
+                  }
+                });
               },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: Icon(FontAwesomeIcons.magnifyingGlass,
-                    size: 20, color: Colors.black //Get.theme.iconTheme.color,
-                    ),
+              child: Image.asset(
+                height: 32,
+                width: 32,
+                Images.translation,
+                color: Theme.of(context).primaryColor,
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                openBottomSheetFilter(context);
-                skillController.getSkills();
-                languageController.getLanguages();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  alignment: Alignment.center,
-                  children: [
-                    Icon(FontAwesomeIcons.filter,
-                        size: 20,
-                        color: Colors.black //Get.theme.iconTheme.color,
-                        ),
-                    bottomNavigationController.applyFilter
-                        ? Positioned(
-                            right: 0,
-                            top: 15,
-                            child: CircleAvatar(
-                              backgroundColor: Colors.blue,
-                              radius: 4,
-                            ),
-                          )
-                        : const SizedBox(),
-                  ],
-                ),
-              ),
-            )
           ],
-        ),
+        ),),
         body: GetBuilder<CallController>(
           builder: (callController) {
             return DefaultTabController(
               length: chatController.categoryList.length,
               child: Column(
                 children: [
-                  TabBar(
-                    padding: EdgeInsets.only(top: 10),
-                    controller: chatController.categoryTab,
-                    isScrollable: true,
-                    onTap: (value) async {
-                      chatController.isSelected = value;
-                      if (value == 0) {
-                        bottomNavigationController.astrologerList = [];
-                        bottomNavigationController.astrologerList.clear();
-                        bottomNavigationController.isAllDataLoaded = false;
-                        bottomNavigationController.update();
-                        global.showOnlyLoaderDialog(context);
-                        await bottomNavigationController.getAstrologerList(
-                            isLazyLoading: false);
-                        global.hideLoader();
-                      } else {
-                        for (var i = 0;
-                            i < chatController.categoryList.length;
-                            i++) {
-                          if (value == i) {
-                            bottomNavigationController.astrologerList = [];
-                            bottomNavigationController.astrologerList.clear();
-                            bottomNavigationController.isAllDataLoaded = false;
-                            bottomNavigationController.update();
-                            global.showOnlyLoaderDialog(context);
-                            await bottomNavigationController.astroCat(
-                                id: chatController.categoryList[i].id!,
-                                isLazyLoading: false);
-                            global.hideLoader();
-                          }
-                        }
-                      }
-                      chatController.update();
-                    },
-                    indicatorColor: Colors.transparent,
-                    labelPadding: EdgeInsets.symmetric(horizontal: 5),
-                    tabs: List.generate(chatController.categoryList.length,
-                        (index) {
-                      return GetBuilder<ChatController>(builder: (chatco) {
-                        return SizedBox(
-                          height: 30,
-                          child: Chip(
-                            padding: EdgeInsets.only(bottom: 5),
-                            backgroundColor: chatController.isSelected == index
-                                ? Get.theme.hoverColor
-                                : Get.theme.cardColor,
-                            shape: RoundedRectangleBorder(
-                                // side: BorderSide(
-                                //   color: chatController.isSelected == index
-                                //       ? Get.theme.primaryColor
-                                //       : Colors.transparent,
-                                // ),
-                                borderRadius: BorderRadius.circular(7)),
-                            label: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Row(
+                  Container(
+                    padding:
+                        EdgeInsets.only(left: Dimensions.paddingSizeDefault),
+                    height: 50,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.only(top: 10),
+                      itemCount: chatController.categoryList.length + 1,
+                      itemBuilder: (context, value) {
+                        // Filter Tab
+                        if (value == 0) {
+                          return GestureDetector(
+                            onTap: () async {
+                              openBottomSheetFilter(context);
+                              skillController.getSkills();
+                              languageController.getLanguages();
+                            },
+                            child: Chip(
+                              padding: EdgeInsets.only(bottom: 5),
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: Theme.of(context).hintColor,
+                                ),
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              label: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  // CachedNetworkImage(
-                                  //   height: 20,
-                                  //   width: 20,
-                                  //   imageUrl:
-                                  //       '${global.imgBaseurl}${chatController.categoryList[index].image}',
-                                  //   placeholder: (context, url) => const Center(
-                                  //       child: CircularProgressIndicator()),
-                                  //   errorWidget: (context, url, error) =>
-                                  //       Icon(Icons.grid_view_rounded, size: 20),
-                                  // ),
+                                  Icon(
+                                    Icons.tune,
+                                    size: 22,
+                                    color: Theme.of(context)
+                                        .hoverColor
+                                        .withOpacity(0.40),
+                                  ),
                                   SizedBox(width: 5),
                                   Text(
-                                    chatController.categoryList[index].name,
+                                    'Filter',
                                     style: Get.theme.primaryTextTheme.bodySmall!
-                                        .copyWith(fontWeight: FontWeight.w300,
-                                    color: chatController.isSelected == index
-                                        ? Theme.of(context).cardColor
-                                        : Theme.of(context).hoverColor.withOpacity(0.40), ),
+                                        .copyWith(
+                                      fontWeight: FontWeight.w300,
+                                      color: Theme.of(context)
+                                          .hoverColor
+                                          .withOpacity(0.40),
+                                    ),
                                   ).tr(),
                                 ],
                               ),
                             ),
-                          ),
+                          );
+                        }
+
+                        // Dynamic Tabs
+                        int adjustedIndex = value - 1;
+                        return GestureDetector(
+                          onTap: () async {
+                            chatController.isSelected = adjustedIndex;
+                            pageController.jumpToPage(adjustedIndex);
+
+                            if (adjustedIndex == 0) {
+                              global.showOnlyLoaderDialog(context);
+                              bottomNavigationController.astrologerList = [];
+                              bottomNavigationController.isAllDataLoaded =
+                                  false;
+                              bottomNavigationController.update();
+                              await bottomNavigationController
+                                  .getAstrologerList(isLazyLoading: false);
+                              global.hideLoader();
+                            } else {
+                              bottomNavigationController.astrologerList = [];
+                              bottomNavigationController.isAllDataLoaded =
+                                  false;
+                              bottomNavigationController.update();
+                              global.showOnlyLoaderDialog(context);
+                              await bottomNavigationController.astroCat(
+                                id: chatController
+                                    .categoryList[adjustedIndex].id!,
+                                isLazyLoading: false,
+                              );
+                              global.hideLoader();
+                            }
+                            chatController.update();
+                          },
+                          child: GetBuilder<ChatController>(builder: (chatco) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  right: Dimensions.paddingSize5),
+                              child: Chip(
+                                padding: EdgeInsets.only(bottom: 5),
+                                backgroundColor:
+                                    chatController.isSelected == adjustedIndex
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: chatController.isSelected ==
+                                            adjustedIndex
+                                        ? Theme.of(context).primaryColor
+                                        : Theme.of(context).hintColor,
+                                  ),
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                                label: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (chatController
+                                        .categoryList[adjustedIndex]
+                                        .image
+                                        .isNotEmpty)
+                                      CachedNetworkImage(
+                                        height: 20,
+                                        width: 20,
+                                        imageUrl:
+                                            '${global.imgBaseurl}${chatController.categoryList[adjustedIndex].image}',
+                                        placeholder: (context, url) =>
+                                            const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(
+                                          Icons.grid_view_rounded,
+                                          color: Get.theme.primaryColor,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      chatController
+                                          .categoryList[adjustedIndex].name,
+                                      style: Get
+                                          .theme.primaryTextTheme.bodySmall!
+                                          .copyWith(
+                                        fontWeight: FontWeight.w300,
+                                        color: chatController.isSelected ==
+                                                adjustedIndex
+                                            ? Theme.of(context).dividerColor
+                                            : Theme.of(context)
+                                                .hoverColor
+                                                .withOpacity(0.40),
+                                      ),
+                                    ).tr(),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
                         );
-                      });
-                    }),
+                      },
+                    ),
                   ),
-                  GetBuilder<BottomNavigationController>(builder: (b) {
-                    return bottomNavigationController.astrologerList.length == 0
-                        ? Container(
-                            //NO ASTROLOGER IN THIS CATEGORY
-                            height: 500,
-                            child: Center(
+                  Expanded(
+                    child: GetBuilder<BottomNavigationController>(
+                        builder: (bottomNavigationController) {
+                      return PageView.builder(
+                        controller: pageController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        onPageChanged: (index) {
+                          chatController.isSelected = index;
+                          chatController.update();
+                        },
+                        itemCount: chatController.categoryList.length,
+                        itemBuilder: (context, index) {
+                          if (bottomNavigationController
+                              .astrologerList.isEmpty) {
+                            return Center(
                               child: Text(
                                 'Astrologer not available',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 18),
                               ).tr(),
+                            );
+                          }
+                          return RefreshIndicator(
+                            onRefresh: () async {
+                              bottomNavigationController.astrologerList = [];
+                              bottomNavigationController.astrologerList.clear();
+                              bottomNavigationController.isAllDataLoaded =
+                                  false;
+                              if (bottomNavigationController.genderFilterList !=
+                                  null) {
+                                bottomNavigationController.genderFilterList!
+                                    .clear();
+                              }
+                              if (bottomNavigationController.languageFilter !=
+                                  null) {
+                                bottomNavigationController.languageFilter!
+                                    .clear();
+                              }
+                              if (bottomNavigationController.skillFilterList !=
+                                  null) {
+                                bottomNavigationController.skillFilterList!
+                                    .clear();
+                              }
+                              bottomNavigationController.applyFilter = false;
+                              bottomNavigationController.update();
+                              await bottomNavigationController
+                                  .getAstrologerList(isLazyLoading: false);
+                            },
+                            child: TabViewAstrologer(
+                              astrologerList:
+                                  bottomNavigationController.astrologerList,
                             ),
-                          )
-                        : Expanded(
-                            child: TabBarView(
-                            controller: chatController.categoryTab,
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: List.generate(
-                                chatController.categoryList.length, (index) {
-                              return RefreshIndicator(
-                                onRefresh: () async {
-                                  bottomNavigationController.astrologerList =
-                                      [];
-                                  bottomNavigationController.astrologerList
-                                      .clear();
-                                  bottomNavigationController.isAllDataLoaded =
-                                      false;
-                                  if (bottomNavigationController
-                                          .genderFilterList !=
-                                      null) {
-                                    bottomNavigationController.genderFilterList!
-                                        .clear();
-                                  }
-                                  if (bottomNavigationController
-                                          .languageFilter !=
-                                      null) {
-                                    bottomNavigationController.languageFilter!
-                                        .clear();
-                                  }
-                                  if (bottomNavigationController
-                                          .skillFilterList !=
-                                      null) {
-                                    bottomNavigationController.skillFilterList!
-                                        .clear();
-                                  }
-                                  bottomNavigationController.applyFilter =
-                                      false;
-                                  bottomNavigationController.update();
-                                  await bottomNavigationController
-                                      .getAstrologerList(isLazyLoading: false);
-                                },
-                                child: TabViewAstrologer(
-                                  astrologerList:
-                                      bottomNavigationController.astrologerList,
-                                ),
-                              );
-                            }),
-                          ));
-                  }),
+                          );
+                        },
+                      );
+                    }),
+                  ),
+                  // TabBar(
+                  //   padding: EdgeInsets.only(top: 10),
+                  //   controller: chatController.categoryTab,
+                  //   isScrollable: true,
+                  //   onTap: (value) async {
+                  //     chatController.isSelected = value;
+                  //     if (value == 0) {
+                  //       bottomNavigationController.astrologerList = [];
+                  //       bottomNavigationController.astrologerList.clear();
+                  //       bottomNavigationController.isAllDataLoaded = false;
+                  //       bottomNavigationController.update();
+                  //       global.showOnlyLoaderDialog(context);
+                  //       await bottomNavigationController.getAstrologerList(
+                  //           isLazyLoading: false);
+                  //       global.hideLoader();
+                  //     } else {
+                  //       for (var i = 0;
+                  //           i < chatController.categoryList.length;
+                  //           i++) {
+                  //         if (value == i) {
+                  //           bottomNavigationController.astrologerList = [];
+                  //           bottomNavigationController.astrologerList.clear();
+                  //           bottomNavigationController.isAllDataLoaded = false;
+                  //           bottomNavigationController.update();
+                  //           global.showOnlyLoaderDialog(context);
+                  //           await bottomNavigationController.astroCat(
+                  //               id: chatController.categoryList[i].id!,
+                  //               isLazyLoading: false);
+                  //           global.hideLoader();
+                  //         }
+                  //       }
+                  //     }
+                  //     chatController.update();
+                  //   },
+                  //   indicatorColor: Colors.transparent,
+                  //   labelPadding: EdgeInsets.symmetric(horizontal: 5),
+                  //   tabs: List.generate(chatController.categoryList.length,
+                  //       (index) {
+                  //     return GetBuilder<ChatController>(builder: (chatco) {
+                  //       return SizedBox(
+                  //         height: 30,
+                  //         child: Chip(
+                  //           padding: EdgeInsets.only(bottom: 5),
+                  //           backgroundColor: chatController.isSelected == index
+                  //               ? Get.theme.hoverColor
+                  //               : Get.theme.cardColor,
+                  //           shape: RoundedRectangleBorder(
+                  //               // side: BorderSide(
+                  //               //   color: chatController.isSelected == index
+                  //               //       ? Get.theme.primaryColor
+                  //               //       : Colors.transparent,
+                  //               // ),
+                  //               borderRadius: BorderRadius.circular(7)),
+                  //           label: Padding(
+                  //             padding:
+                  //                 const EdgeInsets.symmetric(horizontal: 5),
+                  //             child: Row(
+                  //               mainAxisAlignment: MainAxisAlignment.center,
+                  //               children: [
+                  //                 // CachedNetworkImage(
+                  //                 //   height: 20,
+                  //                 //   width: 20,
+                  //                 //   imageUrl:
+                  //                 //       '${global.imgBaseurl}${chatController.categoryList[index].image}',
+                  //                 //   placeholder: (context, url) => const Center(
+                  //                 //       child: CircularProgressIndicator()),
+                  //                 //   errorWidget: (context, url, error) =>
+                  //                 //       Icon(Icons.grid_view_rounded, size: 20),
+                  //                 // ),
+                  //                 SizedBox(width: 5),
+                  //                 Text(
+                  //                   chatController.categoryList[index].name,
+                  //                   style: Get.theme.primaryTextTheme.bodySmall!
+                  //                       .copyWith(fontWeight: FontWeight.w300,
+                  //                   color: chatController.isSelected == index
+                  //                       ? Theme.of(context).cardColor
+                  //                       : Theme.of(context).hoverColor.withOpacity(0.40), ),
+                  //                 ).tr(),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       );
+                  //     });
+                  //   }),
+                  // ),
+                  // GetBuilder<BottomNavigationController>(builder: (b) {
+                  //   return bottomNavigationController.astrologerList.length == 0
+                  //       ? Container(
+                  //           //NO ASTROLOGER IN THIS CATEGORY
+                  //           height: 500,
+                  //           child: Center(
+                  //             child: Text(
+                  //               'Astrologer not available',
+                  //               style: TextStyle(
+                  //                   fontWeight: FontWeight.w400, fontSize: 18),
+                  //             ).tr(),
+                  //           ),
+                  //         )
+                  //       : Expanded(
+                  //           child: TabBarView(
+                  //           controller: chatController.categoryTab,
+                  //           physics: const NeverScrollableScrollPhysics(),
+                  //           children: List.generate(
+                  //               chatController.categoryList.length, (index) {
+                  //             return RefreshIndicator(
+                  //               onRefresh: () async {
+                  //                 bottomNavigationController.astrologerList =
+                  //                     [];
+                  //                 bottomNavigationController.astrologerList
+                  //                     .clear();
+                  //                 bottomNavigationController.isAllDataLoaded =
+                  //                     false;
+                  //                 if (bottomNavigationController
+                  //                         .genderFilterList !=
+                  //                     null) {
+                  //                   bottomNavigationController.genderFilterList!
+                  //                       .clear();
+                  //                 }
+                  //                 if (bottomNavigationController
+                  //                         .languageFilter !=
+                  //                     null) {
+                  //                   bottomNavigationController.languageFilter!
+                  //                       .clear();
+                  //                 }
+                  //                 if (bottomNavigationController
+                  //                         .skillFilterList !=
+                  //                     null) {
+                  //                   bottomNavigationController.skillFilterList!
+                  //                       .clear();
+                  //                 }
+                  //                 bottomNavigationController.applyFilter =
+                  //                     false;
+                  //                 bottomNavigationController.update();
+                  //                 await bottomNavigationController
+                  //                     .getAstrologerList(isLazyLoading: false);
+                  //               },
+                  //               child: TabViewAstrologer(
+                  //                 astrologerList:
+                  //                     bottomNavigationController.astrologerList,
+                  //               ),
+                  //             );
+                  //           }),
+                  //         ));
+                  // }),
                 ],
               ),
             );
@@ -892,6 +1302,7 @@ class _CallScreenState extends State<CallScreen> {
 
 class TabViewAstrologer extends StatelessWidget {
   final List astrologerList;
+
   TabViewAstrologer({
     required this.astrologerList,
     Key? key,
@@ -957,308 +1368,780 @@ class TabViewAstrologer extends StatelessWidget {
           },
           child: Column(
             children: [
+              // Card(
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: Row(
+              //       children: [
+              //         Column(
+              //           children: [
+              //             Stack(
+              //               children: [
+              //                 // Padding(
+              //                 //   padding: const EdgeInsets.only(top: 10),
+              //                 //   child: Container(
+              //                 //     height: 65,
+              //                 //     width: 65,
+              //                 //     decoration: BoxDecoration(
+              //                 //       border: Border.all(
+              //                 //           color: Get.theme.primaryColor),
+              //                 //       borderRadius: BorderRadius.circular(7),
+              //                 //     ),
+              //                 //     child: CircleAvatar(
+              //                 //       radius: 35,
+              //                 //       backgroundColor: Colors.white,
+              //                 //       child: CachedNetworkImage(
+              //                 //         height: 55,
+              //                 //         width: 55,
+              //                 //         imageUrl:
+              //                 //             '${global.imgBaseurl}${astrologerList[index].profileImage}',
+              //                 //         placeholder: (context, url) =>
+              //                 //             const Center(
+              //                 //                 child:
+              //                 //                     CircularProgressIndicator()),
+              //                 //         errorWidget: (context, url, error) =>
+              //                 //             Image.asset(
+              //                 //           Images.deafultUser,
+              //                 //           fit: BoxFit.cover,
+              //                 //           height: 50,
+              //                 //           width: 40,
+              //                 //         ),
+              //                 //       ),
+              //                 //     ),
+              //                 //   ),
+              //                 // ),
+              //                 Container(
+              //                   height: 14.h,
+              //                   width: 12.h,
+              //                   child: ClipRRect(
+              //                     borderRadius: BorderRadius.circular(2.w),
+              //                     child: CachedNetworkImage(
+              //                       height: 14.h,
+              //                       width: 12.h,
+              //                       fit: BoxFit.cover,
+              //                       imageUrl:
+              //                           '${global.imgBaseurl}${astrologerList[index].profileImage}',
+              //                       placeholder: (context, url) => const Center(
+              //                           child: CircularProgressIndicator()),
+              //                       errorWidget: (context, url, error) =>
+              //                           Image.asset(
+              //                         Images.deafultUser,
+              //                         fit: BoxFit.cover,
+              //                         height: 14.h,
+              //                         width: 12.h,
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 Positioned(
+              //                   bottom: 1.w,
+              //                   right: 1.w,
+              //                   left: 1.w,
+              //                   child: Container(
+              //                     width: 12.h,
+              //                     height: 3.5.h,
+              //                     decoration: BoxDecoration(
+              //                       color: getRandomColor(index),
+              //                       borderRadius: BorderRadius.circular(1.w),
+              //                     ),
+              //                     child: Center(
+              //                       child: Text(
+              //                         astrologerList[index]
+              //                             .allSkill
+              //                             .split(',')[0],
+              //                         overflow: TextOverflow.ellipsis,
+              //                         style: TextStyle(
+              //                             color: Colors.white,
+              //                             fontSize: 14.sp,
+              //                             fontWeight: FontWeight.w500),
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 )
+              //               ],
+              //             ),
+              //           ],
+              //         ),
+              //         Expanded(
+              //           child: Padding(
+              //             padding: const EdgeInsets.symmetric(horizontal: 5),
+              //             child: Column(
+              //               crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 Row(
+              //                   children: [
+              //                     Text(
+              //                       astrologerList[index].name,
+              //                     ).tr(),
+              //                     SizedBox(
+              //                       width: 3,
+              //                     ),
+              //                     Image.asset(
+              //                       Images.right,
+              //                       height: 18,
+              //                     )
+              //                   ],
+              //                 ),
+              //                 astrologerList[index].allSkill == ""
+              //                     ? const SizedBox()
+              //                     : Text(
+              //                         astrologerList[index].allSkill,
+              //                         style: Get
+              //                             .theme.primaryTextTheme.bodySmall!
+              //                             .copyWith(
+              //                           fontWeight: FontWeight.w300,
+              //                           color: Colors.grey[600],
+              //                         ),
+              //                       ).tr(),
+              //                 astrologerList[index].languageKnown == ""
+              //                     ? const SizedBox()
+              //                     : Text(
+              //                         astrologerList[index].languageKnown,
+              //                         style: Get
+              //                             .theme.primaryTextTheme.bodySmall!
+              //                             .copyWith(
+              //                           fontWeight: FontWeight.w300,
+              //                           color: Colors.grey[600],
+              //                         ),
+              //                       ).tr(),
+              //                 Text(
+              //                   'Experience : ${astrologerList[index].experienceInYears} Years',
+              //                   style: Get.theme.primaryTextTheme.bodySmall!
+              //                       .copyWith(
+              //                     fontWeight: FontWeight.w300,
+              //                     color: Colors.grey[600],
+              //                   ),
+              //                 ).tr(),
+              //                 Row(
+              //                   children: [
+              //                     astrologerList[index].isFreeAvailable == true
+              //                         ? Text(
+              //                             'FREE',
+              //                             style: Get
+              //                                 .theme.textTheme.titleMedium!
+              //                                 .copyWith(
+              //                               fontSize: 11,
+              //                               fontWeight: FontWeight.w500,
+              //                               letterSpacing: 0,
+              //                               color:
+              //                                   Color.fromARGB(255, 167, 1, 1),
+              //                             ),
+              //                           ).tr()
+              //                         : const SizedBox(),
+              //                     SizedBox(
+              //                       width:
+              //                           astrologerList[index].isFreeAvailable ==
+              //                                   true
+              //                               ? 10
+              //                               : 0,
+              //                     ),
+              //                     // Text(
+              //                     //   '${global.getSystemFlagValueForLogin(global.systemFlagNameList.currency)} ${astrologerList[index].video}/min',
+              //                     //   style: Get.theme.textTheme.titleMedium!
+              //                     //       .copyWith(
+              //                     //     fontSize: 11,
+              //                     //     fontWeight: FontWeight.w500,
+              //                     //     letterSpacing: 0,
+              //                     //     decoration: astrologerList[index]
+              //                     //                 .isFreeAvailable ==
+              //                     //             true
+              //                     //         ? TextDecoration.lineThrough
+              //                     //         : null,
+              //                     //     color: astrologerList[index]
+              //                     //                 .isFreeAvailable ==
+              //                     //             true
+              //                     //         ? Colors.grey
+              //                     //         : Color.fromARGB(255, 167, 1, 1),
+              //                     //   ),
+              //                     // ).tr(),
+              //                   ],
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //         SizedBox(
+              //           height: 80,
+              //           width: 80,
+              //           child: Column(
+              //             children: [
+              //               SizedBox(
+              //                 height: 4,
+              //               ),
+              //               Row(
+              //                   mainAxisAlignment: MainAxisAlignment.start,
+              //                   children: [
+              //                     Expanded(
+              //                       child: Container(
+              //                         child: Center(
+              //                           child: GetBuilder<CallController>(
+              //                             builder:
+              //                                 (CallController controller) =>
+              //                                     InkWell(
+              //                               onTap: () async {
+              //                                 bool isLogin =
+              //                                     await global.isLogin();
+              //
+              //                                 _logedIn(context, isLogin, index,
+              //                                     true);
+              //                               },
+              //                               child: CircleAvatar(
+              //                                 radius: 18,
+              //                                 backgroundColor:
+              //                                     astrologerList[index]
+              //                                                 .callStatus ==
+              //                                             "Online"
+              //                                         ? Colors.green
+              //                                         : Colors.orangeAccent,
+              //                                 child: Center(
+              //                                   child: Icon(
+              //                                     Icons.call,
+              //                                     color: Colors.white,
+              //                                     size: 15,
+              //                                   ),
+              //                                 ),
+              //                               ),
+              //                             ),
+              //                           ),
+              //                         ),
+              //                       ),
+              //                     ),
+              //                     Expanded(
+              //                       child: Container(
+              //                         child: Center(
+              //                           child: GetBuilder<CallController>(
+              //                             builder:
+              //                                 (CallController controller) =>
+              //                                     InkWell(
+              //                               onTap: () async {
+              //                                 bool isLogin =
+              //                                     await global.isLogin();
+              //                                 _logedIn(context, isLogin, index,
+              //                                     false);
+              //                               },
+              //                               child: CircleAvatar(
+              //                                 radius: 18,
+              //                                 backgroundColor:
+              //                                     astrologerList[index]
+              //                                                 .callStatus ==
+              //                                             "Online"
+              //                                         ? Colors.redAccent
+              //                                         : Colors.orangeAccent,
+              //                                 child: Center(
+              //                                   child: Icon(
+              //                                     Icons.video_call,
+              //                                     color: Colors.white,
+              //                                     size: 15,
+              //                                   ),
+              //                                 ),
+              //                               ),
+              //                             ),
+              //                           ),
+              //                         ),
+              //                       ),
+              //                     ),
+              //                   ]),
+              //               SizedBox(
+              //                 height: 4,
+              //               ),
+              //               RatingBar.builder(
+              //                 initialRating: 0,
+              //                 itemCount: 5,
+              //                 allowHalfRating: false,
+              //                 itemSize: 15,
+              //                 ignoreGestures: true,
+              //                 itemBuilder: (context, _) => Icon(
+              //                   Icons.star,
+              //                   color: Get.theme.primaryColor,
+              //                 ),
+              //                 onRatingUpdate: (rating) {},
+              //               ),
+              //               astrologerList[index].totalOrder == 0 ||
+              //                       astrologerList[index].totalOrder == null
+              //                   ? SizedBox()
+              //                   : Text(
+              //                       '${astrologerList[index].totalOrder} orders',
+              //                       style: Get.theme.primaryTextTheme.bodySmall!
+              //                           .copyWith(
+              //                         fontWeight: FontWeight.w300,
+              //                         fontSize: 9,
+              //                       ),
+              //                     ).tr()
+              //             ],
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              // ),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
+                  child: Column(
                     children: [
-                      Column(
+                      Row(
                         children: [
-                          Stack(
+                          Column(
                             children: [
-                              // Padding(
-                              //   padding: const EdgeInsets.only(top: 10),
-                              //   child: Container(
-                              //     height: 65,
-                              //     width: 65,
-                              //     decoration: BoxDecoration(
-                              //       border: Border.all(
-                              //           color: Get.theme.primaryColor),
-                              //       borderRadius: BorderRadius.circular(7),
-                              //     ),
-                              //     child: CircleAvatar(
-                              //       radius: 35,
-                              //       backgroundColor: Colors.white,
-                              //       child: CachedNetworkImage(
-                              //         height: 55,
-                              //         width: 55,
-                              //         imageUrl:
-                              //             '${global.imgBaseurl}${astrologerList[index].profileImage}',
-                              //         placeholder: (context, url) =>
-                              //             const Center(
-                              //                 child:
-                              //                     CircularProgressIndicator()),
-                              //         errorWidget: (context, url, error) =>
-                              //             Image.asset(
-                              //           Images.deafultUser,
-                              //           fit: BoxFit.cover,
-                              //           height: 50,
-                              //           width: 40,
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-                              Container(
-                                height: 14.h,
-                                width: 12.h,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(2.w),
-                                  child: CachedNetworkImage(
-                                    height: 14.h,
-                                    width: 12.h,
-                                    fit: BoxFit.cover,
-                                    imageUrl:
-                                        '${global.imgBaseurl}${astrologerList[index].profileImage}',
-                                    placeholder: (context, url) => const Center(
-                                        child: CircularProgressIndicator()),
-                                    errorWidget: (context, url, error) =>
-                                        Image.asset(
-                                      Images.deafultUser,
-                                      fit: BoxFit.cover,
-                                      height: 14.h,
-                                      width: 12.h,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 1.w,
-                                right: 1.w,
-                                left: 1.w,
-                                child: Container(
-                                  width: 12.h,
-                                  height: 3.5.h,
-                                  decoration: BoxDecoration(
-                                    color: getRandomColor(index),
-                                    borderRadius: BorderRadius.circular(1.w),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      astrologerList[index]
-                                          .allSkill
-                                          .split(',')[0],
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+                              Stack(
                                 children: [
-                                  Text(
-                                    astrologerList[index].name,
-                                  ).tr(),
-                                  SizedBox(
-                                    width: 3,
+                                  Container(
+                                    height: 90,
+                                    width: 90,
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration:
+                                        BoxDecoration(shape: BoxShape.circle),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      imageUrl:
+                                          '${global.imgBaseurl}${astrologerList[index].profileImage}',
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                              child:
+                                                  CircularProgressIndicator()),
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset(
+                                        Images.deafultUser,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
-                                  Image.asset(
-                                    Images.right,
-                                    height: 18,
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 10,
+                                    left: 10,
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 3),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .dividerColor
+                                            .withOpacity(0.90),
+                                        borderRadius: BorderRadius.circular(
+                                            Dimensions.radius20),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            astrologerList[index]
+                                                .rating
+                                                .toString(),
+                                            style: openSansRegular.copyWith(
+                                                color:
+                                                    Theme.of(context).cardColor,
+                                                fontSize:
+                                                    Dimensions.fontSize14),
+                                          ),
+                                          sizedBoxW5(),
+                                          Icon(
+                                            Icons.star,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            size: Dimensions.fontSize14,
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   )
                                 ],
                               ),
-                              astrologerList[index].allSkill == ""
-                                  ? const SizedBox()
-                                  : Text(
-                                      astrologerList[index].allSkill,
-                                      style: Get
-                                          .theme.primaryTextTheme.bodySmall!
-                                          .copyWith(
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.grey[600],
-                                      ),
-                                    ).tr(),
-                              astrologerList[index].languageKnown == ""
-                                  ? const SizedBox()
-                                  : Text(
-                                      astrologerList[index].languageKnown,
-                                      style: Get
-                                          .theme.primaryTextTheme.bodySmall!
-                                          .copyWith(
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.grey[600],
-                                      ),
-                                    ).tr(),
-                              Text(
-                                'Experience : ${astrologerList[index].experienceInYears} Years',
-                                style: Get.theme.primaryTextTheme.bodySmall!
-                                    .copyWith(
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.grey[600],
-                                ),
-                              ).tr(),
-                              Row(
-                                children: [
-                                  astrologerList[index].isFreeAvailable == true
-                                      ? Text(
-                                          'FREE',
-                                          style: Get
-                                              .theme.textTheme.titleMedium!
-                                              .copyWith(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 0,
-                                            color:
-                                                Color.fromARGB(255, 167, 1, 1),
-                                          ),
-                                        ).tr()
-                                      : const SizedBox(),
-                                  SizedBox(
-                                    width:
-                                        astrologerList[index].isFreeAvailable ==
-                                                true
-                                            ? 10
-                                            : 0,
-                                  ),
-                                  // Text(
-                                  //   '${global.getSystemFlagValueForLogin(global.systemFlagNameList.currency)} ${astrologerList[index].video}/min',
-                                  //   style: Get.theme.textTheme.titleMedium!
-                                  //       .copyWith(
-                                  //     fontSize: 11,
-                                  //     fontWeight: FontWeight.w500,
-                                  //     letterSpacing: 0,
-                                  //     decoration: astrologerList[index]
-                                  //                 .isFreeAvailable ==
-                                  //             true
-                                  //         ? TextDecoration.lineThrough
-                                  //         : null,
-                                  //     color: astrologerList[index]
-                                  //                 .isFreeAvailable ==
-                                  //             true
-                                  //         ? Colors.grey
-                                  //         : Color.fromARGB(255, 167, 1, 1),
-                                  //   ),
-                                  // ).tr(),
-                                ],
-                              ),
                             ],
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 80,
-                        width: 80,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                          Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                      child: Center(
-                                        child: GetBuilder<CallController>(
-                                          builder:
-                                              (CallController controller) =>
-                                                  InkWell(
-                                            onTap: () async {
-                                              bool isLogin =
-                                                  await global.isLogin();
-
-                                              _logedIn(context, isLogin, index,
-                                                  true);
-                                            },
-                                            child: CircleAvatar(
-                                              radius: 18,
-                                              backgroundColor:
-                                                  astrologerList[index]
-                                                              .callStatus ==
-                                                          "Online"
-                                                      ? Colors.green
-                                                      : Colors.orangeAccent,
-                                              child: Center(
-                                                child: Icon(
-                                                  Icons.call,
-                                                  color: Colors.white,
-                                                  size: 15,
-                                                ),
-                                              ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Flexible(
+                                              child: Text(
+                                                astrologerList[index].name,
+                                              ).tr(),
                                             ),
-                                          ),
+                                            SizedBox(
+                                              width: 3,
+                                            ),
+                                            Image.asset(
+                                              Images.right,
+                                              height: 16,
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
+                                      CustomButtonWidget(
+                                        height: 32,
+                                        width: 100,
+                                        onPressed: () {},
+                                        radius: Dimensions.radius20,
+                                        transparent: true,
+                                        borderSideColor: Colors.green,
+                                        buttonText: '+ Follow',
+                                        textColor: Colors.green,
+                                        isBold: false,
+                                        fontSize: Dimensions.fontSize12,
+                                      )
+                                    ],
                                   ),
-                                  Expanded(
-                                    child: Container(
-                                      child: Center(
-                                        child: GetBuilder<CallController>(
-                                          builder:
-                                              (CallController controller) =>
-                                                  InkWell(
-                                            onTap: () async {
-                                              bool isLogin =
-                                                  await global.isLogin();
-                                              _logedIn(context, isLogin, index,
-                                                  false);
-                                            },
-                                            child: CircleAvatar(
-                                              radius: 18,
-                                              backgroundColor:
-                                                  astrologerList[index]
-                                                              .callStatus ==
-                                                          "Online"
-                                                      ? Colors.redAccent
-                                                      : Colors.orangeAccent,
-                                              child: Center(
-                                                child: Icon(
-                                                  Icons.video_call,
-                                                  color: Colors.white,
-                                                  size: 15,
-                                                ),
-                                              ),
+                                  astrologerList[index].languageKnown == ""
+                                      ? const SizedBox()
+                                      : Row(
+                                          children: [
+                                            Icon(
+                                              Icons.translate,
+                                              size: 12,
+                                              color: Colors.grey[600],
                                             ),
-                                          ),
+                                            sizedBoxW5(),
+                                            Text(
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              astrologerList[index]
+                                                  .languageKnown,
+                                              style: Get.theme.primaryTextTheme
+                                                  .bodySmall!
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.grey[600],
+                                              ),
+                                            ).tr(),
+                                          ],
                                         ),
+                                  astrologerList[index].allSkill == ""
+                                      ? const SizedBox()
+                                      : Row(
+                                          children: [
+                                            Icon(
+                                              Icons.verified,
+                                              size: 12,
+                                              color: Colors.grey[600],
+                                            ),
+                                            sizedBoxW5(),
+                                            Text(
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              astrologerList[index].allSkill,
+                                              style: Get.theme.primaryTextTheme
+                                                  .bodySmall!
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.grey[600],
+                                              ),
+                                            ).tr(),
+                                          ],
+                                        ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.school,
+                                        size: 12,
+                                        color: Colors.grey[600],
                                       ),
-                                    ),
+                                      sizedBoxW5(),
+                                      Text(
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        'Experience : ${astrologerList[index].experienceInYears} Years',
+                                        style: Get
+                                            .theme.primaryTextTheme.bodySmall!
+                                            .copyWith(
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ).tr(),
+                                    ],
                                   ),
-                                ]),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            RatingBar.builder(
-                              initialRating: 0,
-                              itemCount: 5,
-                              allowHalfRating: false,
-                              itemSize: 15,
-                              ignoreGestures: true,
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                color: Get.theme.primaryColor,
+                                ],
                               ),
-                              onRatingUpdate: (rating) {},
                             ),
-                            astrologerList[index].totalOrder == 0 ||
-                                    astrologerList[index].totalOrder == null
-                                ? SizedBox()
-                                : Text(
-                                    '${astrologerList[index].totalOrder} orders',
-                                    style: Get.theme.primaryTextTheme.bodySmall!
-                                        .copyWith(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 9,
-                                    ),
-                                  ).tr()
-                          ],
-                        ),
-                      )
+                          ),
+                        ],
+                      ),
+                      Divider(
+                        color: Theme.of(context).dividerColor.withOpacity(0.20),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${global.getSystemFlagValueForLogin(global.systemFlagNameList.currency)}${astrologerList[index].charge}/min',
+                                style:
+                                    Get.theme.textTheme.titleMedium!.copyWith(
+                                  fontSize: Dimensions.fontSize20,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0,
+                                  decoration:
+                                      astrologerList[index].isFreeAvailable ==
+                                              true
+                                          ? TextDecoration.lineThrough
+                                          : null,
+                                  color: Theme.of(context).dividerColor,
+                                ),
+                              ).tr(),
+                              astrologerList[index].isFreeAvailable == true
+                                  ? Text(
+                                      'FREE Chat Available',
+                                      style: Get.theme.textTheme.titleMedium!
+                                          .copyWith(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 0,
+                                        color: Colors.green,
+                                      ),
+                                    ).tr()
+                                  : const SizedBox(),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              CustomButtonWidget(
+                                width: 100,
+                                height: 40,
+                                radius: Dimensions.radius5,
+                                fontSize: Dimensions.fontSize12,
+                                borderSideColor:
+                                    Theme.of(context).highlightColor,
+                                color: Theme.of(context).highlightColor,
+                                textColor: Theme.of(context).cardColor,
+                                buttonText: 'Call Now',
+                                icon: CupertinoIcons.phone_solid,
+                                iconColor: Theme.of(context).cardColor,
+                                onPressed: () async {
+                                  bool isLogin = await global.isLogin();
+
+                                  _logedIn(context, isLogin, index, true);
+                                },
+                                isBold: false,
+                              ),
+                              sizedBoxW10(),
+                              CustomButtonWidget(
+                                width: 100,
+                                height: 40,
+                                radius: Dimensions.radius5,
+                                fontSize: Dimensions.fontSize12,
+                                borderSideColor: redColor,
+                                color: redColor,
+                                textColor: Theme.of(context).cardColor,
+                                buttonText: 'Video Now',
+                                icon: CupertinoIcons.video_camera_solid,
+                                iconColor: Theme.of(context).cardColor,
+                                onPressed: () async {
+                                  bool isLogin = await global.isLogin();
+                                  _logedIn(context, isLogin, index, false);
+                                },
+                                isBold: false,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      // Column(
+                      //   children: [
+                      //     TextButton(
+                      //       style: ButtonStyle(
+                      //         padding:
+                      //         MaterialStateProperty.all(EdgeInsets.all(0)),
+                      //         fixedSize:
+                      //         MaterialStateProperty.all(Size.fromWidth(90)),
+                      //         backgroundColor: astrologerList[index]
+                      //             .chatStatus ==
+                      //             "Online"
+                      //             ? MaterialStateProperty.all(Colors.lightBlue)
+                      //             : MaterialStateProperty.all(
+                      //             Colors.orangeAccent),
+                      //         shape: MaterialStateProperty.all(
+                      //           RoundedRectangleBorder(
+                      //             borderRadius: BorderRadius.circular(10),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       onPressed: () async {
+                      //         bool isLogin = await global.isLogin();
+                      //         if (isLogin) {
+                      //           await bottomNavigationController
+                      //               .getAstrologerbyId(
+                      //               astrologerList[index].id);
+                      //           if (astrologerList[index].charge * 5 <=
+                      //               global.splashController.currentUser!
+                      //                   .walletAmount ||
+                      //               astrologerList[index].isFreeAvailable ==
+                      //                   true) {
+                      //             await bottomNavigationController
+                      //                 .checkAlreadyInReq(
+                      //                 astrologerList[index].id);
+                      //             if (bottomNavigationController
+                      //                 .isUserAlreadyInChatReq ==
+                      //                 false) {
+                      //               if (astrologerList[index].chatStatus ==
+                      //                   "Online") {
+                      //                 global.showOnlyLoaderDialog(context);
+                      //
+                      //                 if (astrologerList[index].chatWaitTime !=
+                      //                     null) {
+                      //                   if (astrologerList[index]
+                      //                       .chatWaitTime!
+                      //                       .difference(DateTime.now())
+                      //                       .inMinutes <
+                      //                       0) {
+                      //                     await bottomNavigationController
+                      //                         .changeOfflineStatus(
+                      //                         astrologerList[index].id,
+                      //                         "Online");
+                      //                   }
+                      //                 }
+                      //                 await Get.to(() => CallIntakeFormScreen(
+                      //                   type: "Chat",
+                      //                   astrologerId:
+                      //                   astrologerList[index].id,
+                      //                   astrologerName:
+                      //                   astrologerList[index].name,
+                      //                   astrologerProfile:
+                      //                   astrologerList[index]
+                      //                       .profileImage,
+                      //                   isFreeAvailable:
+                      //                   astrologerList[index]
+                      //                       .isFreeAvailable,
+                      //                 ));
+                      //                 global.hideLoader();
+                      //               } else if (astrologerList[index]
+                      //                   .chatStatus ==
+                      //                   "Offline" ||
+                      //                   astrologerList[index].chatStatus ==
+                      //                       "Busy" ||
+                      //                   astrologerList[index].chatStatus ==
+                      //                       "Wait Time") {
+                      //                 bottomNavigationController
+                      //                     .dialogForJoinInWaitList(
+                      //                     context,
+                      //                     astrologerList[index].name,
+                      //                     true,
+                      //                     bottomNavigationController
+                      //                         .astrologerbyId[0].chatStatus
+                      //                         .toString(),
+                      //                     astrologerList[index]
+                      //                         .profileImage);
+                      //               }
+                      //             } else {
+                      //               bottomNavigationController
+                      //                   .dialogForNotCreatingSession(context);
+                      //             }
+                      //           } else {
+                      //             global.showOnlyLoaderDialog(context);
+                      //             await walletController.getAmount();
+                      //             global.hideLoader();
+                      //             openBottomSheetRechrage(
+                      //                 context,
+                      //                 (astrologerList[index].charge * 5)
+                      //                     .toString(),
+                      //                 astrologerList[index].name);
+                      //           }
+                      //         }
+                      //       },
+                      //       child: astrologerList[index].isFreeAvailable == true
+                      //           ? Text(
+                      //         'FREE',
+                      //         style: Get.theme.textTheme.titleMedium!
+                      //             .copyWith(
+                      //             fontSize: 12,
+                      //             fontWeight: FontWeight.w500,
+                      //             letterSpacing: 0,
+                      //             color: Colors.white
+                      //           //Color.fromARGB(255, 167, 1, 1),
+                      //         ),
+                      //       ).tr()
+                      //           : Row(
+                      //         mainAxisAlignment:
+                      //         MainAxisAlignment.spaceEvenly,
+                      //         children: [
+                      //           Icon(
+                      //             CupertinoIcons.chat_bubble_fill,
+                      //             size: 15,
+                      //             color: Colors.white,
+                      //           ),
+                      //           Text(
+                      //             '${global.getSystemFlagValueForLogin(global.systemFlagNameList.currency)} ${astrologerList[index].charge}/min',
+                      //             style: Get.theme.textTheme.titleMedium!
+                      //                 .copyWith(
+                      //               fontSize: 11,
+                      //               fontWeight: FontWeight.w500,
+                      //               letterSpacing: 0,
+                      //               decoration: astrologerList[index]
+                      //                   .isFreeAvailable ==
+                      //                   true
+                      //                   ? TextDecoration.lineThrough
+                      //                   : null,
+                      //               color: astrologerList[index]
+                      //                   .isFreeAvailable ==
+                      //                   true
+                      //                   ? Colors.grey
+                      //                   : Colors.white,
+                      //             ),
+                      //           ).tr(),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     astrologerList[index].chatStatus == "Offline"
+                      //         ? Text(
+                      //       "Currently Offline",
+                      //       style: TextStyle(
+                      //           color: Colors.red, fontSize: 09),
+                      //     ).tr()
+                      //         : astrologerList[index].chatStatus == "Wait Time"
+                      //         ? Text(
+                      //       astrologerList[index]
+                      //           .chatWaitTime!
+                      //           .difference(DateTime.now())
+                      //           .inMinutes >
+                      //           0
+                      //           ? "Wait till - ${astrologerList[index].chatWaitTime!.difference(DateTime.now()).inMinutes} min"
+                      //           : "Wait till",
+                      //       style: TextStyle(
+                      //           color: Colors.red, fontSize: 09),
+                      //     ).tr()
+                      //         : (astrologerList[index].chatStatus == "Busy"
+                      //         ? Text(
+                      //       "Currently Busy",
+                      //       style: TextStyle(
+                      //           color: Colors.red, fontSize: 09),
+                      //     ).tr()
+                      //         : SizedBox()),
+                      //     // RatingBar.builder(
+                      //     //   initialRating: 0,
+                      //     //   itemCount: 5,
+                      //     //   allowHalfRating: false,
+                      //     //   itemSize: 15,
+                      //     //   ignoreGestures: true,
+                      //     //   itemBuilder: (context, _) => Icon(
+                      //     //     Icons.star,
+                      //     //     color: Get.theme.primaryColor,
+                      //     //   ),
+                      //     //   onRatingUpdate: (rating) {},
+                      //     // ),
+                      //     astrologerList[index].totalOrder == 0 ||
+                      //         astrologerList[index].totalOrder == null
+                      //         ? SizedBox()
+                      //         : Text(
+                      //       '${astrologerList[index].totalOrder} orders',
+                      //       style: Get.theme.primaryTextTheme.bodySmall!
+                      //           .copyWith(
+                      //         fontWeight: FontWeight.w300,
+                      //         fontSize: 9,
+                      //       ),
+                      //     ).tr()
+                      //   ],
+                      // )
                     ],
                   ),
                 ),

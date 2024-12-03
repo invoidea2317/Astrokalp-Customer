@@ -72,7 +72,7 @@ ThemeData nativeTheme({bool? darkModeEnabled}) {
       cardColor: Colors.white,
       primaryColorDark: Color(0xffBD7A2C),
       hintColor: Color(0xff4D2A7C).withOpacity(0.15),
-      highlightColor: Color(0xffF4CF09),
+      highlightColor: Color(0xff0E971C),
       primaryColorLight: themeController.pickColor,
       iconTheme: IconThemeData(color: Colors.black),
       primaryIconTheme: IconThemeData(color: Colors.black),
@@ -114,3 +114,4 @@ ThemeData nativeTheme({bool? darkModeEnabled}) {
     );
   }
 }
+const Color redColor= Color(0xffDB292C);

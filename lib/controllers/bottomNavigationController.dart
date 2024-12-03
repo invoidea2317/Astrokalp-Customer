@@ -8,6 +8,7 @@ import 'package:AstrowayCustomer/model/kundli_model.dart';
 import 'package:AstrowayCustomer/model/live_asrtrologer_model.dart';
 import 'package:AstrowayCustomer/utils/services/api_helper.dart';
 import 'package:AstrowayCustomer/views/chatScreen.dart';
+import 'package:AstrowayCustomer/views/watch/watch_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -82,9 +83,8 @@ class BottomNavigationController extends GetxController {
     ChatScreen(),
     // LiveAstrologerListScreen(isFromBottom: true),
     CallScreen(flag: 0,),
-    HistoryScreen(
-      currentIndex: historyIndex,
-    ),
+    WatchScreen(),
+    HistoryScreen(currentIndex: historyIndex,),
   ];
   // final HomeController homeController = Get.find<HomeController>();
   @override
