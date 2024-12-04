@@ -2,6 +2,7 @@ import 'package:AstrowayCustomer/controllers/astromallController.dart';
 import 'package:AstrowayCustomer/utils/images.dart';
 import 'package:AstrowayCustomer/views/astromall/astroProductScreen.dart';
 import 'package:AstrowayCustomer/views/searchAstrologerScreen.dart';
+import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -9,21 +10,54 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
 import 'package:AstrowayCustomer/utils/global.dart' as global;
 
+import '../../controllers/homeController.dart';
+import '../../utils/sizedboxes.dart';
 import '../../widget/commonAppbar.dart';
+import '../../widget/drawerWidget.dart';
+import '../../widget/language_widget.dart';
 
 class AstromallScreen extends StatelessWidget {
-  AstromallScreen({Key? key}) : super(key: key);
+  final bool? isBackButton;
+  AstromallScreen({Key? key, this.isBackButton = false}) : super(key: key);
   final AstromallController astromallController = Get.find<AstromallController>();
+  final homeController = Get.find<HomeController>();
+  final drawerKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      astromallController.getAstromallCategory(false);
+    });
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(56),
-          child: CommonAppBar(
-            title: 'Shopping',
-          )),
+      key: drawerKey,
+      drawer: DrawerWidget(),
+      appBar: CustomApp(title: 'Shopping',isBackButtonExist: isBackButton! ? true : false ,
+        menuWidget: Row(
+          children: [
+            InkWell(
+              onTap: () async {
+                homeController.lan = [];
+                await Future.wait([
+                  homeController.getLanguages(),
+                  homeController.updateLanIndex()
+                ]);
+                print(homeController.lan);
+                global.checkBody().then((result) {
+                  if (result) {
+                    Get.dialog(LanguageDialogWidget());
+                  }
+                });
+              },
+              child: Image.asset(
+                height: 32,
+                width: 32,
+                Images.translation,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           astromallController.astroCategory.clear();
@@ -40,7 +74,7 @@ class AstromallScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                astromallController.astroCategory.length >= 3
+                /*astromallController.astroCategory.length >= 3
                     ? Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: ImageSlideshow(
@@ -352,7 +386,7 @@ class AstromallScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
+                ),*/
                 GetBuilder<AstromallController>(builder: (c) {
                   return GridView.builder(
                       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 250, childAspectRatio: 3 / 3, crossAxisSpacing: 10, mainAxisSpacing: 10),

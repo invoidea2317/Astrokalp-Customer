@@ -10,42 +10,38 @@ import 'package:AstrowayCustomer/controllers/skillController.dart';
 import 'package:AstrowayCustomer/controllers/walletController.dart';
 import 'package:AstrowayCustomer/main.dart';
 import 'package:AstrowayCustomer/utils/dimensions.dart';
-// import 'package:AstrowayCustomer/utils/AppColors.dart';
 import 'package:AstrowayCustomer/utils/images.dart';
 import 'package:AstrowayCustomer/utils/text_styles.dart';
-// import 'package:AstrowayCustomer/views/addMoneyToWallet.dart';
 import 'package:AstrowayCustomer/views/astrologerProfile/astrologerProfile.dart';
 import 'package:AstrowayCustomer/views/callIntakeFormScreen.dart';
 import 'package:AstrowayCustomer/views/chat/incoming_chat_request.dart';
 import 'package:AstrowayCustomer/views/paymentInformationScreen.dart';
-import 'package:AstrowayCustomer/views/searchAstrologerScreen.dart';
 import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:AstrowayCustomer/widget/custom_button_widget.dart';
 import 'package:AstrowayCustomer/widget/drawerWidget.dart';
+import 'package:AstrowayCustomer/widget/language_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:AstrowayCustomer/utils/global.dart' as global;
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../controllers/homeController.dart';
 import '../utils/sizedboxes.dart';
 
 
 class ChatScreen extends StatefulWidget {
+  final bool isBackButton;
+
+  ChatScreen({Key? key, this.isBackButton = false}) : super(key: key);
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
-
 class _ChatScreenState extends State<ChatScreen> {
   final drawerKey = new GlobalKey<ScaffoldState>();
-
   FiltterTabController filtterTabController = Get.find<FiltterTabController>();
   SkillController skillController = Get.find<SkillController>();
   LanguageController languageController = Get.find<LanguageController>();
@@ -88,7 +84,9 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: Colors.white,
         key: drawerKey,
         drawer: DrawerWidget(),
-        appBar: CustomApp(title: 'Chat With Astrologers',menuWidget: Row(
+        appBar: CustomApp(title: widget.isBackButton ?'All Astrologers' : 'Chat With Astrologers',
+        isBackButtonExist: widget.isBackButton ? true : false,
+        menuWidget: Row(
           children: [
             InkWell(
               onTap: () async {
@@ -101,260 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 print(homeController.lan);
                 global.checkBody().then((result) {
                   if (result) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return GetBuilder<HomeController>(builder: (h) {
-                            return AlertDialog(
-                              backgroundColor: Colors.white,
-                              contentPadding: EdgeInsets.zero,
-                              content: GetBuilder<HomeController>(builder: (h) {
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    sizedBoxDefault(),
-                                    InkWell(
-                                      onTap: () => Get.back(),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          right: 2.w,
-                                          top: 2.w,
-                                        ),
-                                        child: Align(
-                                          alignment: Alignment.topRight,
-                                          child: const Icon(Icons.close),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                        padding: EdgeInsets.all(6),
-                                        child: Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Choose your app language',
-                                                style: Get
-                                                    .textTheme.titleMedium!
-                                                    .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ).tr(),
-                                              GetBuilder<HomeController>(
-                                                  builder: (home) {
-                                                    return Padding(
-                                                      padding:
-                                                      EdgeInsets.only(top: 15),
-                                                      child: Wrap(
-                                                          children: List.generate(
-                                                              homeController.lan
-                                                                  .length, (index) {
-                                                            return InkWell(
-                                                              onTap: () {
-                                                                //! LANGUAGE SET DILAOG
-                                                                homeController
-                                                                    .updateLan(index);
-                                                                switch (index) {
-                                                                  case 0:
-                                                                    var newLocale =
-                                                                    const Locale(
-                                                                        'en',
-                                                                        'US'); //ENGLISH
-
-                                                                    context.setLocale(
-                                                                        newLocale);
-                                                                    Get.updateLocale(
-                                                                        newLocale);
-                                                                    homeController.refreshIt();
-
-                                                                    break;
-                                                                  case 1:
-                                                                    var newLocale =
-                                                                    const Locale(
-                                                                        'gu', 'IN');
-                                                                    context.setLocale(
-                                                                        newLocale);
-                                                                    Get.updateLocale(
-                                                                        newLocale);
-                                                                    homeController.refreshIt();
-
-                                                                    break;
-                                                                  case 2:
-                                                                    var newLocale =
-                                                                    const Locale(
-                                                                        'hi',
-                                                                        'IN'); //HINDI
-                                                                    context.setLocale(
-                                                                        newLocale);
-                                                                    Get.updateLocale(
-                                                                        newLocale);
-                                                                    homeController.refreshIt();
-
-                                                                    break;
-                                                                  case 3:
-                                                                    var newLocale =
-                                                                    const Locale(
-                                                                        'es',
-                                                                        'ES'); //Spanish
-                                                                    context.setLocale(
-                                                                        newLocale);
-                                                                    Get.updateLocale(
-                                                                        newLocale);
-                                                                    homeController.refreshIt();
-
-                                                                    break;
-                                                                  case 4:
-                                                                    var newLocale =
-                                                                    const Locale(
-                                                                        'mr',
-                                                                        'IN'); //marathi
-                                                                    context.setLocale(
-                                                                        newLocale);
-                                                                    Get.updateLocale(
-                                                                        newLocale);
-                                                                    homeController.refreshIt();
-
-                                                                    break;
-                                                                  case 5:
-                                                                    var newLocale =
-                                                                    const Locale(
-                                                                        'bn',
-                                                                        'IN'); //bengali
-                                                                    context.setLocale(
-                                                                        newLocale);
-                                                                    Get.updateLocale(
-                                                                        newLocale);
-                                                                    homeController.refreshIt();
-
-                                                                    break;
-
-                                                                  case 6:
-                                                                    var newLocale =
-                                                                    const Locale(
-                                                                        'kn',
-                                                                        'IN'); //kannad
-                                                                    context.setLocale(
-                                                                        newLocale);
-                                                                    Get.updateLocale(
-                                                                        newLocale);
-                                                                    homeController.refreshIt();
-
-                                                                    break;
-
-                                                                  case 7:
-                                                                    var newLocale =
-                                                                    const Locale(
-                                                                        'ml',
-                                                                        'IN'); //malayalam
-                                                                    context.setLocale(
-                                                                        newLocale);
-                                                                    Get.updateLocale(
-                                                                        newLocale);
-                                                                    homeController.refreshIt();
-
-                                                                    break;
-
-                                                                  case 8:
-                                                                    var newLocale =
-                                                                    const Locale(
-                                                                        'ta',
-                                                                        'IN'); //tamil
-                                                                    context.setLocale(
-                                                                        newLocale);
-                                                                    Get.updateLocale(
-                                                                        newLocale);
-                                                                    homeController.refreshIt();
-
-                                                                    break;
-                                                                }
-                                                              },
-                                                              child: GetBuilder<
-                                                                  HomeController>(
-                                                                  builder: (h) {
-                                                                    return Container(
-                                                                      height: 80,
-                                                                      alignment:
-                                                                      Alignment.center,
-                                                                      margin:
-                                                                      EdgeInsets.only(
-                                                                          left: 7,
-                                                                          right: 7,
-                                                                          top: 10),
-                                                                      width: 75,
-                                                                      padding: EdgeInsets
-                                                                          .symmetric(
-                                                                          horizontal: 8,
-                                                                          vertical: 8),
-                                                                      decoration:
-                                                                      BoxDecoration(
-                                                                        color: homeController
-                                                                            .lan[index]
-                                                                            .isSelected
-                                                                            ? Color
-                                                                            .fromARGB(
-                                                                            255,
-                                                                            228,
-                                                                            217,
-                                                                            185)
-                                                                            : Colors
-                                                                            .transparent,
-                                                                        border: Border.all(
-                                                                            color: homeController
-                                                                                .lan[
-                                                                            index]
-                                                                                .isSelected
-                                                                                ? Get.theme
-                                                                                .primaryColor
-                                                                                : Colors
-                                                                                .black),
-                                                                        borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                            10),
-                                                                      ),
-                                                                      child: Column(
-                                                                          mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                          children: [
-                                                                            Text(
-                                                                              homeController
-                                                                                  .lan[
-                                                                              index]
-                                                                                  .title,
-                                                                              style: Get
-                                                                                  .textTheme
-                                                                                  .bodyMedium,
-                                                                            ),
-                                                                            Text(
-                                                                              homeController
-                                                                                  .lan[
-                                                                              index]
-                                                                                  .subTitle,
-                                                                              style: Get
-                                                                                  .textTheme
-                                                                                  .bodyMedium!
-                                                                                  .copyWith(
-                                                                                  fontSize:
-                                                                                  12),
-                                                                            )
-                                                                          ]),
-                                                                    );
-                                                                  }),
-                                                            );
-                                                          })),
-                                                    );
-                                                  }),
-                                            ])),
-                                    sizedBoxDefault(),
-                                  ],
-                                );
-                              }),
-                            );
-                          });
-                        });
+                   Get.dialog(LanguageDialogWidget());
                   }
                 });
               },
@@ -1442,201 +1187,6 @@ class TabViewWidget extends StatelessWidget {
                           isBold: false,)
                         ],
                       ),
-                      // Column(
-                      //   children: [
-                      //     TextButton(
-                      //       style: ButtonStyle(
-                      //         padding:
-                      //         MaterialStateProperty.all(EdgeInsets.all(0)),
-                      //         fixedSize:
-                      //         MaterialStateProperty.all(Size.fromWidth(90)),
-                      //         backgroundColor: astrologerList[index]
-                      //             .chatStatus ==
-                      //             "Online"
-                      //             ? MaterialStateProperty.all(Colors.lightBlue)
-                      //             : MaterialStateProperty.all(
-                      //             Colors.orangeAccent),
-                      //         shape: MaterialStateProperty.all(
-                      //           RoundedRectangleBorder(
-                      //             borderRadius: BorderRadius.circular(10),
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       onPressed: () async {
-                      //         bool isLogin = await global.isLogin();
-                      //         if (isLogin) {
-                      //           await bottomNavigationController
-                      //               .getAstrologerbyId(
-                      //               astrologerList[index].id);
-                      //           if (astrologerList[index].charge * 5 <=
-                      //               global.splashController.currentUser!
-                      //                   .walletAmount ||
-                      //               astrologerList[index].isFreeAvailable ==
-                      //                   true) {
-                      //             await bottomNavigationController
-                      //                 .checkAlreadyInReq(
-                      //                 astrologerList[index].id);
-                      //             if (bottomNavigationController
-                      //                 .isUserAlreadyInChatReq ==
-                      //                 false) {
-                      //               if (astrologerList[index].chatStatus ==
-                      //                   "Online") {
-                      //                 global.showOnlyLoaderDialog(context);
-                      //
-                      //                 if (astrologerList[index].chatWaitTime !=
-                      //                     null) {
-                      //                   if (astrologerList[index]
-                      //                       .chatWaitTime!
-                      //                       .difference(DateTime.now())
-                      //                       .inMinutes <
-                      //                       0) {
-                      //                     await bottomNavigationController
-                      //                         .changeOfflineStatus(
-                      //                         astrologerList[index].id,
-                      //                         "Online");
-                      //                   }
-                      //                 }
-                      //                 await Get.to(() => CallIntakeFormScreen(
-                      //                   type: "Chat",
-                      //                   astrologerId:
-                      //                   astrologerList[index].id,
-                      //                   astrologerName:
-                      //                   astrologerList[index].name,
-                      //                   astrologerProfile:
-                      //                   astrologerList[index]
-                      //                       .profileImage,
-                      //                   isFreeAvailable:
-                      //                   astrologerList[index]
-                      //                       .isFreeAvailable,
-                      //                 ));
-                      //                 global.hideLoader();
-                      //               } else if (astrologerList[index]
-                      //                   .chatStatus ==
-                      //                   "Offline" ||
-                      //                   astrologerList[index].chatStatus ==
-                      //                       "Busy" ||
-                      //                   astrologerList[index].chatStatus ==
-                      //                       "Wait Time") {
-                      //                 bottomNavigationController
-                      //                     .dialogForJoinInWaitList(
-                      //                     context,
-                      //                     astrologerList[index].name,
-                      //                     true,
-                      //                     bottomNavigationController
-                      //                         .astrologerbyId[0].chatStatus
-                      //                         .toString(),
-                      //                     astrologerList[index]
-                      //                         .profileImage);
-                      //               }
-                      //             } else {
-                      //               bottomNavigationController
-                      //                   .dialogForNotCreatingSession(context);
-                      //             }
-                      //           } else {
-                      //             global.showOnlyLoaderDialog(context);
-                      //             await walletController.getAmount();
-                      //             global.hideLoader();
-                      //             openBottomSheetRechrage(
-                      //                 context,
-                      //                 (astrologerList[index].charge * 5)
-                      //                     .toString(),
-                      //                 astrologerList[index].name);
-                      //           }
-                      //         }
-                      //       },
-                      //       child: astrologerList[index].isFreeAvailable == true
-                      //           ? Text(
-                      //         'FREE',
-                      //         style: Get.theme.textTheme.titleMedium!
-                      //             .copyWith(
-                      //             fontSize: 12,
-                      //             fontWeight: FontWeight.w500,
-                      //             letterSpacing: 0,
-                      //             color: Colors.white
-                      //           //Color.fromARGB(255, 167, 1, 1),
-                      //         ),
-                      //       ).tr()
-                      //           : Row(
-                      //         mainAxisAlignment:
-                      //         MainAxisAlignment.spaceEvenly,
-                      //         children: [
-                      //           Icon(
-                      //             CupertinoIcons.chat_bubble_fill,
-                      //             size: 15,
-                      //             color: Colors.white,
-                      //           ),
-                      //           Text(
-                      //             '${global.getSystemFlagValueForLogin(global.systemFlagNameList.currency)} ${astrologerList[index].charge}/min',
-                      //             style: Get.theme.textTheme.titleMedium!
-                      //                 .copyWith(
-                      //               fontSize: 11,
-                      //               fontWeight: FontWeight.w500,
-                      //               letterSpacing: 0,
-                      //               decoration: astrologerList[index]
-                      //                   .isFreeAvailable ==
-                      //                   true
-                      //                   ? TextDecoration.lineThrough
-                      //                   : null,
-                      //               color: astrologerList[index]
-                      //                   .isFreeAvailable ==
-                      //                   true
-                      //                   ? Colors.grey
-                      //                   : Colors.white,
-                      //             ),
-                      //           ).tr(),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //     astrologerList[index].chatStatus == "Offline"
-                      //         ? Text(
-                      //       "Currently Offline",
-                      //       style: TextStyle(
-                      //           color: Colors.red, fontSize: 09),
-                      //     ).tr()
-                      //         : astrologerList[index].chatStatus == "Wait Time"
-                      //         ? Text(
-                      //       astrologerList[index]
-                      //           .chatWaitTime!
-                      //           .difference(DateTime.now())
-                      //           .inMinutes >
-                      //           0
-                      //           ? "Wait till - ${astrologerList[index].chatWaitTime!.difference(DateTime.now()).inMinutes} min"
-                      //           : "Wait till",
-                      //       style: TextStyle(
-                      //           color: Colors.red, fontSize: 09),
-                      //     ).tr()
-                      //         : (astrologerList[index].chatStatus == "Busy"
-                      //         ? Text(
-                      //       "Currently Busy",
-                      //       style: TextStyle(
-                      //           color: Colors.red, fontSize: 09),
-                      //     ).tr()
-                      //         : SizedBox()),
-                      //     // RatingBar.builder(
-                      //     //   initialRating: 0,
-                      //     //   itemCount: 5,
-                      //     //   allowHalfRating: false,
-                      //     //   itemSize: 15,
-                      //     //   ignoreGestures: true,
-                      //     //   itemBuilder: (context, _) => Icon(
-                      //     //     Icons.star,
-                      //     //     color: Get.theme.primaryColor,
-                      //     //   ),
-                      //     //   onRatingUpdate: (rating) {},
-                      //     // ),
-                      //     astrologerList[index].totalOrder == 0 ||
-                      //         astrologerList[index].totalOrder == null
-                      //         ? SizedBox()
-                      //         : Text(
-                      //       '${astrologerList[index].totalOrder} orders',
-                      //       style: Get.theme.primaryTextTheme.bodySmall!
-                      //           .copyWith(
-                      //         fontWeight: FontWeight.w300,
-                      //         fontSize: 9,
-                      //       ),
-                      //     ).tr()
-                      //   ],
-                      // )
                     ],
                   ),
                 ),

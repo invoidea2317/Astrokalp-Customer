@@ -59,14 +59,14 @@ String stripeBaseApi = 'https://api.stripe.com/v1';
 // String baseUrl = "https://invoidea.work/goodpandit/api";
 // String baseUrl = "https://lab5.invoidea.in/goodpandit/api";
 // String imgBaseurl = "https://lab5.invoidea.in/goodpandit/api";
-String baseUrl = "https://lab5.invoidea.in/astrokalp/api";
-String imgBaseurl = "https://lab5.invoidea.in/astrokalp/";
+String baseUrl = "https://invoidea.work/astrokalp/api";
+String imgBaseurl = "https://invoidea.work/astrokalp/";
 String webBaseUrl = "https://astroway.diploy.in/api/";
 String appMode = "LIVE";
 Map<String, dynamic> appParameters = {
   "LIVE": {
-    "apiUrl": "https://lab5.invoidea.in/goodpandit/api/",
-    "imageBaseurl": "https://astroway.diploy.in/",
+    "apiUrl": "https://invoidea.work/astrokalp/api/",
+    "imageBaseurl": "https://invoidea.work/astrokalp/",
   },
   "DEV": {
     "apiUrl": "http://192.168.29.223:8001/api",

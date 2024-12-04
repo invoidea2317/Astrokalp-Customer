@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:AstrowayCustomer/controllers/homeController.dart';
 import 'package:AstrowayCustomer/utils/images.dart';
 import 'package:AstrowayCustomer/views/blog_screen.dart';
+import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -19,26 +20,7 @@ class AstrologerVideoScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor:
-              Get.theme.appBarTheme.systemOverlayStyle!.statusBarColor,
-          title: Text(
-            'Astrology Video',
-            style: Get.theme.primaryTextTheme.titleLarge!
-                .copyWith(fontSize: 15, fontWeight: FontWeight.normal),
-          ).tr(),
-          leading: IconButton(
-            onPressed: () => Get.back(),
-            icon: Icon(
-              kIsWeb
-                  ? Icons.arrow_back
-                  : Platform.isIOS
-                      ? Icons.arrow_back_ios
-                      : Icons.arrow_back,
-              color: Get.theme.iconTheme.color,
-            ),
-          ),
-        ),
+        appBar: CustomApp(title: 'Astrology Video',isBackButtonExist: true,),
         body: GetBuilder<HomeController>(builder: (homeController) {
           return RefreshIndicator(
             onRefresh: () async {

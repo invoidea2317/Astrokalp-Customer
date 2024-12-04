@@ -80,7 +80,7 @@ class CustomApp extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       leading: isBackButtonExist ? IconButton(
         icon:  const Icon(Icons.arrow_back),
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).primaryColor,
         onPressed: () =>  Navigator.pop(context),
       ) :  Builder(
         builder: (context) => InkWell(

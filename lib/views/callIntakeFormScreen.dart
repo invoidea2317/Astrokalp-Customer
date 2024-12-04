@@ -13,6 +13,7 @@ import 'package:AstrowayCustomer/utils/images.dart';
 import 'package:AstrowayCustomer/views/CustomText.dart';
 import 'package:AstrowayCustomer/views/paymentInformationScreen.dart';
 import 'package:AstrowayCustomer/views/placeOfBrithSearchScreen.dart';
+import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:AstrowayCustomer/widget/customBottomButton.dart';
 import 'package:AstrowayCustomer/widget/textFieldLabelWidget.dart';
 import 'package:AstrowayCustomer/widget/textFieldWidget.dart';
@@ -77,25 +78,7 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Get.theme.appBarTheme.systemOverlayStyle!.statusBarColor,
-        title: Text(
-          '${widget.type} ${tr("Intake Form")}',
-          style: Get.theme.primaryTextTheme.titleLarge!.copyWith(
-              fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black),
-        ).tr(),
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(
-              kIsWeb
-                  ? Icons.arrow_back
-                  : Platform.isIOS
-                      ? Icons.arrow_back_ios
-                      : Icons.arrow_back,
-              color: Colors.black //Get.theme.iconTheme.color,
-              ),
-        ),
-      ),
+      appBar: CustomApp(title:   '${widget.type} ${tr("Intake Form")}',isBackButtonExist: true,),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -304,6 +287,7 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
                     callIntakeController.namefocus.unfocus();
                     callIntakeController.phonefocus.unfocus();
                     var datePicked = await DatePicker.showSimpleDatePicker(
+                      textColor: Theme.of(context).dividerColor,
                       context,
                       initialDate: DateTime(1994),
                       firstDate: DateTime(1960),
@@ -316,7 +300,7 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
                         letterSpacing: 0,
                       ),
                       titleText: tr('Select Birth Date'),
-                      textColor: Get.theme.primaryColor,
+                      // textColor: Get.theme.primaryColor,
                     );
                     if (datePicked != null) {
                       callIntakeController.dobController.text =
@@ -768,8 +752,7 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
                   time[selectTime].toString());
             }
           },
-          title:
-              '${tr("Start")} ${widget.type} ${tr("with")} ${widget.astrologerName}',
+          title: '${tr("Start")} ${widget.type} ${tr("with")} ${widget.astrologerName}'.toUpperCase(),
         );
       }),
     );

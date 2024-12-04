@@ -85,8 +85,8 @@ class BottomNavigationController extends GetxController {
     // LiveAstrologerListScreen(isFromBottom: true),
     CallScreen(flag: 0,),
     WatchScreen(),
-    // AstromallScreen()
-    HistoryScreen(currentIndex: historyIndex,),
+    AstromallScreen()
+    // HistoryScreen(currentIndex: historyIndex,),
   ];
   // final HomeController homeController = Get.find<HomeController>();
   @override
@@ -774,6 +774,8 @@ class BottomNavigationController extends GetxController {
               startIndex: startIndex,
               fetchRecords: fetchRecord)
               .then((result) {
+                print('Print Skill=========> ${skills}');
+                print('Print sortBy=========> ${sortBy}');
             if (result.status == "200") {
               astrologerList.addAll(result.recordList);
               log('astrologer list length ${astrologerList.length} ');
@@ -1072,6 +1074,102 @@ class BottomNavigationController extends GetxController {
       });
     } catch (e) {
       print("Exception in getAstrologerbyId :-" + e.toString());
+    }
+  }
+  var skilledAstrologerList = <AstrologerModel>[];
+  Future<dynamic> getSkillAstrologerList(
+      {List<int>? skills,
+        // List<int>? language,
+        // List<String>? gender,
+        // String? sortBy,
+        bool isLazyLoading = false}) async {
+    try {
+      startIndex = 0;
+      if (skilledAstrologerList.isNotEmpty) {
+        startIndex = skilledAstrologerList.length;
+      }
+      if (!isLazyLoading) {
+        isDataLoaded = false;
+      }
+      await global.checkBody().then((result) async {
+        if (result) {
+          await apiHelper
+              .getAstrologer(
+              sortingKey: sortBy,
+              skills: skills,
+              // language: language,
+              // gender: gender,
+              startIndex: startIndex,
+              fetchRecords: fetchRecord)
+              .then((result) {
+            if (result.status == "200") {
+              skilledAstrologerList.addAll(result.recordList);
+              log('astrologer list length ${skilledAstrologerList.length} ');
+              if (result.recordList.length == 0) {
+                isMoreDataAvailable = false;
+                isAllDataLoaded = true;
+              }
+              update();
+            } else {
+              global.showToast(
+                message: '',
+                textColor: global.textColor,
+                bgColor: global.toastBackGoundColor,
+              );
+            }
+          });
+        }
+      });
+    } catch (e) {
+      print("Exception in getAstrologerList :-" + e.toString());
+    }
+  }
+  var tarotAstrologerList = <AstrologerModel>[];
+  Future<dynamic> getTarotAstrologerList(
+      {List<int>? skills,
+        // List<int>? language,
+        // List<String>? gender,
+        // String? sortBy,
+        bool isLazyLoading = false}) async {
+    try {
+      startIndex = 0;
+      if (tarotAstrologerList.isNotEmpty) {
+        startIndex = tarotAstrologerList.length;
+      }
+      if (!isLazyLoading) {
+        isDataLoaded = false;
+      }
+      await global.checkBody().then((result) async {
+        if (result) {
+          await apiHelper
+              .getAstrologer(
+              sortingKey: sortBy,
+              skills: skills,
+              // language: language,
+              // gender: gender,
+              startIndex: startIndex,
+              fetchRecords: fetchRecord)
+              .then((result) {
+            if (result.status == "200") {
+              tarotAstrologerList.addAll(result.recordList);
+              log('astrologer list length ${tarotAstrologerList.length} ');
+              if (result.recordList.length == 0) {
+                isMoreDataAvailable = false;
+                isAllDataLoaded = true;
+              }
+              update();
+            } else {
+              global.showToast(
+                message: '',
+                textColor: global.textColor,
+                bgColor: global.toastBackGoundColor,
+              );
+            }
+          });
+        }
+      });
+    } catch (e) {
+      print("Exception in getAstrologerList :-" + e.toString());
     }
   }
 }

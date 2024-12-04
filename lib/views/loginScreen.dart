@@ -572,8 +572,7 @@ class LeftTrianglePainter extends CustomPainter {
 class RightTrianglePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.white; // Triangle color
-
+    Paint paint = Paint()..color = Colors.white;
     Path path = Path();
     path.moveTo(0, size.height / 2);
     path.lineTo(size.width, 0);

@@ -66,6 +66,8 @@ class HomeController extends GetxController {
       ]);
       bottomNavigationController.astrologerList.clear();
       await bottomNavigationController.getAstrologerList(isLazyLoading: false);
+      await bottomNavigationController.getSkillAstrologerList(isLazyLoading: false,skills: [35]);
+      await bottomNavigationController.getTarotAstrologerList(isLazyLoading: false,skills: [56]);
     } catch (e) {
       print("Exception -Homecontroller init future.wait: $e");
     }
@@ -469,5 +471,7 @@ class HomeController extends GetxController {
     refresh();
     Get.back();
   }
+
+  
 
 }
