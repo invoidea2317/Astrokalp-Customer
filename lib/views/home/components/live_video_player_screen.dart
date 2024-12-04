@@ -1,3 +1,4 @@
+import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -6,8 +7,7 @@ import 'dart:convert';
 class LiveYouTubePlayer extends StatefulWidget {
   final String youtubeUrl;
 
-
-  LiveYouTubePlayer({required this.youtubeUrl,});
+  LiveYouTubePlayer({required this.youtubeUrl});
 
   @override
   _LiveYouTubePlayerState createState() => _LiveYouTubePlayerState();
@@ -26,22 +26,38 @@ class _LiveYouTubePlayerState extends State<LiveYouTubePlayer> {
 
   // Function to fetch live chat messages
   Future<List<String>> _fetchLiveChatMessages() async {
-    final response = await http.get(Uri.parse(
-        'https://www.googleapis.com/youtube/v3/liveChat/messages?liveChatId=$videoId&key=AIzaSyA_dBvtao_sFYmHRvqCxlELTMsCsbgvazM'));
+    // Get the live chat ID from the videoId
+    final liveChatIdResponse = await http.get(Uri.parse(
+        'https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails&id=$videoId&key=YOUR_API_KEY'));
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      List<String> chatMessages = [];
-
-      for (var item in data['items']) {
-        if (item['snippet'] != null && item['snippet']['displayMessage'] != null) {
-          chatMessages.add(item['snippet']['displayMessage']);
-        }
+    if (liveChatIdResponse.statusCode == 200) {
+      final liveChatData = json.decode(liveChatIdResponse.body);
+      if (liveChatData['items'].isEmpty ||
+          liveChatData['items'][0]['liveStreamingDetails'] == null ||
+          liveChatData['items'][0]['liveStreamingDetails']['activeLiveChatId'] == null) {
+        throw Exception('Live chat is not available for this video.');
       }
 
-      return chatMessages;
+      final liveChatId = liveChatData['items'][0]['liveStreamingDetails']['activeLiveChatId'];
+
+      // Now use liveChatId to fetch live chat messages
+      final chatMessagesResponse = await http.get(Uri.parse(
+          'https://www.googleapis.com/youtube/v3/liveChat/messages?liveChatId=$liveChatId&key=AIzaSyA_dBvtao_sFYmHRvqCxlELTMsCsbgvazM'));
+
+      if (chatMessagesResponse.statusCode == 200) {
+        final data = json.decode(chatMessagesResponse.body);
+        List<String> chatMessages = [];
+        for (var item in data['items']) {
+          if (item['snippet'] != null && item['snippet']['displayMessage'] != null) {
+            chatMessages.add(item['snippet']['displayMessage']);
+          }
+        }
+        return chatMessages;
+      } else {
+        throw Exception('Failed to load live chat messages');
+      }
     } else {
-      throw Exception('Failed to load live chat messages');
+      throw Exception('Failed to fetch live chat ID');
     }
   }
 
@@ -60,7 +76,8 @@ class _LiveYouTubePlayerState extends State<LiveYouTubePlayer> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Live Video')),
+      backgroundColor: Colors.white,
+      appBar: CustomApp(title: 'Live Video',isBackButtonExist: true,),
       body: Column(
         children: [
           // YouTube Player

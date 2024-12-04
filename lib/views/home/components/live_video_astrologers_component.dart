@@ -77,8 +77,6 @@ class LiveVideoAstrologersComponent extends StatelessWidget {
                         print("Invalid YouTube URL");
                         return;
                       }
-
-                      // Proceed with navigation to the YouTube player
                       print("YouTube URL: $youtubeUrl");
                       Get.to(LiveYouTubePlayer(youtubeUrl: youtubeUrl,));
                     },
@@ -86,19 +84,17 @@ class LiveVideoAstrologersComponent extends StatelessWidget {
                     child: Stack(
                       children: [
                         Container(
-                          decoration: BoxDecoration(color: Colors.redAccent,
-                            shape: BoxShape.circle,
-
-                          ),
+                          decoration: BoxDecoration(shape: BoxShape.circle,),
                           child: CustomRoundNetworkImage(
                               height: 130,
                               width: 130,
+                              placeholder: Images.icAstrokalpLogo,
                               image: liveVideo[i].coverImage.toString()),
                         ),
                         Positioned(
                           bottom: 0,
-                          left: 0,
-                          right: 0,
+                          left: 10,
+                          right: 10,
                           child: Row(
                             children: [
                               CustomDecoratedContainer(color: Theme.of(context).primaryColor,
@@ -114,18 +110,7 @@ class LiveVideoAstrologersComponent extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Positioned(
-                          top: 1,
-                          right: 1,
-                          child: Row(
-                            children: [
-                              CustomDecoratedContainer(color: primarypinkColor,
-                                  verticalPadding: 7,
-                                  horizontalPadding: 12,
-                                  child: Text('Live Now',style: openSansSemiBold.copyWith(fontSize: 8),)),
-                            ],
-                          ),
-                        )
+
                       ],
                     ),
                   );

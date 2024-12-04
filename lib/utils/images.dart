@@ -32,4 +32,5 @@ class Images {
   static const String placeholder = 'assets/images/img_placeholder.png';
   static const String icProfilePlaceholder = 'assets/images/ic_profile_placeholder.png';
   static const String icYellowPlay = 'assets/images/ic_yellow_video.png';
+  static const String icAstrokalpLogo = 'assets/images/ic_astrokalp_logo.png';
 }

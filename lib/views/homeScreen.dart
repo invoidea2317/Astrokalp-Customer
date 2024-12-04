@@ -3514,116 +3514,116 @@ class _HomeScreenState extends State<HomeScreen> {
                   //           ),
                   //         );
                   // }),
-                  GetBuilder<HomeController>(builder: (homeController) {
-                    return Card(
-                      elevation: 0,
-                      margin: EdgeInsets.only(top: 6),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero),
-                      child: Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'I am the Product Manager',
-                              style: Get.theme.primaryTextTheme.titleMedium!
-                                  .copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17.sp,
-                              ),
-                            ).tr(),
-                            Text(
-                              'share your feedback to help us improve the app',
-                              style: TextStyle(
-                                fontSize: 15.sp,
-                              ),
-                            ).tr(),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextFormField(
-                              style: TextStyle(fontSize: 15.sp),
-                              controller: homeController.feedbackController,
-                              maxLines: 8,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(5),
-                                border: InputBorder.none,
-                                filled: true,
-                                fillColor: Colors.white,
-                                hintText: 'Start typing here..',
-                                hintStyle: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey[500],
-                                  fontSize: 15.sp,
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 15, bottom: 5),
-                                child: SizedBox(
-                                  height: 35,
-                                  child: TextButton(
-                                    style: ButtonStyle(
-                                      padding: MaterialStateProperty.all(
-                                          EdgeInsets.all(0)),
-                                      fixedSize: MaterialStateProperty.all(
-                                          Size.fromWidth(Get.width / 2)),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Get.theme.primaryColor),
-                                      shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(7),
-                                        ),
-                                      ),
-                                    ),
-                                    onPressed: () async {
-                                      bool isLogin = await global.isLogin();
-                                      if (isLogin) {
-                                        if (homeController
-                                                .feedbackController.text ==
-                                            "") {
-                                          global.showToast(
-                                            message: 'Please enter feedback',
-                                            textColor: global.textColor,
-                                            bgColor: global.toastBackGoundColor,
-                                          );
-                                        } else {
-                                          global.showOnlyLoaderDialog(context);
-                                          await homeController.addFeedback(
-                                              homeController
-                                                  .feedbackController.text);
-                                          global.hideLoader();
-                                        }
-                                      }
-                                    },
-                                    child: Text(
-                                      'Send Feedback',
-                                      style: Get
-                                          .theme.primaryTextTheme.bodySmall!
-                                          .copyWith(color: Colors.white),
-                                    ).tr(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
+                  // GetBuilder<HomeController>(builder: (homeController) {
+                  //   return Card(
+                  //     elevation: 0,
+                  //     margin: EdgeInsets.only(top: 6),
+                  //     shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.zero),
+                  //     child: Container(
+                  //       margin:
+                  //           EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.grey[200],
+                  //         borderRadius: BorderRadius.circular(15),
+                  //       ),
+                  //       padding: EdgeInsets.all(10),
+                  //       child: Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           Text(
+                  //             'I am the Product Manager',
+                  //             style: Get.theme.primaryTextTheme.titleMedium!
+                  //                 .copyWith(
+                  //               fontWeight: FontWeight.w500,
+                  //               fontSize: 17.sp,
+                  //             ),
+                  //           ).tr(),
+                  //           Text(
+                  //             'share your feedback to help us improve the app',
+                  //             style: TextStyle(
+                  //               fontSize: 15.sp,
+                  //             ),
+                  //           ).tr(),
+                  //           SizedBox(
+                  //             height: 10,
+                  //           ),
+                  //           TextFormField(
+                  //             style: TextStyle(fontSize: 15.sp),
+                  //             controller: homeController.feedbackController,
+                  //             maxLines: 8,
+                  //             keyboardType: TextInputType.text,
+                  //             decoration: InputDecoration(
+                  //               contentPadding: EdgeInsets.all(5),
+                  //               border: InputBorder.none,
+                  //               filled: true,
+                  //               fillColor: Colors.white,
+                  //               hintText: 'Start typing here..',
+                  //               hintStyle: TextStyle(
+                  //                 fontWeight: FontWeight.w600,
+                  //                 color: Colors.grey[500],
+                  //                 fontSize: 15.sp,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //           Align(
+                  //             alignment: Alignment.center,
+                  //             child: Padding(
+                  //               padding:
+                  //                   const EdgeInsets.only(top: 15, bottom: 5),
+                  //               child: SizedBox(
+                  //                 height: 35,
+                  //                 child: TextButton(
+                  //                   style: ButtonStyle(
+                  //                     padding: MaterialStateProperty.all(
+                  //                         EdgeInsets.all(0)),
+                  //                     fixedSize: MaterialStateProperty.all(
+                  //                         Size.fromWidth(Get.width / 2)),
+                  //                     backgroundColor:
+                  //                         MaterialStateProperty.all(
+                  //                             Get.theme.primaryColor),
+                  //                     shape: MaterialStateProperty.all(
+                  //                       RoundedRectangleBorder(
+                  //                         borderRadius:
+                  //                             BorderRadius.circular(7),
+                  //                       ),
+                  //                     ),
+                  //                   ),
+                  //                   onPressed: () async {
+                  //                     bool isLogin = await global.isLogin();
+                  //                     if (isLogin) {
+                  //                       if (homeController
+                  //                               .feedbackController.text ==
+                  //                           "") {
+                  //                         global.showToast(
+                  //                           message: 'Please enter feedback',
+                  //                           textColor: global.textColor,
+                  //                           bgColor: global.toastBackGoundColor,
+                  //                         );
+                  //                       } else {
+                  //                         global.showOnlyLoaderDialog(context);
+                  //                         await homeController.addFeedback(
+                  //                             homeController
+                  //                                 .feedbackController.text);
+                  //                         global.hideLoader();
+                  //                       }
+                  //                     }
+                  //                   },
+                  //                   child: Text(
+                  //                     'Send Feedback',
+                  //                     style: Get
+                  //                         .theme.primaryTextTheme.bodySmall!
+                  //                         .copyWith(color: Colors.white),
+                  //                   ).tr(),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   );
+                  // }),
                   Card(
                     elevation: 0,
                     margin: EdgeInsets.only(top: 6),
