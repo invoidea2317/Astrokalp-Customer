@@ -15,6 +15,8 @@ import 'package:AstrowayCustomer/controllers/kundliController.dart';
 import 'package:AstrowayCustomer/controllers/liveController.dart';
 import 'package:AstrowayCustomer/controllers/reviewController.dart';
 import 'package:AstrowayCustomer/utils/text_styles.dart';
+import 'package:AstrowayCustomer/widget/custom_network_image.dart';
+import 'package:AstrowayCustomer/widget/custom_rows_widget.dart';
 import 'package:AstrowayCustomer/widget/language_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:AstrowayCustomer/model/kundli_model.dart';
@@ -67,6 +69,7 @@ import '../controllers/settings_controller.dart';
 import '../controllers/splashController.dart';
 import '../controllers/walletController.dart';
 import '../model/systemFlagNameListModel.dart';
+import '../theme/nativeTheme.dart';
 import '../utils/fonts.dart';
 import '../widget/videoPlayerWidget.dart';
 import 'CustomText.dart';
@@ -74,6 +77,7 @@ import 'astromall/astroProductScreen.dart';
 import 'chatScreen.dart';
 import 'daily_horoscope/dailyHoroscopeScreen.dart';
 import 'home/components/horizontal_astrologer_view.dart';
+import 'home/components/live_video_astrologers_component.dart';
 
 class HomeScreen extends StatefulWidget {
   final KundliModel? userDetails;
@@ -417,20 +421,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                   }),
                   sizedBoxDefault(),
-                  Row(
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(Images.icYellowPlay,height: 24,),
-                          Text('Free Live Chat',style: openSansSemiBold.copyWith(
-                              fontSize: Dimensions.fontSize14
-                          ),),
-                        ],
-                      )
+                  LiveVideoAstrologersComponent(title: 'Free Live Chat', liveVideo: homeController.liveAstrologersVideo,),
 
-
-                    ],
-                  ),
 
                   // GetBuilder<HomeController>(builder: (homeController) {
                   //   return homeController.bannerList.isEmpty
@@ -668,6 +660,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
+                  LiveVideoAstrologersComponent( title: 'Free Live Webinar', liveVideo: homeController.liveAstrologersVideo,),
+                  LiveVideoAstrologersComponent( title: 'Free Live Vastu',isBlackColor: true, liveVideo: homeController.liveAstrologersVideo,),
                   HorizontalAstrologerView(
                     isColor: true,
                     astrologerList:

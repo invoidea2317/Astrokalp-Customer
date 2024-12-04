@@ -69,8 +69,8 @@ Map<String, dynamic> appParameters = {
     "imageBaseurl": "https://invoidea.work/astrokalp/",
   },
   "DEV": {
-    "apiUrl": "http://192.168.29.223:8001/api",
-    "imageBaseurl": "http://192.168.29.223:8001/",
+    "apiUrl": "https://invoidea.work/astrokalp/api/",
+    "imageBaseurl": "https://invoidea.work/astrokalp/api/",
   }
 };
 

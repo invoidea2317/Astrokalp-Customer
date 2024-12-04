@@ -118,3 +118,4 @@ const Color redColor= Color(0xffDB292C);
 const Color primaryGreenColor = Color(0xff0e971c);
 const Color lightPrimary= Color(0xffFDF9D5);
 const Color blackBgPrimary= Color(0xff212121);
+const Color primarypinkColor= Color(0xffFFB19c);

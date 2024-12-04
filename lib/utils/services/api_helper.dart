@@ -49,6 +49,7 @@ import '../../model/assistant_model.dart';
 import '../../model/astromallHistoryModel.dart';
 import '../../model/customer_support_review_model.dart';
 import '../../model/intake_model.dart';
+import '../../model/live_video_model.dart';
 import '../../model/login_model.dart';
 
 class APIHelper {
@@ -219,6 +220,52 @@ class APIHelper {
       debugPrint('Exception in getHomeBanner():' + e.toString());
     }
   }
+
+
+  Future<dynamic> getLiveAstrologers() async {
+    try {
+      var headers = {
+        'Cookie': 'PHPSESSID=eek2mfd6k99sa3buhe6p9forff',
+      };
+
+      // Make the request
+      var request = http.Request(
+        'GET',
+        Uri.parse('$baseUrl/getLiveVideo'),
+      );
+
+      request.headers.addAll(headers);
+
+      // Send the request
+      http.StreamedResponse response = await request.send();
+
+      // Process response
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        var jsonData = json.decode(responseBody);
+
+        // Map response to List of Video objects
+        List<VideoRecord> videoList = List<VideoRecord>.from(
+          jsonData["recordList"].map((x) => VideoRecord.fromJson(x)),
+        );
+
+        return {
+          "status": jsonData["status"],
+          "recordList": videoList,
+          "totalRecords": jsonData["totalRecords"],
+        };
+      } else {
+        return {
+          "status": response.statusCode,
+          "message": response.reasonPhrase,
+        };
+      }
+    } catch (e) {
+      debugPrint('Exception in getLiveVideos(): ${e.toString()}');
+      return {"status": "error", "message": e.toString()};
+    }
+  }
+
 
   Future<dynamic> getHomeOrder() async {
     try {

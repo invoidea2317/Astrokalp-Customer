@@ -283,8 +283,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             
                                       if (isValid) {
                                         global.showOnlyLoaderDialog(context);
-                                        loginController
-                                            .verifyOTP(context);
+                                        // loginController
+                                        //     .verifyOTP(context);
                                         // loginController
                                         //     .startHeadlessWithWhatsapp('phone');
                                       } else {

@@ -15,6 +15,8 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../model/language.dart';
 import 'package:AstrowayCustomer/utils/global.dart' as global;
 
+import '../model/live_video_model.dart';
+
 class HomeController extends GetxController {
   List<Language> lan = [];
   APIHelper apiHelper = APIHelper();
@@ -63,6 +65,7 @@ class HomeController extends GetxController {
         getMyOrder(),
         getAstrologyVideos(),
         getClientsTestimonals(),
+        getLiveAstrologersVideos()
       ]);
       bottomNavigationController.astrologerList.clear();
       await bottomNavigationController.getAstrologerList(isLazyLoading: false);
@@ -117,17 +120,56 @@ class HomeController extends GetxController {
     }
   }
 
+  String? extractVideoId(String url) {
+    final regex = RegExp(
+      r'(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/live\/)([^"&?\/\s]{11})',
+    );
+    final match = regex.firstMatch(url);
+    return match?.group(1);
+  }
+  bool isValidYoutubeLiveUrl(String url) {
+    final regex = RegExp(
+        r'^(https?\:\/\/)?(www\.)?(youtube\.com\/live\/)[^"&?\/\s]{11}');
+    return regex.hasMatch(url);
+  }
+
   Future youtubPlay(String url) async {
-    String? videoId;
-    videoId = YoutubePlayer.convertUrlToId(url);
+    // Validate live stream link
+    if (!isValidYoutubeLiveUrl(url)) {
+      throw Exception("Invalid YouTube live stream link");
+    }
+
+    // Extract video ID
+    String? videoId = extractVideoId(url);
+    if (videoId == null) {
+      throw Exception("Could not extract video ID from the link");
+    }
+
+
+
+    // Initialize YouTube player
     youtubePlayerController = YoutubePlayerController(
-        initialVideoId: '$videoId',
-        flags: YoutubePlayerFlags(
-          autoPlay: true,
-          showLiveFullscreenButton: true,
-        ));
+      initialVideoId: videoId,
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+        showLiveFullscreenButton: true,
+      ),
+    );
     update();
   }
+
+
+  // Future youtubPlay(String url) async {
+  //   String? videoId;
+  //   videoId = YoutubePlayer.convertUrlToId(url);
+  //   youtubePlayerController = YoutubePlayerController(
+  //       initialVideoId: '$videoId',
+  //       flags: YoutubePlayerFlags(
+  //         autoPlay: true,
+  //         showLiveFullscreenButton: true,
+  //       ));
+  //   update();
+  // }
 
   homeBlogVideo(String link) {
     homeVideoPlayerController = VideoPlayerController.networkUrl(
@@ -471,7 +513,30 @@ class HomeController extends GetxController {
     refresh();
     Get.back();
   }
+  var liveAstrologersVideo = <VideoRecord>[];
+  Future<void> getLiveAstrologersVideos() async {
+    try {
+      await global.checkBody().then((result) async {
+        if (result) {
+          await apiHelper.getLiveAstrologers().then((result) {
+            if (result["status"] == 200) {
+              liveAstrologersVideo = result["recordList"];
+              update();
+            } else {
+              global.showToast(
+                message: result["message"] ?? 'Failed to get live videos',
+                textColor: global.textColor,
+                bgColor: global.toastBackGoundColor,
+              );
+            }
+          });
+        }
+      });
+    } catch (e) {
+      print("Exception in getBanner:- $e");
+    }
+  }
 
-  
+
 
 }
