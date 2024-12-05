@@ -11,6 +11,7 @@ class VideoRecord {
   final int? createdBy;
   final int? modifiedBy;
   final String? astroName;
+  final String? astroImage;
 
   VideoRecord({
     this.id,
@@ -25,6 +26,7 @@ class VideoRecord {
     this.createdBy,
     this.modifiedBy,
     this.astroName,
+    this.astroImage,
   });
 
   factory VideoRecord.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class VideoRecord {
       createdBy: json['createdBy'],
       modifiedBy: json['modifiedBy'],
       astroName: json['astroName'],
+      astroImage: json['astroImage'],
     );
   }
 
@@ -58,6 +61,7 @@ class VideoRecord {
       'createdBy': createdBy,
       'modifiedBy': modifiedBy,
       'astroName': astroName,
+      'astroImage': astroImage,
     };
   }
 }

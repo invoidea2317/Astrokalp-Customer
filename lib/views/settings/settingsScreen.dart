@@ -1,8 +1,10 @@
 import 'package:AstrowayCustomer/controllers/history_controller.dart';
 import 'package:AstrowayCustomer/controllers/settings_controller.dart';
+import 'package:AstrowayCustomer/utils/AppColors.dart';
 import 'package:AstrowayCustomer/views/astrologerProfile/block_astrologer_screen.dart';
 import 'package:AstrowayCustomer/views/settings/privacyPolicyScreen.dart';
 import 'package:AstrowayCustomer/views/settings/termsAndConditionScreen.dart';
+import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,11 +21,7 @@ class SettingListScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(56),
-            child: CommonAppBar(
-              title: 'Settings',
-            )),
+        appBar: CustomApp(title: 'Settings',isBackButtonExist: true,),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -56,7 +54,7 @@ class SettingListScreen extends StatelessWidget {
                         ),
                       );
               }),
-               GestureDetector(
+              GestureDetector(
                 onTap: () {
                   Get.to(() => TermAndConditionScreen());
                 },
@@ -65,33 +63,74 @@ class SettingListScreen extends StatelessWidget {
                   child: Card(
                     elevation: 2,
                     child: Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text(
-                        "Terms and Condition",
-                        style: TextStyle(color: Colors.green, fontWeight: FontWeight.w500, fontSize: 16),
-                      ).tr(),
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.note_alt,
+                            color: Colors.black,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 12.0),
+                            child: Text(
+                              "Terms and Condition",
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
+                            ).tr(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
+              //  GestureDetector(
+              //   onTap: () {
+              //     Get.to(() => TermAndConditionScreen());
+              //   },
+              //   child: SizedBox(
+              //     width: MediaQuery.of(context).size.width,
+              //     child: Card(
+              //       elevation: 2,
+              //       child: Padding(
+              //         padding: EdgeInsets.all(15.0),
+              //         child: Text(
+              //           "Terms and Condition",
+              //           style: TextStyle(color: Colors.green, fontWeight: FontWeight.w500, fontSize: 16),
+              //         ).tr(),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               GestureDetector(
                 onTap: () {
-                  Get.to(() =>  PrivacyPolicyScreen());
+                  Get.to(() => PrivacyPolicyScreen());
                 },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Card(
                     elevation: 2,
                     child: Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text(
-                        "Privacy Policy",
-                        style: TextStyle(color: Colors.green, fontWeight: FontWeight.w500, fontSize: 16),
-                      ).tr(),
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.privacy_tip_outlined,
+                            color: Colors.black,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 12.0),
+                            child: Text(
+                              "Privacy Policy",
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
+                            ).tr(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
+
               GestureDetector(
                 onTap: () {
                   Get.dialog(
@@ -118,6 +157,10 @@ class SettingListScreen extends StatelessWidget {
                           Expanded(
                             flex: 4,
                             child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: greenColor, // Change background color
+                                foregroundColor: Colors.white, // Change text color), // Optional: Customize padding
+                              ),
                               onPressed: () {
                                 HistoryController historyController = Get.find<HistoryController>();
                                 historyController.chatHistoryList.clear();

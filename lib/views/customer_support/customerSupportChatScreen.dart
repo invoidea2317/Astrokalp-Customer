@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 
 import '../../controllers/bottomNavigationController.dart';
+import '../../widget/customAppbarWidget.dart';
 import '../bottomNavigationBarScreen.dart';
 
 class CustomerSupportChat extends StatelessWidget {
@@ -29,12 +30,13 @@ class CustomerSupportChat extends StatelessWidget {
         },
         child: Scaffold(
           backgroundColor: Colors.white,
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(56),
-              child: CommonAppBar(
-                title: 'Support Chat',
-                flagId: 1,
-              )),
+          appBar: CustomApp(title: 'Customer Support',isBackButtonExist: true,),
+          // appBar: PreferredSize(
+          //     preferredSize: Size.fromHeight(56),
+          //     child: CommonAppBar(
+          //       title: 'Support Chat',
+          //       flagId: 1,
+          //     )),
           body: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

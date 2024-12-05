@@ -1,6 +1,7 @@
 import 'package:AstrowayCustomer/controllers/bottomNavigationController.dart';
 import 'package:AstrowayCustomer/controllers/follow_astrologer_controller.dart';
 import 'package:AstrowayCustomer/widget/commonAppbar.dart';
+import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +21,7 @@ class MyFollowingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(56),
-            child: CommonAppBar(
-              title: 'Following',
-            )),
+        appBar: CustomApp(title: 'Following',isBackButtonExist: true,),
         body: RefreshIndicator(
           onRefresh: () async {
             FollowAstrologerController followAstrologerController = Get.find<FollowAstrologerController>();

@@ -41,31 +41,51 @@ class CustomNetworkImageWidget extends StatelessWidget {
 }
 
 
-
 class CustomRoundNetworkImage extends StatelessWidget {
   final double? height;
   final double? width;
   final String image;
   final String? placeholder;
   final double? imagePadding;
-  const CustomRoundNetworkImage({super.key, this.height, this.width, required this.image,  this.placeholder, this.imagePadding});
+
+  const CustomRoundNetworkImage({
+    super.key,
+    this.height,
+    this.width,
+    required this.image,
+    this.placeholder,
+    this.imagePadding,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       clipBehavior: Clip.hardEdge,
-      height: height, width: width,
+      height: height,
+      width: width,
       decoration: BoxDecoration(
-          shape: BoxShape.circle
+        shape: BoxShape.circle,
       ),
       child: CachedNetworkImage(
-        imageUrl: image, fit: BoxFit.cover,
-        placeholder: (context, url) => Image.asset(placeholder ?? Images.placeholder, fit: BoxFit.cover),
-        errorWidget: (context, url, error) => Padding(
-          padding:  EdgeInsets.all(imagePadding ?? 0),
-          child: Image.asset(placeholder ?? Images.placeholder, fit: BoxFit.cover),
+        imageUrl: image,
+        fit: BoxFit.cover,
+        progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+          child: SizedBox(
+            width: 30,
+            height: 30,
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor, // Customize color
+            ),
+          ),
         ),
-      ) ,
+        errorWidget: (context, url, error) => Padding(
+          padding: EdgeInsets.all(imagePadding ?? 0),
+          child: Image.asset(
+            placeholder ?? Images.placeholder,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
     );
   }
 }

@@ -65,7 +65,9 @@ class HomeController extends GetxController {
         getMyOrder(),
         getAstrologyVideos(),
         getClientsTestimonals(),
-        getLiveAstrologersVideos()
+        getLiveWebinarVideos(),
+        getLiveVastuVideos(),
+        getLiveRemedyVideos()
       ]);
       bottomNavigationController.astrologerList.clear();
       await bottomNavigationController.getAstrologerList(isLazyLoading: false);
@@ -513,15 +515,22 @@ class HomeController extends GetxController {
     refresh();
     Get.back();
   }
-  var liveAstrologersVideo = <VideoRecord>[];
-  Future<void> getLiveAstrologersVideos() async {
+  var freeLiveWebinarVideo = <VideoRecord>[];
+  var freeLiveVastuVideo = <VideoRecord>[];
+  var freeLiveRemediesVideo = <VideoRecord>[];
+
+
+  bool _isWebinarLoading = false;
+  bool get isWebinarLoading => _isWebinarLoading;
+
+  Future<void> getLiveWebinarVideos() async {
     try {
+      _isWebinarLoading = true;
       await global.checkBody().then((result) async {
         if (result) {
-          await apiHelper.getLiveAstrologers().then((result) {
+          await apiHelper.getLiveAstrologers("1").then((result) {
             if (result["status"] == 200) {
-              liveAstrologersVideo = result["recordList"];
-              update();
+              freeLiveWebinarVideo = result["recordList"];
             } else {
               global.showToast(
                 message: result["message"] ?? 'Failed to get live videos',
@@ -534,8 +543,70 @@ class HomeController extends GetxController {
       });
     } catch (e) {
       print("Exception in getBanner:- $e");
+    } finally {
+      _isWebinarLoading = false; // Set loading to false
+      update(); // Notify listeners
     }
   }
+
+  bool _isVastuLoading = false;
+  bool get isVastuLoading => _isVastuLoading;
+
+  Future<void> getLiveVastuVideos() async {
+    try {
+      _isVastuLoading = true;
+      await global.checkBody().then((result) async {
+        if (result) {
+          await apiHelper.getLiveAstrologers("2").then((result) {
+            if (result["status"] == 200) {
+              freeLiveVastuVideo = result["recordList"];
+            } else {
+              global.showToast(
+                message: result["message"] ?? 'Failed to get live videos',
+                textColor: global.textColor,
+                bgColor: global.toastBackGoundColor,
+              );
+            }
+          });
+        }
+      });
+    } catch (e) {
+      print("Exception in getBanner:- $e");
+    } finally {
+      _isVastuLoading = false; // Set loading to false
+      update(); // Notify listeners
+    }
+  }
+
+
+  bool _isRemedyLoading = false;
+  bool get isRemedyLoading => _isRemedyLoading;
+  Future<void> getLiveRemedyVideos() async {
+    try {
+      _isRemedyLoading = true;
+      await global.checkBody().then((result) async {
+        if (result) {
+          await apiHelper.getLiveAstrologers("3").then((result) {
+            if (result["status"] == 200) {
+              freeLiveRemediesVideo = result["recordList"];
+            } else {
+              global.showToast(
+                message: result["message"] ?? 'Failed to get live videos',
+                textColor: global.textColor,
+                bgColor: global.toastBackGoundColor,
+              );
+            }
+          });
+        }
+      });
+    } catch (e) {
+      print("Exception in getBanner:- $e");
+    } finally {
+      _isRemedyLoading = false; // Set loading to false
+      update(); // Notify listeners
+    }
+  }
+
 
 
 

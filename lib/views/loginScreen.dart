@@ -18,6 +18,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../utils/Strings.dart';
+import '../widget/custom_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -161,130 +162,145 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               return Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(4)),
-                                      border: Border.all(color: Colors.grey),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 2),
-                                      child: SizedBox(
-                                        child: Theme(
-                                          data: ThemeData(
-                                            dialogTheme: DialogTheme(
-                                              contentTextStyle: const TextStyle(
-                                                  color: Colors.white),
-                                              backgroundColor: Colors.grey[800],
-                                              surfaceTintColor: Colors.grey[800],
-                                            ),
-                                          ),
-                                          //MOBILE
-                                          child: SizedBox(
-                                            child: InternationalPhoneNumberInput(
-                                              textFieldController:
-                                                  loginController.phoneController,
-                                              inputDecoration: const InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintText: 'Phone number',
-                                                  hintStyle: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 16,
-                                                    fontFamily: "verdana_regular",
-                                                    fontWeight: FontWeight.w400,
-                                                  )),
-                                              onInputValidated: (bool value) {
-                                                // log('$value');
-                                              },
-                                              selectorConfig: const SelectorConfig(
-                                                leadingPadding: 2,
-                                                selectorType: PhoneInputSelectorType
-                                                    .BOTTOM_SHEET,
-                                              ),
-                                              ignoreBlank: false,
-                                              autoValidateMode:
-                                                  AutovalidateMode.disabled,
-                                              selectorTextStyle: const TextStyle(
-                                                  color: Colors.black),
-                                              searchBoxDecoration: InputDecoration(
-                                                  border: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(2.w)),
-                                                    borderSide: const BorderSide(
-                                                        color: Colors.black),
-                                                  ),
-                                                  hintText: "Search",
-                                                  hintStyle: const TextStyle(
-                                                    color: Colors.black,
-                                                  )),
-                                              initialValue: _initialPhone,
-                                              formatInput: false,
-                                              keyboardType: const TextInputType
-                                                  .numberWithOptions(
-                                                  signed: true, decimal: false),
-                                              inputBorder: InputBorder.none,
-                                              onSaved: (PhoneNumber number) {
-                                                loginController.updateCountryCode(
-                                                    number.dialCode);
-                                                loginController.updateCountryCode(
-                                                    number.dialCode);
-                                              },
-                                              onFieldSubmitted: (value) {
-                                                FocusScope.of(context).unfocus();
-                                              },
-                                              onInputChanged: (PhoneNumber number) {
-                                                loginController.updateCountryCode(
-                                                    number.dialCode);
-                                                loginController.updateCountryCode(
-                                                    number.dialCode);
-                                              },
-                                              onSubmit: () {
-                                                FocusScope.of(context).unfocus();
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                  // Container(
+                                  //   decoration: BoxDecoration(
+                                  //     color: Colors.white,
+                                  //     borderRadius:
+                                  //         BorderRadius.all(Radius.circular(4)),
+                                  //     border: Border.all(color: Colors.grey),
+                                  //   ),
+                                  //   child: Padding(
+                                  //     padding: const EdgeInsets.only(left: 2),
+                                  //     child: SizedBox(
+                                  //       child: Theme(
+                                  //         data: ThemeData(
+                                  //           dialogTheme: DialogTheme(
+                                  //             contentTextStyle: const TextStyle(
+                                  //                 color: Colors.white),
+                                  //             backgroundColor: Colors.grey[800],
+                                  //             surfaceTintColor: Colors.grey[800],
+                                  //           ),
+                                  //         ),
+                                  //         //MOBILE
+                                  //         child: SizedBox(
+                                  //           child: InternationalPhoneNumberInput(
+                                  //             textFieldController:
+                                  //                 loginController.phoneController,
+                                  //             inputDecoration: const InputDecoration(
+                                  //                 border: InputBorder.none,
+                                  //                 hintText: 'Phone number',
+                                  //                 hintStyle: TextStyle(
+                                  //                   color: Colors.grey,
+                                  //                   fontSize: 16,
+                                  //                   fontFamily: "verdana_regular",
+                                  //                   fontWeight: FontWeight.w400,
+                                  //                 )),
+                                  //             onInputValidated: (bool value) {
+                                  //               // log('$value');
+                                  //             },
+                                  //             selectorConfig: const SelectorConfig(
+                                  //               leadingPadding: 2,
+                                  //               selectorType: PhoneInputSelectorType
+                                  //                   .BOTTOM_SHEET,
+                                  //             ),
+                                  //             ignoreBlank: false,
+                                  //             autoValidateMode:
+                                  //                 AutovalidateMode.disabled,
+                                  //             selectorTextStyle: const TextStyle(
+                                  //                 color: Colors.black),
+                                  //             searchBoxDecoration: InputDecoration(
+                                  //                 border: OutlineInputBorder(
+                                  //                   borderRadius: BorderRadius.all(
+                                  //                       Radius.circular(2.w)),
+                                  //                   borderSide: const BorderSide(
+                                  //                       color: Colors.black),
+                                  //                 ),
+                                  //                 hintText: "Search",
+                                  //                 hintStyle: const TextStyle(
+                                  //                   color: Colors.black,
+                                  //                 )),
+                                  //             initialValue: _initialPhone,
+                                  //             formatInput: false,
+                                  //             keyboardType: const TextInputType
+                                  //                 .numberWithOptions(
+                                  //                 signed: true, decimal: false),
+                                  //             inputBorder: InputBorder.none,
+                                  //             onSaved: (PhoneNumber number) {
+                                  //               loginController.updateCountryCode(
+                                  //                   number.dialCode);
+                                  //               loginController.updateCountryCode(
+                                  //                   number.dialCode);
+                                  //             },
+                                  //             onFieldSubmitted: (value) {
+                                  //               FocusScope.of(context).unfocus();
+                                  //             },
+                                  //             onInputChanged: (PhoneNumber number) {
+                                  //               loginController.updateCountryCode(
+                                  //                   number.dialCode);
+                                  //               loginController.updateCountryCode(
+                                  //                   number.dialCode);
+                                  //             },
+                                  //             onSubmit: () {
+                                  //               FocusScope.of(context).unfocus();
+                                  //             },
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  CustomTextField(
+                                    maxLength: 10,
+                                    isNumber: true,
+                                    inputType: TextInputType.number,
+                                    controller: loginController.phoneController,
+                                    isPhone: true,
+                                    hintText: "Enter your mobile number here",
+                                    validation: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your Phone No';
+                                      } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                                        return 'Please enter a valid 10-digit Phone No';
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                 sizedBoxDefault(),
-                                        InkWell(
-                                      onTap: (){
-                                        global.showOnlyLoaderDialog(context);
-                                        loginController.startHeadlessWithWhatsapp("GMAIL");
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.grey
-                                            ),
-                                            borderRadius: BorderRadius.circular(10.sp)
-                                        ),
-                                        width: 100.w,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Image.asset("assets/images/gmail.png",
-                                              height:5.h,
-                                              width: 7.w,
-                                              fit: BoxFit.fitWidth,),
-                                            SizedBox(width: 3.w,),
-                                            Text('Continue with Gmail'),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                  // sizedBoxDefault(),
+                                 //  InkWell(
+                                 //      onTap: (){
+                                 //        global.showOnlyLoaderDialog(context);
+                                 //        loginController.startHeadlessWithWhatsapp("GMAIL");
+                                 //      },
+                                 //      child: Container(
+                                 //        alignment: Alignment.center,
+                                 //        decoration: BoxDecoration(
+                                 //            border: Border.all(
+                                 //                color: Colors.grey
+                                 //            ),
+                                 //            borderRadius: BorderRadius.circular(10.sp)
+                                 //        ),
+                                 //        width: 100.w,
+                                 //        child: Row(
+                                 //          mainAxisAlignment: MainAxisAlignment.center,
+                                 //          children: [
+                                 //            Image.asset("assets/images/gmail.png",
+                                 //              height:5.h,
+                                 //              width: 7.w,
+                                 //              fit: BoxFit.fitWidth,),
+                                 //            SizedBox(width: 3.w,),
+                                 //            Text('Continue with Gmail'),
+                                 //          ],
+                                 //        ),
+                                 //      ),
+                                 //    ),
                                  sizedBoxDefault(),
                                   CustomButtonWidget(buttonText: 'Send Otp ',
                                   onPressed: () {
                                       bool isValid = loginController.validedPhone();
-                            
+
                                       if (isValid) {
                                         global.showOnlyLoaderDialog(context);
-                                        // loginController
-                                        //     .verifyOTP(context);
+                                        loginController.verifyOTP(context);
                                         // loginController
                                         //     .startHeadlessWithWhatsapp('phone');
                                       } else {

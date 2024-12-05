@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBNB2kmkXSOtldNxPdJ6vPs_yaiXBG6SSU"/>
+            android:value="AIzaSyCg3ejTMDJN0RDlNNKgWiUO5AW_xx3W_Ms"/>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"

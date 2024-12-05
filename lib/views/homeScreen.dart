@@ -2,7 +2,6 @@
 
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:AstrowayCustomer/controllers/advancedPanchangController.dart';
 import 'package:AstrowayCustomer/controllers/astrologerCategoryController.dart';
 import 'package:AstrowayCustomer/controllers/astrologyBlogController.dart';
@@ -421,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                   }),
                   sizedBoxDefault(),
-                  LiveVideoAstrologersComponent(title: 'Free Live Chat', liveVideo: homeController.liveAstrologersVideo,),
+                  // LiveVideoAstrologersComponent(title: 'Free Live Chat', liveVideo: homeController.liveAstrologersVideo,),
 
 
                   // GetBuilder<HomeController>(builder: (homeController) {
@@ -660,8 +659,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  LiveVideoAstrologersComponent( title: 'Free Live Webinar', liveVideo: homeController.liveAstrologersVideo,),
-                  LiveVideoAstrologersComponent( title: 'Free Live Vastu',isBlackColor: true, liveVideo: homeController.liveAstrologersVideo,),
+                  LiveVideoAstrologersComponent( title: 'Free Live Webinar', liveVideo: homeController.freeLiveWebinarVideo,),
+                  LiveVideoAstrologersComponent( title: 'Free Live Vastu',isBlackColor: true, liveVideo: homeController.freeLiveVastuVideo,),
+                  LiveVideoAstrologersComponent( title: 'Free Live Remedies', liveVideo: homeController.freeLiveRemediesVideo,),
                   HorizontalAstrologerView(
                     isColor: true,
                     astrologerList:
@@ -753,8 +753,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     radius: 27,
                                                     backgroundColor:
                                                         Colors.yellow,
-                                                    backgroundImage: NetworkImage(
-                                                        "${global.imgBaseurl}${homeController.allStories[index].profileImage}"),
+                                                    backgroundImage: NetworkImage("${global.imgBaseurl}${homeController.allStories[index].profileImage}"),
                                                   ),
                                                 ),
                                                 SizedBox(

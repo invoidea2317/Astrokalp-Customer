@@ -34,7 +34,8 @@ import 'settings/notificationScreen.dart';
 
 class HistoryScreen extends StatefulWidget {
   int currentIndex;
-  HistoryScreen({Key? key, this.currentIndex = 0}) : super(key: key);
+  final bool? isBackButton;
+  HistoryScreen({Key? key, this.currentIndex = 0, this.isBackButton = false}) : super(key: key);
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
@@ -158,7 +159,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
           backgroundColor: Colors.white,
           key: drawerKey,
           drawer: DrawerWidget(),
-          appBar: CustomApp(title: 'History',menuWidget: Row(
+          appBar: CustomApp(title: 'History',isBackButtonExist: widget.isBackButton! ? true : false,
+            menuWidget: Row(
             children: [
               InkWell(
                 onTap: () async {

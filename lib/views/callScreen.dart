@@ -36,8 +36,9 @@ import 'call/oneToOneVideo/onetooneVideo.dart';
 
 class CallScreen extends StatefulWidget {
   int flag;
+  final bool? isBackExist;
 
-  CallScreen({super.key, required this.flag});
+  CallScreen({super.key, required this.flag, this.isBackExist = false});
 
   @override
   State<CallScreen> createState() => _CallScreenState();
@@ -94,7 +95,9 @@ class _CallScreenState extends State<CallScreen> {
         backgroundColor: Colors.white,
         key: drawerKey,
         drawer: DrawerWidget(),
-        appBar: CustomApp(title: 'Call With Astrologers',menuWidget: Row(
+        appBar: CustomApp(title:widget.isBackExist! ? 'All Astrologers' : 'Call With Astrologers',
+          isBackButtonExist: widget.isBackExist! ? true : false,
+          menuWidget: Row(
           children: [
             InkWell(
               onTap: () async {

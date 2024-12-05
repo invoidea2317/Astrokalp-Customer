@@ -33,7 +33,7 @@ class BottomNavigationBarScreen extends StatelessWidget {
     'Chat',
     'Call',
     'Watch',  // Added Watch label before History
-    'History',
+    'Shop',
   ];
 
   final HomeController homeController = Get.find<HomeController>();

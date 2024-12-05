@@ -9,16 +9,15 @@ import 'package:AstrowayCustomer/model/login_model.dart';
 import 'package:AstrowayCustomer/utils/services/api_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:otpless_flutter/otpless_flutter.dart';
-
 import '../model/device_info_login_model.dart';
 import '../utils/global.dart';
 import '../views/bottomNavigationBarScreen.dart';
 import '../views/verifyPhoneScreen.dart';
 import 'package:AstrowayCustomer/utils/global.dart' as global;
 import 'package:http/http.dart' as http;
+
 
 class LoginController extends GetxController {
   TextEditingController phoneController = TextEditingController();
@@ -324,6 +323,8 @@ class LoginController extends GetxController {
         debugPrint('Fail: $errorMessage');
       }
     }
+    global.hideLoader();
+    update();
   }
 
   loginAndSignupUser(int? phoneNumber, String email) async {
@@ -341,7 +342,7 @@ class LoginController extends GetxController {
       loginModel.deviceInfo?.deviceLocation = global.deviceLocation ?? "";
       loginModel.deviceInfo?.deviceManufacturer = global.deviceManufacturer;
       loginModel.deviceInfo?.deviceModel = global.deviceManufacturer;
-      loginModel.deviceInfo?.fcmToken = global.fcmToken;
+      // loginModel.deviceInfo?.fcmToken = global.fcmToken;
       loginModel.deviceInfo?.appVersion = global.appVersion;
 
       await apiHelper.loginSignUp(loginModel).then((result) async {

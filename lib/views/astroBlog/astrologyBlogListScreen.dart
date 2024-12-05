@@ -4,6 +4,7 @@ import 'package:AstrowayCustomer/controllers/astrologyBlogController.dart';
 import 'package:AstrowayCustomer/controllers/homeController.dart';
 import 'package:AstrowayCustomer/views/astroBlog/astrologyDetailScreen.dart';
 import 'package:AstrowayCustomer/views/astroBlog/search_astrologyBlog_screen.dart';
+import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -21,37 +22,16 @@ class AstrologyBlogScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor:
-              Get.theme.appBarTheme.systemOverlayStyle!.statusBarColor,
-          title: Text(
-            'Astrology Blog',
-            style: Get.theme.primaryTextTheme.titleLarge!.copyWith(
-                fontSize: 15,
-                fontWeight: FontWeight.normal,
-                color: Colors.white),
-          ).tr(),
-          leading: IconButton(
-            onPressed: () => Get.back(),
-            icon: Icon(
-                kIsWeb
-                    ? Icons.arrow_back
-                    : Platform.isIOS
-                        ? Icons.arrow_back_ios
-                        : Icons.arrow_back,
-                color: Colors.white //Get.theme.iconTheme.color,
-                ),
-          ),
-          actions: [
+        appBar: CustomApp(title: 'Astrology Blog',isBackButtonExist: true,
+        menuWidget: Row(
+          children: [
             IconButton(
                 onPressed: () {
                   Get.to(() => SearchAstrologyBlogScreen());
                 },
-                icon: Icon(Icons.search,
-                    color: Colors.white //Get.theme.iconTheme.color,
-                    ))
+                icon: Icon(Icons.search, color: Theme.of(context).primaryColor))
           ],
-        ),
+        ),),
         body: RefreshIndicator(
           onRefresh: () async {
             BlogController blogController = Get.find<BlogController>();

@@ -222,7 +222,7 @@ class APIHelper {
   }
 
 
-  Future<dynamic> getLiveAstrologers() async {
+  Future<dynamic> getLiveAstrologers(String categoryId) async {
     try {
       var headers = {
         'Cookie': 'PHPSESSID=eek2mfd6k99sa3buhe6p9forff',
@@ -231,7 +231,7 @@ class APIHelper {
       // Make the request
       var request = http.Request(
         'GET',
-        Uri.parse('$baseUrl/getLiveVideo'),
+        Uri.parse('$baseUrl/getLiveVideo?category_id=$categoryId'),
       );
 
       request.headers.addAll(headers);
