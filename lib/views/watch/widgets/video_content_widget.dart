@@ -1,8 +1,10 @@
+import 'package:AstrowayCustomer/utils/sizedboxes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../controllers/homeController.dart';
 import '../../../model/home_Model.dart';
 import '../../../utils/dimensions.dart';
@@ -13,15 +15,16 @@ import 'package:AstrowayCustomer/utils/global.dart' as global;
 
 class AstrologyVideoWidget extends StatelessWidget {
   final String title;
-  final List<AstrologyVideo> videoDataList;
+  final List<WatchVideoModel> videoDataList;
   final Function() onSeeAllTap;
   final bool? isColor;
+  final bool? isLoading;
 
    AstrologyVideoWidget({
     Key? key,
     required this.title,
     required this.videoDataList,
-     required this.onSeeAllTap, this.isColor = false,
+     required this.onSeeAllTap, this.isColor = false, this.isLoading = false,
   }) : super(key: key);
   final homeController = Get.find<HomeController>();
   @override
@@ -72,22 +75,24 @@ class AstrologyVideoWidget extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
+                child: isLoading! ? LoadingVideoContent() :ListView.builder(
                   itemCount: videoDataList.length,
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
                   itemBuilder: (context, index) {
-                    return GestureDetector(
+                    return
+                      GestureDetector(
                       onTap: () async {
                         global.showOnlyLoaderDialog(context);
-                        await homeController.youtubPlay(videoDataList[index].youtubeLink);
+                        print(videoDataList[index].youtubeLink);
+                        await homeController.youtubePlayWatchVideos(videoDataList[index].youtubeLink);
                         global.hideLoader();
                         Get.to(() => BlogScreen(
                           link: videoDataList[index].youtubeLink,
                           title: 'Video',
                           controller: homeController.youtubePlayerController,
-                          date: DateFormat("MMM d,yyyy").format(DateTime.parse(videoDataList[index].createdAt)),
+                          date: DateFormat("MMM d,yyyy").format(DateTime.parse(videoDataList[index].createdAt.toString())),
                           videoTitle: videoDataList[index].videoTitle,
                         ));
                       },
@@ -166,7 +171,7 @@ class AstrologyVideoWidget extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          DateFormat("MMM d, yyyy").format(DateTime.parse(videoDataList[index].createdAt)),
+                                          DateFormat("MMM d, yyyy").format(DateTime.parse(videoDataList[index].createdAt.toString())),
                                           textAlign: TextAlign.center,
                                           style: Get.theme.textTheme.titleMedium!.copyWith(
                                             fontSize: 10,
@@ -190,6 +195,97 @@ class AstrologyVideoWidget extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class LoadingVideoContent extends StatelessWidget {
+  const LoadingVideoContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 4,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      scrollDirection: Axis.horizontal,
+      padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
+      itemBuilder: (context, index) {
+        return
+          Card(
+            elevation: 4,
+            margin: EdgeInsets.only(right: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Container(
+              width: 180,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        height: 110,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle
+                        ),
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                      Positioned(
+                        child: Image.asset(
+                          Images.youtube,
+                          height: 40,
+                          width: 40,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5, right: 5, top: 3, bottom: 3),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ShimmerText(padding: 50,),
+                        sizedBox10(),
+                        ShimmerText(padding: 30,),
+                        sizedBox10(),
+                        ShimmerText(padding: 70,),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+      },
+    );
+  }
+}
+class ShimmerText extends StatelessWidget {
+  final double? padding;
+  const ShimmerText({super.key, this.padding});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors( baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        margin: EdgeInsets.only(right: padding!),
+        height: 8,
+        width: Get.size.width,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12)
         ),
       ),
     );

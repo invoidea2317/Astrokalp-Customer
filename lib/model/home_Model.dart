@@ -288,3 +288,64 @@ class TopOrder {
     "call_type":call_type,
       };
 }
+
+
+class WatchVideoModel {
+  final int id;
+  final String youtubeLink;
+  final String coverImage;
+  final String videoTitle;
+  final int categoryId;
+  final int isActive;
+  final int isDelete;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final int createdBy;
+  final int modifiedBy;
+
+  WatchVideoModel({
+    required this.id,
+    required this.youtubeLink,
+    required this.coverImage,
+    required this.videoTitle,
+    required this.categoryId,
+    required this.isActive,
+    required this.isDelete,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createdBy,
+    required this.modifiedBy,
+  });
+
+  factory WatchVideoModel.fromJson(Map<String, dynamic> json) {
+    return WatchVideoModel(
+      id: json['id'],
+      youtubeLink: json['youtubeLink'],
+      coverImage: json['coverImage'],
+      videoTitle: json['videoTitle'],
+      categoryId: json['category_id'],
+      isActive: json['isActive'],
+      isDelete: json['isDelete'],
+      createdAt: DateTime.parse(json['created_at']),
+      updatedAt: DateTime.parse(json['updated_at']),
+      createdBy: json['createdBy'],
+      modifiedBy: json['modifiedBy'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'youtubeLink': youtubeLink,
+      'coverImage': coverImage,
+      'videoTitle': videoTitle,
+      'category_id': categoryId,
+      'isActive': isActive,
+      'isDelete': isDelete,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
+      'createdBy': createdBy,
+      'modifiedBy': modifiedBy,
+    };
+  }
+}

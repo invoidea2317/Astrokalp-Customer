@@ -51,6 +51,7 @@ import '../../model/customer_support_review_model.dart';
 import '../../model/intake_model.dart';
 import '../../model/live_video_model.dart';
 import '../../model/login_model.dart';
+import '../../widget/loading_widget.dart';
 
 class APIHelper {
   // login & signup
@@ -3271,4 +3272,43 @@ class APIHelper {
       debugPrint("Exception in addFeedBack : -" + e.toString());
     }
   }
+  // LoadingDialog.showLoading(message: "Please wait...");
+  // LoadingDialog.hideLoading();
+  Future<dynamic> getWatchVideos(String? categoryId) async {
+    try {
+
+      debugPrint("Request URL: $baseUrl/getAdsVideo?category_id=$categoryId");
+
+      final response = await http.post(
+        Uri.parse("$baseUrl/getAdsVideo?category_id=$categoryId"),
+      );
+
+      debugPrint("Response Status Code: ${response.statusCode}");
+      debugPrint("Response Body: ${response.body}");
+
+      dynamic recordList;
+      if (response.statusCode == 200) {
+        try {
+          final decodedJson = json.decode(response.body);
+          debugPrint("Decoded JSON: $decodedJson");
+
+          recordList = List<WatchVideoModel>.from(
+            decodedJson["recordList"].map((x) => WatchVideoModel.fromJson(x)),
+          );
+          debugPrint("Parsed Record List: $recordList");
+        } catch (parseError) {
+          debugPrint("Error Parsing JSON: $parseError");
+          recordList = null;
+        }
+      } else {
+        debugPrint("Non-200 Response. Status Code: ${response.statusCode}");
+        recordList = null;
+      }
+      debugPrint("Final Record List: $recordList");
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      debugPrint('Exception in getWatchVideos(): $e');
+    }
+  }
+
 }

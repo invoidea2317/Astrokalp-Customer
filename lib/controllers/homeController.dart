@@ -67,7 +67,12 @@ class HomeController extends GetxController {
         getClientsTestimonals(),
         getLiveWebinarVideos(),
         getLiveVastuVideos(),
-        getLiveRemedyVideos()
+        getLiveRemedyVideos(),
+
+        // getAstrologyTrendingReelsVideos(),
+        // getAstrologyDailyHoroscopeVideos(),
+        // getAstrologyMonthlyHoroscopeVideos(),
+        // getAstrologyYearlyHoroscopeVideos(),
       ]);
       bottomNavigationController.astrologerList.clear();
       await bottomNavigationController.getAstrologerList(isLazyLoading: false);
@@ -161,17 +166,17 @@ class HomeController extends GetxController {
   }
 
 
-  // Future youtubPlay(String url) async {
-  //   String? videoId;
-  //   videoId = YoutubePlayer.convertUrlToId(url);
-  //   youtubePlayerController = YoutubePlayerController(
-  //       initialVideoId: '$videoId',
-  //       flags: YoutubePlayerFlags(
-  //         autoPlay: true,
-  //         showLiveFullscreenButton: true,
-  //       ));
-  //   update();
-  // }
+  Future youtubePlayWatchVideos(String url) async {
+    String? videoId;
+    videoId = YoutubePlayer.convertUrlToId(url);
+    youtubePlayerController = YoutubePlayerController(
+        initialVideoId: '$videoId',
+        flags: YoutubePlayerFlags(
+          autoPlay: true,
+          showLiveFullscreenButton: true,
+        ));
+    update();
+  }
 
   homeBlogVideo(String link) {
     homeVideoPlayerController = VideoPlayerController.networkUrl(
@@ -607,6 +612,161 @@ class HomeController extends GetxController {
     }
   }
 
+  bool _isLatestVideoLoading = false;
+  bool get isLatestVideoLoading => _isLatestVideoLoading;
+  var getAstrologyLatestVideo = <WatchVideoModel>[];
+
+  Future<void> getAstrologyLatestVideos() async {
+    print('running');
+    try {
+      _isLatestVideoLoading = true;
+      await global.checkBody().then((result) async {
+        if (result) {
+          await apiHelper.getWatchVideos('1').then((result) {
+            print("API Result: $result");
+
+            if (result.status == "200" && result.recordList != null) {
+              getAstrologyLatestVideo = List<WatchVideoModel>.from(result.recordList);
+              print("Updated getAstrologyLatestVideo: $getAstrologyLatestVideo");
+              update();
+            } else {
+              global.showToast(
+                message: 'Failed to get Astrology video',
+                textColor: global.textColor,
+                bgColor: global.toastBackGoundColor,
+              );
+            }
+          });
+        }
+      });
+    } catch (e) {
+      print("Exception in getAstrologyLatestVideos: $e");
+    } finally {
+      _isLatestVideoLoading = false; // Set loading to false
+      update(); //
+    }
+  }
+
+  var getAstrologyTrendingReelsVideo = <WatchVideoModel>[];
+  bool _isTrendingReelsLoading = false;
+  bool get isTrendingReelsLoading => _isTrendingReelsLoading;
+  Future<void> getAstrologyTrendingReelsVideos() async {
+    try {
+      _isTrendingReelsLoading = true;
+      await global.checkBody().then((result) async {
+        if (result) {
+          await apiHelper.getWatchVideos('2').then((result) {
+            if (result.status == "200") {
+              getAstrologyTrendingReelsVideo = result.recordList;
+              update();
+            } else {
+              global.showToast(
+                message: 'Failed to get Astrology video',
+                textColor: global.textColor,
+                bgColor: global.toastBackGoundColor,
+              );
+            }
+          });
+        }
+      });
+    } catch (e) {
+      print("Exception in  getAstrologyVideos:-" + e.toString());
+    }  finally {
+      _isTrendingReelsLoading = false; // Set loading to false
+      update(); //
+    }
+  }
+  var getAstrologyDailyHoroscopeVideo = <WatchVideoModel>[];
+  bool _isDailyHoroscopeLoading = false;
+  bool get isDailyHoroscopeLoading => _isDailyHoroscopeLoading;
+  Future<void> getAstrologyDailyHoroscopeVideos() async {
+    try {
+      _isDailyHoroscopeLoading = true;
+      await global.checkBody().then((result) async {
+        if (result) {
+          await apiHelper.getWatchVideos('3').then((result) {
+            if (result.status == "200") {
+              getAstrologyDailyHoroscopeVideo = result.recordList;
+              update();
+            } else {
+              global.showToast(
+                message: 'Failed to get Astrology video',
+                textColor: global.textColor,
+                bgColor: global.toastBackGoundColor,
+              );
+            }
+          });
+        }
+      });
+    } catch (e) {
+      print("Exception in  getAstrologyVideos:-" + e.toString());
+    }  finally {
+      _isDailyHoroscopeLoading = false; // Set loading to false
+      update(); //
+    }
+  }
+
+  bool _isMonthlyHoroscopeLoading = false;
+  bool get isMonthlyHoroscopeLoading => _isMonthlyHoroscopeLoading;
+  var getAstrologyMonthlyHoroscopeVideo = <WatchVideoModel>[];
+  Future<void> getAstrologyMonthlyHoroscopeVideos() async {
+    try {
+      _isMonthlyHoroscopeLoading = true;
+      await global.checkBody().then((result) async {
+        if (result) {
+          await apiHelper.getWatchVideos('4').then((result) {
+            if (result.status == "200") {
+              getAstrologyMonthlyHoroscopeVideo = result.recordList;
+              update();
+            } else {
+              global.showToast(
+                message: 'Failed to get Astrology video',
+                textColor: global.textColor,
+                bgColor: global.toastBackGoundColor,
+              );
+            }
+          });
+        }
+      });
+    } catch (e) {
+      print("Exception in  getAstrologyVideos:-" + e.toString());
+    }  finally {
+      _isMonthlyHoroscopeLoading = false; // Set loading to false
+      update(); //
+    }
+  }
+
+  var getAstrologyYearlyHoroscopeVideo = <WatchVideoModel>[];
+  bool _isYearlyHoroscopeLoading = false;
+  bool get isYearlyHoroscopeLoading => _isYearlyHoroscopeLoading;
+  Future<void> getAstrologyYearlyHoroscopeVideos() async {
+    try {
+      _isYearlyHoroscopeLoading = true;
+      await global.checkBody().then((result) async {
+        if (result) {
+          await apiHelper.getWatchVideos('5').then((result) {
+            if (result.status == "200") {
+              getAstrologyYearlyHoroscopeVideo = result.recordList;
+              update();
+            } else {
+              global.showToast(
+                message: 'Failed to get Astrology video',
+                textColor: global.textColor,
+                bgColor: global.toastBackGoundColor,
+              );
+            }
+          });
+        }
+      });
+    } catch (e) {
+      print("Exception in  getAstrologyVideos:-" + e.toString());
+    }  finally {
+      _isYearlyHoroscopeLoading = false; // Set loading to false
+      update(); //
+    }
+  }
+
+  var watchVideoList = <WatchVideoModel>[];
 
 
 

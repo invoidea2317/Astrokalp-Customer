@@ -70,8 +70,9 @@ class CustomApp extends StatelessWidget implements PreferredSizeWidget {
   final bool isBackButtonExist;
   final Function? onBackPressed;
   final Widget? menuWidget;
+  final Function()? isBackCall;
 
-  const CustomApp({Key? key, required this.title, this.onBackPressed, this.isBackButtonExist = false, this.menuWidget, }) : super(key: key);
+  const CustomApp({Key? key, required this.title, this.onBackPressed, this.isBackButtonExist = false, this.menuWidget,  this.isBackCall, }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,10 +80,16 @@ class CustomApp extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title!, style: openSansRegular.copyWith(fontSize: Dimensions.fontSize18, color: Theme.of(context).primaryColor)),
       centerTitle: true,
       leading: isBackButtonExist ? IconButton(
-        icon:  const Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back),
         color: Theme.of(context).primaryColor,
-        onPressed: () =>  Navigator.pop(context),
-      ) :  Builder(
+        onPressed: () {
+          if (isBackCall != null) {
+            isBackCall!();
+          } else {
+            Navigator.pop(context);
+          }
+        },
+      ):  Builder(
         builder: (context) => InkWell(
           onTap: () {
             Scaffold.of(context).openDrawer();

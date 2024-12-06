@@ -261,7 +261,6 @@ showOnlyLoaderDialog(context) {
       return Dialog(
         backgroundColor: Colors.white,
         elevation: 0,
-        //backgroundColor: Colors.transparent,
         child: kIsWeb
             ? Container(
                 width: Get.width * 0.10,
@@ -302,6 +301,9 @@ showOnlyLoaderDialog(context) {
     },
   );
 }
+
+
+
 
 showSnackBar(String title, String text, {Duration? duration}) {
   return Get.snackbar(title, text,
