@@ -350,7 +350,7 @@ class LoginController extends GetxController {
           var recordId = result.recordList["recordList"];
           var token = result.recordList["token"];
           var tokenType = result.recordList["token_type"];
-          await global.saveCurrentUser(recordId["id"], token, tokenType);
+          // await global.saveCurrentUser(recordId["id"], token, tokenType);
           await splashController.getCurrentUserData();
           await global.getCurrentUser();
           // global.hideLoader();
@@ -405,7 +405,7 @@ class LoginController extends GetxController {
           var recordId = result.recordList["recordList"];
           var token = result.recordList["token"];
           var tokenType = result.recordList["token_type"];
-          await global.saveCurrentUser(recordId["id"], token, tokenType);
+          // await global.saveCurrentUser(recordId["id"], token, tokenType);
           await splashController.getCurrentUserData();
           await global.getCurrentUser();
           // global.hideLoader();
@@ -433,6 +433,81 @@ class LoginController extends GetxController {
     } catch (e) {
       global.hideLoader();
       print("Exception in loginAndSignupUser():-" + e.toString());
+    }
+  }
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  Future<void> sendLoginOtp() async {
+    _isLoading = true;
+    update();
+    try {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${baseUrl}/send-login-otp'),
+      );
+
+      // Add form fields
+      request.fields.addAll({
+        'mobile': phoneController.text,
+      });
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        Get.to(() => VerifyPhoneScreen(
+          phoneNumber: phoneController.text.trim(),
+        ));
+        print('Response: $responseBody');
+      } else {
+        print('Error: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Exception: $e');
+    } finally {
+      _isLoading = false;
+      update();
+
+    }
+  }
+
+
+  Future<void> verifyLoginOtp(String verifyOtp) async {
+    _isLoading = true;
+    update();
+    try {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${baseUrl}/verify-login-otp'),
+      );
+
+      // Add form fields
+      request.fields.addAll({
+        'mobile': phoneController.text,
+        'otp': verifyOtp,
+      });
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseBody);
+
+        String token = jsonResponse['token'];
+        print('Token: $token');
+        // await global.saveCurrentUser(/*recordId["id"], */token, /*'tokenType'*/);
+
+
+        // Navigate or perform any other actions
+        // Get.to(() => VerifyPhoneScreen(phoneNumber: phoneController.text.trim()));
+      } else {
+        print('Error: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Exception: $e');
+    } finally {
+      _isLoading = false;
+      update();
     }
   }
 }

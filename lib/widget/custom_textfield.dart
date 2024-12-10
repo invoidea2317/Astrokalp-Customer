@@ -1,9 +1,11 @@
 
+import 'package:AstrowayCustomer/controllers/loginController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import '../../utils/dimensions.dart';
 import '../utils/text_styles.dart';
-
+import 'package:country_code_picker/country_code_picker.dart';
 class CustomTextField extends StatefulWidget {
   final String hintText;
   final TextEditingController? controller;
@@ -36,6 +38,7 @@ class CustomTextField extends StatefulWidget {
   final bool isClockIcon; // New property for clock icon
   final int? maxLength; // Property for max character limit
   final String? suffixText;
+  final Function(String)? onCountryCodeChanged;
 
   const CustomTextField({
     super.key,
@@ -69,7 +72,7 @@ class CustomTextField extends StatefulWidget {
     this.isCalenderIcon = false,
     this.isClockIcon = false, // Initialize the new property
     this.maxLength,
-    this.suffixText,
+    this.suffixText, this.onCountryCodeChanged,
   });
 
   @override
@@ -153,26 +156,41 @@ class CustomTextFieldState extends State<CustomTextField> {
                 fontSize: Dimensions.fontSize14, color: Theme.of(context).dividerColor),
             filled: true,
             prefixIcon: widget.isPhone
-                ? SizedBox(
-              width: 55,
-              child: Row(
-                children: [
-                  const SizedBox(width: 5),
-                  Text(
-                    " + 91",
-                    style: TextStyle(
-                      color: Theme.of(context).dividerColor,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Container(
-                    height: 20,
-                    width: 2,
-                    color: Theme.of(context).disabledColor.withOpacity(0.40),
-                  ),
-                ],
+                ?
+            SizedBox(
+              // width: 90,
+              child: CountryCodePicker(
+                onChanged: (countryCode) {
+                  widget.onCountryCodeChanged!(countryCode.dialCode!);
+                },
+                initialSelection: 'IN',
+                favorite: const ['+91', 'IN'], // Favorites
+                showCountryOnly: false,
+                showOnlyCountryWhenClosed: false,
+                alignLeft: false,
+                textStyle: TextStyle(color: Theme.of(context).dividerColor),
               ),
             )
+            // SizedBox(
+            //   width: 55,
+            //   child: Row(
+            //     children: [
+            //       const SizedBox(width: 5),
+            //       Text(
+            //         " + 91",
+            //         style: TextStyle(
+            //           color: Theme.of(context).dividerColor,
+            //         ),
+            //       ),
+            //       const SizedBox(width: 5),
+            //       Container(
+            //         height: 20,
+            //         width: 2,
+            //         color: Theme.of(context).disabledColor.withOpacity(0.40),
+            //       ),
+            //     ],
+            //   ),
+            // )
                 : widget.prefixImage != null && widget.prefixIcon == null
                 ? Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),

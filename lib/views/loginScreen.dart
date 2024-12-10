@@ -255,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                     inputType: TextInputType.number,
                                     controller: loginController.phoneController,
                                     isPhone: true,
-                                    hintText: "Enter your mobile number here",
+                                    hintText: "Mobile Number",
                                     validation: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter your Phone No';
@@ -265,44 +265,43 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                       return null;
                                     },
                                   ),
-                                  // sizedBoxDefault(),
-                                 //  InkWell(
-                                 //      onTap: (){
-                                 //        global.showOnlyLoaderDialog(context);
-                                 //        loginController.startHeadlessWithWhatsapp("GMAIL");
-                                 //      },
-                                 //      child: Container(
-                                 //        alignment: Alignment.center,
-                                 //        decoration: BoxDecoration(
-                                 //            border: Border.all(
-                                 //                color: Colors.grey
-                                 //            ),
-                                 //            borderRadius: BorderRadius.circular(10.sp)
-                                 //        ),
-                                 //        width: 100.w,
-                                 //        child: Row(
-                                 //          mainAxisAlignment: MainAxisAlignment.center,
-                                 //          children: [
-                                 //            Image.asset("assets/images/gmail.png",
-                                 //              height:5.h,
-                                 //              width: 7.w,
-                                 //              fit: BoxFit.fitWidth,),
-                                 //            SizedBox(width: 3.w,),
-                                 //            Text('Continue with Gmail'),
-                                 //          ],
-                                 //        ),
-                                 //      ),
-                                 //    ),
+                                  sizedBoxDefault(),
+                                  InkWell(
+                                      onTap: (){
+                                        global.showOnlyLoaderDialog(context);
+                                        loginController.startHeadlessWithWhatsapp("GMAIL");
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.grey
+                                            ),
+                                            borderRadius: BorderRadius.circular(10.sp)
+                                        ),
+                                        width: 100.w,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset("assets/images/gmail.png",
+                                              height:5.h,
+                                              width: 7.w,
+                                              fit: BoxFit.fitWidth,),
+                                            SizedBox(width: 3.w,),
+                                            Text('Continue with Gmail'),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                  sizedBoxDefault(),
+                                  loginController.isLoading ?
+                                      Center(child: CircularProgressIndicator()) :
                                   CustomButtonWidget(buttonText: 'Send Otp ',
                                   onPressed: () {
                                       bool isValid = loginController.validedPhone();
-
                                       if (isValid) {
                                         global.showOnlyLoaderDialog(context);
-                                        loginController.verifyOTP(context);
-                                        // loginController
-                                        //     .startHeadlessWithWhatsapp('phone');
+                                        loginController.sendLoginOtp();
                                       } else {
                                         global.showToast(
                                           message: loginController.errorText!,

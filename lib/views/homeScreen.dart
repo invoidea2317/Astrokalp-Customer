@@ -137,8 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             },
             child: Text(
-              'ASTROJIO',
-              // '${global.getSystemFlagValueForLogin(global.systemFlagNameList.appName)}',
+              'Astrokalp',
               style: Get.theme.primaryTextTheme.titleLarge!.copyWith(
                 fontSize: kIsWeb
                     ? MediaQuery.of(context).size.width * 0.027
@@ -172,6 +171,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Theme.of(context).primaryColor,
                     )),
           actions: [
+            GetBuilder<SettingsController>(builder: (settingController) {
+              return  IconButton(
+                icon: Icon(Icons.notifications_outlined,
+                  color: Theme.of(context).primaryColor,), onPressed: () {  },
+              );
+            }),
             InkWell(
               onTap: () async {
                 homeController.lan = [];
@@ -187,13 +192,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               },
               child: Image.asset(
-                height: 32,
-                width: 32,
-                Images.translation,
-                color: Theme.of(context).primaryColor,
+                height: 32, width: 32,
+                Images.translation, color: Theme.of(context).primaryColor,
               ),
             ),
-            const SizedBox(width: 15),
+            SizedBox(width: 15),
+
+
           ],
         ),
         body: RefreshIndicator(

@@ -86,7 +86,9 @@ class NotificationScreen extends StatelessWidget {
                         color: Colors.white,
                         size: 18,
                       ));
-            })
+            }),
+
+
           ]),
       body: GetBuilder<SettingsController>(builder: (settingsController) {
         return settingsController.notification.isEmpty
