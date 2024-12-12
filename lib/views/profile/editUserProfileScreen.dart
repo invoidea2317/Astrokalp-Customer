@@ -7,6 +7,7 @@ import 'package:AstrowayCustomer/controllers/splashController.dart';
 
 import 'package:AstrowayCustomer/controllers/userProfileController.dart';
 import 'package:AstrowayCustomer/views/placeOfBrithSearchScreen.dart';
+import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:AstrowayCustomer/widget/customBottomButton.dart';
 import 'package:AstrowayCustomer/widget/textFieldLabelWidget.dart';
 import 'package:AstrowayCustomer/widget/textFieldWidget.dart';
@@ -36,11 +37,12 @@ class EditUserProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(56),
-          child: CommonAppBar(
-            title: 'Profile',
-          )),
+      appBar: CustomApp(title: 'Profile',isBackButtonExist: true,),
+      // appBar: PreferredSize(
+      //     preferredSize: Size.fromHeight(56),
+      //     child: CommonAppBar(
+      //       title: 'Profile',
+      //     )),
       body: SingleChildScrollView(
           child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -244,11 +246,8 @@ class EditUserProfile extends StatelessWidget {
                                                                       ElevatedButton(
                                                                         onPressed:
                                                                             () async {
-                                                                          String
-                                                                              imgPath =
-                                                                              "${global.imgBaseurl}${userProfileController.zodicData[i].image}";
-                                                                          print(
-                                                                              'ontappp');
+                                                                          String imgPath = "${global.imgBaseurl}${userProfileController.zodicData[i].image}";
+                                                                          print('ontappp');
 
                                                                           // GallerySaver.saveImage(imgPath)
                                                                           //     .then((path) {
@@ -280,15 +279,10 @@ class EditUserProfile extends StatelessWidget {
                                                                       ElevatedButton(
                                                                         onPressed:
                                                                             () async {
-                                                                          userProfileController.profile = userProfileController
-                                                                              .zodicData[i]
-                                                                              .image;
-                                                                          userProfileController.isImgSelectFromList =
-                                                                              true;
-                                                                          userProfileController
-                                                                              .update();
-                                                                          await userProfileController
-                                                                              .updateCurrentUserProfilepic(userProfileController.profile);
+                                                                          userProfileController.profile = userProfileController.zodicData[i].image;
+                                                                          userProfileController.isImgSelectFromList = true;
+                                                                          userProfileController.update();
+                                                                          await userProfileController.updateCurrentUserProfilepic(userProfileController.profile);
                                                                           Get.back();
                                                                         },
                                                                         child: Text('Set profile pic')
@@ -619,6 +613,7 @@ class EditUserProfile extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 10),
               InkWell(
                 onTap: () {
                   userProfileController.nameFocus.unfocus();

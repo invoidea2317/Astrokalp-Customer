@@ -36,7 +36,7 @@ class ContactAstrologerCottomButton extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Get.theme.primaryColor,
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(7),
                     ),
                     child: Row(
@@ -45,7 +45,7 @@ class ContactAstrologerCottomButton extends StatelessWidget {
                         Icon(
                           FontAwesomeIcons.solidCommentDots,
                           size: 13,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 5),
@@ -55,7 +55,7 @@ class ContactAstrologerCottomButton extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               letterSpacing: -0.2,
                               wordSpacing: 0,
-                              color: Colors.white
+                              color: Colors.black
                             ),
                           ).tr(),
                         ),
@@ -87,7 +87,7 @@ class ContactAstrologerCottomButton extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Get.theme.primaryColor,
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(7),
                     ),
                     child: Row(
@@ -96,7 +96,7 @@ class ContactAstrologerCottomButton extends StatelessWidget {
                         Icon(
                           Icons.phone,
                           size: 18,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 5),
@@ -106,7 +106,7 @@ class ContactAstrologerCottomButton extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               letterSpacing: -0.2,
                               wordSpacing: 0,
-                              color: Colors.white
+                              color: Colors.black
                             ),
                           ).tr(),
                         ),

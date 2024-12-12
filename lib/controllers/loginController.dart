@@ -480,8 +480,6 @@ class LoginController extends GetxController {
         'POST',
         Uri.parse('${baseUrl}/verify-login-otp'),
       );
-
-      // Add form fields
       request.fields.addAll({
         'mobile': phoneController.text,
         'otp': verifyOtp,
@@ -493,13 +491,20 @@ class LoginController extends GetxController {
         String responseBody = await response.stream.bytesToString();
         var jsonResponse = jsonDecode(responseBody);
 
-        String token = jsonResponse['token'];
+        String token = jsonResponse['user']['token'].toString();
+        String userid = jsonResponse['user']['recordList']['id'].toString();
+        String tokenType = jsonResponse['user']['token_type'].toString();
         print('Token: $token');
-        // await global.saveCurrentUser(/*recordId["id"], */token, /*'tokenType'*/);
+        print('userid: $userid');
+        print('tokenType: $tokenType');
+        await global.saveCurrentUser(int.parse(userid), token, tokenType);
+        bottomController.astrologerList.clear();
+        bottomController.getAstrologerList(isLazyLoading: false);
+        bottomController.setIndex(0, 0);
+        print('check BottomNavigationBarScreen');
+        Get.off(() => BottomNavigationBarScreen(index: 0));
 
 
-        // Navigate or perform any other actions
-        // Get.to(() => VerifyPhoneScreen(phoneNumber: phoneController.text.trim()));
       } else {
         print('Error: ${response.reasonPhrase}');
       }

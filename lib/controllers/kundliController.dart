@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:AstrowayCustomer/controllers/dropDownController.dart';
 import 'package:AstrowayCustomer/controllers/kundliMatchingController.dart';
+import 'package:AstrowayCustomer/controllers/splashController.dart';
 import 'package:AstrowayCustomer/model/getPdfKundali_model.dart';
 import 'package:AstrowayCustomer/model/getPdfPrice_model.dart';
 import 'package:AstrowayCustomer/model/kundli.dart';
@@ -96,7 +97,6 @@ class KundliController extends GetxController
   }
 
   _init() async {
-
     await getKundliList();
   }
 
@@ -210,16 +210,18 @@ class KundliController extends GetxController
       await global.checkBody().then((result) async {
         if (result) {
           await apiHelper.getKundli().then((result) {
+            print("getKundli API Response: ${result}"); // Print the entire response
+
             if (result.status == "200") {
               kundliList = result.recordList;
               searchKundliList = kundliList;
-              print("getKundaliList");
-              print("${searchKundliList[0].latitude}");
+              print("Kundli List: ${kundliList}"); // Print the kundli list
+              print("Search Kundli List: ${searchKundliList}"); // Print search kundli list
               update();
             } else {
               if (global.currentUserId != null) {
                 global.showToast(
-                  message: 'FAil to get kundli',
+                  message: 'Failed to get kundli',
                   textColor: global.textColor,
                   bgColor: global.toastBackGoundColor,
                 );
@@ -229,9 +231,38 @@ class KundliController extends GetxController
         }
       });
     } catch (e) {
-      print('Exception in getKundliList():' + e.toString());
+      print('Exception in getKundliList(): ' + e.toString());
     }
   }
+
+
+  // getKundliList() async {
+  //   try {
+  //     await global.checkBody().then((result) async {
+  //       if (result) {
+  //         await apiHelper.getKundli().then((result) {
+  //           if (result.status == "200") {
+  //             kundliList = result.recordList;
+  //             searchKundliList = kundliList;
+  //             // print("getKundaliList");
+  //             // print("${searchKundliList[0].latitude}");
+  //             update();
+  //           } else {
+  //             if (global.currentUserId != null) {
+  //               global.showToast(
+  //                 message: 'FAil to get kundli',
+  //                 textColor: global.textColor,
+  //                 bgColor: global.toastBackGoundColor,
+  //               );
+  //             }
+  //           }
+  //         });
+  //       }
+  //     });
+  //   } catch (e) {
+  //     print('Exception in getKundliList():' + e.toString());
+  //   }
+  // }
 
   Future<int> pdfPrice() async {
     int value = 0;
@@ -323,8 +354,10 @@ class KundliController extends GetxController
   }
 
   addKundliData(String pdfType,int amount) async {
+
     List<KundliModel> kundliModel = [
       KundliModel(
+          id:  Get.find<SplashController>().currentUser!.id,
           name: userName!,
           gender: selectedGender!,
           birthDate: selectedDate ?? DateTime(1996),

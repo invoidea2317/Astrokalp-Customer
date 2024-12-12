@@ -39,7 +39,7 @@ class KundliBirthDateWidget extends StatelessWidget {
           child: TextButton(
             style: ButtonStyle(
               padding: WidgetStateProperty.all(EdgeInsets.all(0)),
-              backgroundColor: WidgetStateProperty.all(Get.theme.primaryColor),
+              backgroundColor: WidgetStateProperty.all(Theme.of(context).dividerColor),
               shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15), side: BorderSide(color: Colors.grey)),
               ),
@@ -49,7 +49,7 @@ class KundliBirthDateWidget extends StatelessWidget {
               'Next',
               textAlign: TextAlign.center,
               style: Get.theme.primaryTextTheme.titleMedium!.copyWith(
-                color: Colors.white
+                color: Theme.of(context).primaryColor
               ),
             ).tr(),
           ),

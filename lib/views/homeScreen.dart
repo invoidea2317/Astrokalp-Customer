@@ -561,106 +561,104 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: Dimensions.paddingSize20),
                     color: Theme.of(context).primaryColor.withOpacity(0.25),
-                    child: Center(
-                      child: SizedBox(
-                        height: Get.size.height * 0.16,
-                        child: ListView.separated(
-                          padding: EdgeInsets.only(left: Dimensions.paddingSizeDefault,right: 0,bottom: 0),
-                          scrollDirection: Axis.horizontal,
-                          itemCount:  getCategoriesFromSystemFlagNameList.length,
-                          itemBuilder: (_, i) {
-                            List<String> categoryName = ['Kundli', 'Horoscope', 'Match\nMaker', 'Panchang'];
-                            return GestureDetector(
-                              onTap: () async {
-                                try {
-                                  switch (categoryName[i]) {
-                                    case 'Kundli':
-                                      bool isLogin = await global.isLogin();
-                                      if (isLogin) {
-                                        if (Get.context != null) global.showOnlyLoaderDialog(Get.context);
-                                        await kundliController.getKundliList();
-                                        global.hideLoader();
-                                        Get.to(() => KundaliScreen(), transition: Transition.rightToLeft);
-                                      }
-                                      break;
-                                    case 'Horoscope':
-                                      Get.find<DailyHoroscopeController>().selectZodic(0);
-                                      await Get.find<DailyHoroscopeController>().getHoroscopeList(
-                                        horoscopeId: Get.find<DailyHoroscopeController>().signId,
-                                      );
-                                      Get.to(() => DailyHoroscopeScreen(), transition: Transition.rightToLeft);
-                                      break;
-                                    case 'Match\n Maker':
+                    child: SizedBox(
+                      height: Get.size.height * 0.16,
+                      child: ListView.separated(
+                        padding: EdgeInsets.symmetric(horizontal:  Dimensions.paddingSizeDefault),
+                        scrollDirection: Axis.horizontal,
+                        itemCount:  getCategoriesFromSystemFlagNameList.length,
+                        itemBuilder: (_, i) {
+                          List<String> categoryName = ['Kundli', 'Horoscope', 'Match\nMaker', 'Panchang'];
+                          return GestureDetector(
+                            onTap: () async {
+                              try {
+                                switch (categoryName[i]) {
+                                  case 'Kundli':
+                                    bool isLogin = await global.isLogin();
+                                    if (isLogin) {
                                       if (Get.context != null) global.showOnlyLoaderDialog(Get.context);
                                       await kundliController.getKundliList();
                                       global.hideLoader();
-                                      Get.to(() => KundliMatchingScreen(), transition: Transition.rightToLeft);
-                                      break;
-                                    case 'Panchang':
-                                      DateTime now = DateTime.now();
-                                      global.showOnlyLoaderDialog(context);
-                                      await kundliController.getBasicPanchangDetail(
-                                        day: now.day,
-                                        hour: now.hour,
-                                        min: now.minute,
-                                        month: now.month,
-                                        year: now.year,
-                                        lat: 21.1255,
-                                        lon: 73.1122,
-                                        tzone: 5,
-                                      );
-                                      panchangController.getPanchangVedic(now);
-                                      global.hideLoader();
-                                      Get.to(() => PanchangScreen(), transition: Transition.rightToLeft);
-                                      break;
-                                    default:
-                                      print('No navigation defined for this category');
-                                      break;
-                                  }
-                                } catch (e) {
-                                  print('Error in navigation: $e');
+                                      Get.to(() => KundaliScreen(), transition: Transition.rightToLeft);
+                                    }
+                                    break;
+                                  case 'Horoscope':
+                                    Get.find<DailyHoroscopeController>().selectZodic(0);
+                                    await Get.find<DailyHoroscopeController>().getHoroscopeList(
+                                      horoscopeId: Get.find<DailyHoroscopeController>().signId,
+                                    );
+                                    Get.to(() => DailyHoroscopeScreen(), transition: Transition.rightToLeft);
+                                    break;
+                                  case 'Match\n Maker':
+                                    if (Get.context != null) global.showOnlyLoaderDialog(Get.context);
+                                    await kundliController.getKundliList();
+                                    global.hideLoader();
+                                    Get.to(() => KundliMatchingScreen(), transition: Transition.rightToLeft);
+                                    break;
+                                  case 'Panchang':
+                                    DateTime now = DateTime.now();
+                                    global.showOnlyLoaderDialog(context);
+                                    await kundliController.getBasicPanchangDetail(
+                                      day: now.day,
+                                      hour: now.hour,
+                                      min: now.minute,
+                                      month: now.month,
+                                      year: now.year,
+                                      lat: 21.1255,
+                                      lon: 73.1122,
+                                      tzone: 5,
+                                    );
+                                    panchangController.getPanchangVedic(now);
+                                    global.hideLoader();
+                                    Get.to(() => PanchangScreen(), transition: Transition.rightToLeft);
+                                    break;
+                                  default:
+                                    print('No navigation defined for this category');
+                                    break;
                                 }
-                              },
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 70,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(Dimensions.radius10),
-                                      gradient: LinearGradient(
-                                        colors: [Colors.black, Colors.black.withOpacity(0.70), Colors.black],
-                                        stops: [0.0, 0.5, 1.0],
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                      ),
+                              } catch (e) {
+                                print('Error in navigation: $e');
+                              }
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 70,
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(Dimensions.radius10),
+                                    gradient: LinearGradient(
+                                      colors: [Colors.black, Colors.black.withOpacity(0.70), Colors.black],
+                                      stops: [0.0, 0.5, 1.0],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
                                     ),
-                                    child: Center(
-                                      child: SizedBox(
-                                        height: 5.h,
-                                        width: 5.h,
-                                        child: ClipRRect(
-                                          child: CachedNetworkImage(
-                                            imageUrl: getCategoriesFromSystemFlagNameList[i],
-                                            placeholder: (context, url) =>
-                                            const Center(child: CircularProgressIndicator()),
-                                            errorWidget: (context, url, error) =>
-                                            const Icon(Icons.no_accounts, size: 20),
-                                          ),
+                                  ),
+                                  child: Center(
+                                    child: SizedBox(
+                                      height: 5.h,
+                                      width: 5.h,
+                                      child: ClipRRect(
+                                        child: CachedNetworkImage(
+                                          imageUrl: getCategoriesFromSystemFlagNameList[i],
+                                          placeholder: (context, url) =>
+                                          const Center(child: CircularProgressIndicator()),
+                                          errorWidget: (context, url, error) =>
+                                          const Icon(Icons.no_accounts, size: 20),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 1.w),
-                                  Text(categoryName[i], textAlign: TextAlign.center,
-                                    style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14),
-                                  ).tr(),
-                                ],
-                              ),
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) => sizedBoxW15(),
-                        ),
+                                ),
+                                SizedBox(height: 1.w),
+                                Text(categoryName[i], textAlign: TextAlign.center,
+                                  style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14),
+                                ).tr(),
+                              ],
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) => sizedBoxW15(),
                       ),
                     ),
                   ),

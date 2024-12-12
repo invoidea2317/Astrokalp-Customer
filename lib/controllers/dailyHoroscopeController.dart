@@ -100,10 +100,10 @@ class DailyHoroscopeController extends GetxController {
         if (result) {
           await apiHelper.getHoroscope(horoscopeSignId: horoscopeId).then((result) {
             if (result != null) {
-              dailyhoroscopeData= result;
+              dailyhoroscopeData= result as Map<String, dynamic>?;
               update();
               dailyhoroscopeData!['astroApiCallType'].toString()=="2"?
-               dailyList = DailyscopeModel.fromJson(dailyhoroscopeData!['recordList']):null;
+              dailyList = DailyscopeModel.fromJson(dailyhoroscopeData!['recordList']):null;
               update();
             } else {
             }

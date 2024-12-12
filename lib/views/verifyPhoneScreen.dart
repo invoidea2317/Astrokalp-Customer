@@ -13,6 +13,8 @@ import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import '../widget/custom_button_widget.dart';
 class VerifyPhoneScreen extends StatelessWidget {
   final String phoneNumber;
   VerifyPhoneScreen(
@@ -138,57 +140,70 @@ class VerifyPhoneScreen extends StatelessWidget {
                 SizedBox(
                   height: 15,
                 ),
+
                 SizedBox(
                   width: kIsWeb ? Get.width * 0.25 : double.infinity,
                   child: GetBuilder<LoginController>(builder: (c) {
-                    return ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          Map<String, dynamic> arg = {};
-                          arg["phone"] = "${phoneNumber}";
-                          arg["countryCode"] = "+91";
-                          arg["otp"] = "${loginController.smsCode}";
-                          global.showOnlyLoaderDialog(context);
-                          print('verificationId : ${loginController.verificationIdBySentOtp}');
-                          PhoneAuthCredential credential =
-                          PhoneAuthProvider.credential(
-                            verificationId: loginController.verificationIdBySentOtp,smsCode: loginController.smsCode,
-                          );
-                          print('Check signInWithCredential');
-                          global.showOnlyLoaderDialog(context);
-                          await auth.signInWithCredential(credential);
-                          print('Check Credientials');
-                          print(credential);
-                          print(credential.verificationId);
-                          await loginController.loginAndSignupUser(int.parse(phoneNumber),"");
-                        } catch (e) {
-                          global.hideLoader();
-          
-                          global.showToast(
-                            message: "OTP INVALID",
-                            textColor: Colors.white,
-                            bgColor: Colors.red,
-                          );
-                          print("Exception " + e.toString());
-                        }
-                      },
-                      child: Text(
-                        'SUBMIT',
-                        style: TextStyle(color: Colors.white),
-                      ).tr(),
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        padding: MaterialStateProperty.all(EdgeInsets.all(12)),
-                        backgroundColor:
-                        MaterialStateProperty.all(Get.theme.primaryColorDark),
-                        textStyle: MaterialStateProperty.all(
-                            TextStyle(fontSize: 18, color: Colors.black)),
-                      ),
-                    );
+                    return c.isLoading ?
+                        Center(child: CircularProgressIndicator()) :
+                    c.isLoading ?
+                    Center(child: CircularProgressIndicator()) :
+                    CustomButtonWidget(buttonText: 'Send Otp ',
+                        onPressed: () {
+                              loginController.verifyLoginOtp(pinEditingControllerlogin.text);
+                        },
+                        suffixIcon: Icons.arrow_forward_outlined,
+                        color: Theme.of(context).dividerColor,
+                        textColor: Theme.of(context).primaryColor);
+                    //   ElevatedButton(
+                    //   onPressed: () async {
+                    //     loginController.verifyLoginOtp(pinEditingControllerlogin.text);
+                    //   //   try {
+                    //   //     Map<String, dynamic> arg = {};
+                    //   //     arg["phone"] = "${phoneNumber}";
+                    //   //     arg["countryCode"] = "+91";
+                    //   //     arg["otp"] = "${loginController.smsCode}";
+                    //   //     global.showOnlyLoaderDialog(context);
+                    //   //     print('verificationId : ${loginController.verificationIdBySentOtp}');
+                    //   //     PhoneAuthCredential credential =
+                    //   //     PhoneAuthProvider.credential(
+                    //   //       verificationId: loginController.verificationIdBySentOtp,smsCode: loginController.smsCode,
+                    //   //     );
+                    //   //     print('Check signInWithCredential');
+                    //   //     global.showOnlyLoaderDialog(context);
+                    //   //     await auth.signInWithCredential(credential);
+                    //   //     print('Check Credientials');
+                    //   //     print(credential);
+                    //   //     print(credential.verificationId);
+                    //   //     await loginController.loginAndSignupUser(int.parse(phoneNumber),"");
+                    //   //   } catch (e) {
+                    //   //     global.hideLoader();
+                    //   //
+                    //   //     global.showToast(
+                    //   //       message: "OTP INVALID",
+                    //   //       textColor: Colors.white,
+                    //   //       bgColor: Colors.red,
+                    //   //     );
+                    //   //     print("Exception " + e.toString());
+                    //   //   }
+                    //   },
+                    //   child: Text(
+                    //     'SUBMIT',
+                    //     style: TextStyle(color: Colors.white),
+                    //   ).tr(),
+                    //   style: ButtonStyle(
+                    //     shape: MaterialStateProperty.all(
+                    //       RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(10),
+                    //       ),
+                    //     ),
+                    //     padding: MaterialStateProperty.all(EdgeInsets.all(12)),
+                    //     backgroundColor:
+                    //     MaterialStateProperty.all(Get.theme.primaryColorDark),
+                    //     textStyle: MaterialStateProperty.all(
+                    //         TextStyle(fontSize: 18, color: Colors.black)),
+                    //   ),
+                    // );
                   }
                   ),
                 ),

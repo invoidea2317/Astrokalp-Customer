@@ -23,6 +23,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../widget/contactAstrologerBottomButton.dart';
+import '../../widget/customAppbarWidget.dart';
 import '../../widget/timeWiseHoroscopeWidget.dart';
 
 class DailyHoroscopeScreen extends StatefulWidget {
@@ -57,26 +58,10 @@ class _DailyHoroscopeScreenState extends State<DailyHoroscopeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: kIsWeb?AppBar(
-                leading: SizedBox(),
-        ):AppBar(
-            backgroundColor:
-                Get.theme.appBarTheme.systemOverlayStyle!.statusBarColor,
-            title: Text(
-              'Daily Horoscope',
-              style: Get.theme.primaryTextTheme.titleLarge!.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white),
-            ).tr(),
-            leading: IconButton(
-              onPressed: () => Get.back(),
-              icon: Icon(
-                kIsWeb? Icons.arrow_back :    Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-                  color: Colors.white //Get.theme.iconTheme.color,
-                  ),
-            ),
-            actions: [
+        appBar: CustomApp(title: 'Daily Horoscope',
+          isBackButtonExist: true,
+          menuWidget: Row(
+            children: [
               GestureDetector(
                 onTap: () {
                   global
@@ -85,22 +70,20 @@ class _DailyHoroscopeScreenState extends State<DailyHoroscopeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Container(
+                    padding: EdgeInsets.symmetric(horizontal:  16),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Row(
                       children: [
-                        Image.asset(
-                          Images.whatsapp,
-                          height: 40,
-                          width: 40,
-                        ),
+                        Icon(Icons.share_outlined,
+                        color: Theme.of(context).primaryColor,size: 12,),
                         Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Text('Share',
-                                  style: Get.textTheme.titleMedium!.copyWith(
-                                      fontSize: 12, color: Colors.white))
+                              style: Get.textTheme.titleMedium!.copyWith(
+                                  fontSize: 12, color:  Theme.of(context).primaryColor))
                               .tr(),
                         )
                       ],
@@ -108,7 +91,8 @@ class _DailyHoroscopeScreenState extends State<DailyHoroscopeScreen> {
                   ),
                 ),
               )
-            ]),
+            ],
+          ),),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),

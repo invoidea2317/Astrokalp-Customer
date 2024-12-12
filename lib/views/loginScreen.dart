@@ -300,7 +300,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                   onPressed: () {
                                       bool isValid = loginController.validedPhone();
                                       if (isValid) {
-                                        global.showOnlyLoaderDialog(context);
+                                        // global.showOnlyLoaderDialog(context);
                                         loginController.sendLoginOtp();
                                       } else {
                                         global.showToast(

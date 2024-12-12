@@ -66,15 +66,15 @@ class KundliNameWidget extends StatelessWidget {
               padding: WidgetStateProperty.all(EdgeInsets.all(0)),
               backgroundColor: WidgetStateProperty.all(
                   kundliController.isDisable
-                      ? Color.fromARGB(255, 209, 204, 204)
-                      : Get.theme.primaryColor),
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).dividerColor),
               shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                     side: BorderSide(
                         color: kundliController.isDisable
                             ? Colors.transparent
-                            : Colors.grey)),
+                            : Theme.of(context).primaryColor)),
               ),
             ),
             onPressed: onPressed,
@@ -84,7 +84,7 @@ class KundliNameWidget extends StatelessWidget {
               style: Get.theme.primaryTextTheme.titleMedium!.copyWith(
                   color: kundliController.isDisable
                       ? Color.fromARGB(255, 100, 98, 98)
-                      : Colors.white),
+                      : Theme.of(context).primaryColor),
             ).tr(),
           ),
         ),

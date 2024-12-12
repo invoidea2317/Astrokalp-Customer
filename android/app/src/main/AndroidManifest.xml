@@ -8,7 +8,7 @@
      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <application
-        android:label="Astrokalp CustomerApp"
+        android:label="Astrokalp"
         android:name="${applicationName}"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCg3ejTMDJN0RDlNNKgWiUO5AW_xx3W_Ms"/>
+            android:value="AIzaSyBNB2kmkXSOtldNxPdJ6vPs_yaiXBG6SSU"/>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"

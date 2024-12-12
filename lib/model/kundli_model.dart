@@ -42,8 +42,8 @@ class KundliModel {
         "latitude": latitude,
         "longitude": longitude,
         "timezone": timezone,
-    "pdf_type":pdf_type,
-    "match_type":direction,
+        "pdf_type":pdf_type,
+        "match_type":direction,
     "forMatch":forMatch,
     "lang":lang,
       };

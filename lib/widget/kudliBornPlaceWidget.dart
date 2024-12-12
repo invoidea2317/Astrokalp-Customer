@@ -165,7 +165,7 @@ class _KundliBornPlaceWidgetState extends State<KundliBornPlaceWidget> {
             style: ButtonStyle(
               padding: WidgetStateProperty.all(EdgeInsets.all(0)),
               backgroundColor:
-                  WidgetStateProperty.all(Get.theme.primaryColor),
+                  WidgetStateProperty.all(Theme.of(context).dividerColor),
               shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -237,7 +237,7 @@ class _KundliBornPlaceWidgetState extends State<KundliBornPlaceWidget> {
               'Submit',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white
+                color: Theme.of(context).cardColor
               ),
             ).tr(),
           ),

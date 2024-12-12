@@ -63,15 +63,14 @@ class UserProfileController extends GetxController {
 
   Future<File> getImageFileFromAssets(String path) async {
     final byteData = await rootBundle.load('assets/$path');
-
     final file = await File('${(await getApplicationDocumentsDirectory()).path}/$path').create(recursive: true);
     await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-
     return file;
   }
 
   getValue() async {
     if (splashController.currentUser != null) {
+
       nameController.text = splashController.currentUser!.name!;
       emailController.text = splashController.currentUser!.email!;
       mobileController.text = splashController.currentUser!.contactNo!;

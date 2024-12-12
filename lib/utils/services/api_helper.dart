@@ -45,6 +45,7 @@ import 'package:http/http.dart' as http;
 import 'package:AstrowayCustomer/utils/global.dart' as global;
 
 import '../../controllers/reviewController.dart';
+import '../../controllers/splashController.dart';
 import '../../model/assistant_model.dart';
 import '../../model/astromallHistoryModel.dart';
 import '../../model/customer_support_review_model.dart';
@@ -1018,6 +1019,23 @@ class APIHelper {
 //add API
   Future<dynamic> addKundli(
       List<KundliModel> basicDetails, int amount, bool isMatch) async {
+    print('================>> basicDetails ${basicDetails[0].id.toString()}');
+    print('================>> Latitude: ${basicDetails[0].latitude.toString()}');
+    print('================>> Longitude: ${basicDetails[0].longitude.toString()}');
+    print('================>> Name: ${basicDetails[0].name.toString()}');
+    print('================>> Gender: ${basicDetails[0].gender.toString()}');
+    print('================>> Birth Date: ${basicDetails[0].birthDate.toString()}');
+    print('================>> Birth Place: ${basicDetails[0].birthPlace}');
+    print('================>> Birth Time: ${basicDetails[0].birthTime}');
+    print('================>> Direction: ${basicDetails[0].direction}');
+    print('================>> For Match: ${basicDetails[0].forMatch}');
+    print('================>> PDF Type: ${basicDetails[0].pdf_type}');
+    print('================>> Timezone: ${basicDetails[0].timezone}');
+    print('================>> Language: ${basicDetails[0].lang}');
+    print('================>> Language: ${basicDetails[0].lang}');
+    print('================>> amount: ${amount}');
+
+
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/kundali/add'),
@@ -2103,10 +2121,10 @@ class APIHelper {
     }
   }
 
-  Future<dynamic> getHoroscope({int? horoscopeSignId}) async {
+  Future<List<Map<String, dynamic>>?> getHoroscope({int? horoscopeSignId}) async {
     try {
-      log("currentLanguge");
-      log("${global.sp!.getString('currentLanguage')}");
+      log("currentLanguage: ${global.sp!.getString('currentLanguage')}");
+
       final response = await http.post(
         Uri.parse("$baseUrl/getDailyHoroscope"),
         body: json.encode({
@@ -2115,19 +2133,63 @@ class APIHelper {
         }),
         headers: await global.getApiHeaders(true),
       );
-      log("responsecode123:- ${response.statusCode}");
-      log("responsecode123:- ${json.decode(response.body)}");
-      dynamic recordList;
+
+      log("Response Code: ${response.statusCode}");
+
       if (response.statusCode == 200) {
-        recordList = json.decode(response.body);
-      } else {
-        recordList = null;
+        final responseData = json.decode(response.body);
+        final vedicList = responseData['vedicList'];
+
+        // Parsing and formatting the response into a list
+        if (vedicList != null && vedicList is List) {
+          return vedicList.map((item) {
+            return {
+              'zodiac': item['zodiac'] ?? '',
+              'start_date': item['start_date'] ?? '',
+              'end_date': item['end_date'] ?? '',
+              'total_score': item['total_score'] ?? 0,
+              'bot_response': item['bot_response'] ?? '',
+              'career_remark': item['career_remark'] ?? '',
+              'health_remark': item['health_remark'] ?? '',
+              'finances_remark': item['finances_remark'] ?? '',
+              'relationship_remark': item['relationship_remark'] ?? '',
+            };
+          }).toList();
+        }
       }
-      return recordList;
+      return null;
     } catch (e) {
-      debugPrint('Exception in getHoroscope():' + e.toString());
+      debugPrint('Exception in getHoroscope: ${e.toString()}');
+      return null;
     }
   }
+
+
+  // Future<dynamic> getHoroscope({int? horoscopeSignId}) async {
+  //   try {
+  //     log("currentLanguge");
+  //     log("${global.sp!.getString('currentLanguage')}");
+  //     final response = await http.post(
+  //       Uri.parse("$baseUrl/getDailyHoroscope"),
+  //       body: json.encode({
+  //         "horoscopeSignId": horoscopeSignId,
+  //         'langcode': global.sp!.getString('currentLanguage') ?? 'en'
+  //       }),
+  //       headers: await global.getApiHeaders(true),
+  //     );
+  //     log("responsecode123:- ${response.statusCode}");
+  //     log("responsecode123:- ${json.decode(response.body)}");
+  //     dynamic recordList;
+  //     if (response.statusCode == 200) {
+  //       recordList = json.decode(response.body);
+  //     } else {
+  //       recordList = null;
+  //     }
+  //     return recordList;
+  //   } catch (e) {
+  //     debugPrint('Exception in getHoroscope():' + e.toString());
+  //   }
+  // }
 
   //customer support chat
   Future<dynamic> getTickets(int userId) async {
