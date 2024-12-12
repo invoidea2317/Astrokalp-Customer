@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../controllers/bottomNavigationController.dart';
 import '../../../controllers/homeController.dart';
@@ -85,14 +86,18 @@ class LiveVideoAstrologersComponent extends StatelessWidget {
                       itemBuilder: (_, i) {
                         return Stack(
                           children: [
-                            Container(
-                              height: 130,
-                              width: 130,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).hintColor.withOpacity(0.70),
-                                shape: BoxShape.circle,
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                height: 130,
+                                width: 130,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,)),
                               ),
-                              child: Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,)),
                             ),
                           ],
                         );

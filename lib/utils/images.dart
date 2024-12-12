@@ -30,7 +30,7 @@ class Images {
   static const String vedicAstro = "assets/images/vedicAstro.jpg";
   static const String icOfferTag = "assets/images/ic_offer_tag.png";
   static const String placeholder = 'assets/images/img_placeholder.png';
-  static const String icProfilePlaceholder = 'assets/images/ic_profile_placeholder.png';
+  static const String icProfilePlaceholder = 'assets/images/no_customer_image.png';
   static const String icYellowPlay = 'assets/images/ic_yellow_video.png';
   static const String icAstrokalpLogo = 'assets/images/ic_astrokalp_logo.png';
 }

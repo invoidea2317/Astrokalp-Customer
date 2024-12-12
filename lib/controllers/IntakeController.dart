@@ -176,8 +176,6 @@ class IntakeController extends GetxController {
   }
 
   addCallIntakeFormData() async {
-
-
     IntakeModel intakeModel = isEnterPartnerDetails == true
         ? IntakeModel(
             name: nameController.text,

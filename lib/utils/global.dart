@@ -86,13 +86,13 @@ Map<String, dynamic> appParameters = {
 // };
 
 String agoraChannelName = ""; //valid 24hr
-String agoraToken = "967ffdf4a9be41169ffdc0d52bd66cf5";
+String agoraToken = "";
 String channelName = "goodpanditLive";
 String agoraLiveToken = "";
 String liveChannelName = "goodpanditLive";
 String agoraChatUserId = "goodpanditLive";
 String chatChannelName = "astrowayLive";
-String agoraChatToken = "967ffdf4a9be41169ffdc0d52bd66cf5";
+String agoraChatToken = "4106818e64824bf5a911d3c847cacb7f";
 String encodedString = "&&";
 Color coursorColor = Color(0xFF757575);
 int? currentUserId;
@@ -421,8 +421,7 @@ logoutUser() async {
   Get.off(() => LoginScreen());
 }
 
-//save current user
-// CurrentUserModel? user;
+
 saveCurrentUser(int id, String token, String tokenType) async {
   try {
     sp = await SharedPreferences.getInstance();
@@ -485,9 +484,11 @@ String getSystemFlagValueForLogin(String flag) {
 }
 
 showToast(
-    {required String message,
-    required Color textColor,
-    required Color bgColor}) async {
+    {
+      required String message,
+      required Color textColor,
+      required Color bgColor
+    }) async {
   Fluttertoast.showToast(
     msg: message,
     toastLength: Toast.LENGTH_SHORT,

@@ -265,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                       return null;
                                     },
                                   ),
-                                  sizedBoxDefault(),
+                            /*      sizedBoxDefault(),
                                   InkWell(
                                       onTap: (){
                                         global.showOnlyLoaderDialog(context);
@@ -292,7 +292,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                           ],
                                         ),
                                       ),
-                                    ),
+                                    ),*/
                                  sizedBoxDefault(),
                                   loginController.isLoading ?
                                       Center(child: CircularProgressIndicator()) :

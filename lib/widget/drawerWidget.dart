@@ -30,6 +30,7 @@ import 'package:get/get.dart';
 import 'package:AstrowayCustomer/utils/global.dart' as global;
 
 import 'package:store_redirect/store_redirect.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/astrologer_assistant_controller.dart';
 import '../controllers/astrologyBlogController.dart';
@@ -40,6 +41,7 @@ import '../utils/images.dart';
 import '../views/astroBlog/astrologyBlogListScreen.dart';
 import '../views/counsellor/counsellorScreen.dart';
 import '../views/customer_support/customerSupportChatScreen.dart';
+import 'custom_network_image.dart';
 
 class DrawerWidget extends StatelessWidget {
   DrawerWidget({Key? key}) : super(key: key);
@@ -60,11 +62,8 @@ class DrawerWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                 child: Row(
                   children: [
-                    splashController.currentUser?.profile == ""?
-                    InkWell(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () async {
+                    GestureDetector(
+                      onTap : () async {
                         bool isLogin = await global.isLogin();
                         if (isLogin) {
                           global.showOnlyLoaderDialog(context);
@@ -73,49 +72,11 @@ class DrawerWidget extends StatelessWidget {
                           Get.to(() => EditUserProfile());
                         }
                       },
-                      child: CircleAvatar(
-                        radius: 40,
-                        child:
-                      Image.asset(
-                         Images.deafultUser,
-                        fit: BoxFit.fill,
-                         height: 40,
-                       ),
-                      ),
-                    ):
-                    InkWell(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () async {
-                        bool isLogin = await global.isLogin();
-                        if (isLogin) {
-                          global.showOnlyLoaderDialog(context);
-                          await splashController.getCurrentUserData();
-                          global.hideLoader();
-                          Get.to(() => EditUserProfile());
-                        }
-                      },
-                      child: CachedNetworkImage(
-                        imageUrl: "${global.imgBaseurl}${splashController.currentUser?.profile}",
-                        imageBuilder: (context, imageProvider) {
-                          return CircleAvatar(
-                            radius: 40,
-                            backgroundColor: Colors.white,
-                            backgroundImage: NetworkImage("${global.imgBaseurl}${splashController.currentUser?.profile}"),
-                          );
-                        },
-                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) {
-                          return CircleAvatar(
-                              radius: 40,
-                              backgroundColor: Colors.white,
-                              child: Image.asset(
-                                Images.deafultUser,
-                                fit: BoxFit.fill,
-                                height: 70,
-                              ));
-                        },
-                      ),
+                      child: CustomRoundNetworkImage(
+                        height: 80,
+                        width: 80,
+                        placeholder: Images.icProfilePlaceholder,
+                        image: "${global.imgBaseurl}${splashController.currentUser?.profile}",),
                     ),
                     SizedBox(width: 15),
                     Text(
@@ -358,19 +319,39 @@ class DrawerWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Image.asset("assets/images/facebook.png",
-                    fit: BoxFit.cover,
-                    height: 40,
+                  GestureDetector(
+                    onTap: () {
+                      _launchURL('https://www.facebook.com/profile.php?id=61568398828208');
+                    },
+                    child: Image.asset("assets/images/facebook.png",
+                      fit: BoxFit.cover,
+                      height: 40,
+                    ),
                   ),
-                  Image.asset("assets/images/instagram.png",
-                    fit: BoxFit.cover,
-                    height: 40),
-                  Image.asset("assets/images/twitter.png",
-                    fit: BoxFit.cover,
-                    height: 40),
-                  Image.asset("assets/images/youtube.png",
-                    fit: BoxFit.fitHeight,
-                    height: 40),
+                  GestureDetector(
+                    onTap: () {
+                      _launchURL('https://www.instagram.com/astrokalp.in/');
+                    },
+                    child: Image.asset("assets/images/instagram.png",
+                      fit: BoxFit.cover,
+                      height: 40),
+                  ),
+                  GestureDetector(
+                   onTap: () {
+                     _launchURL('https://x.com/astrokalp');
+                   },
+                   child : Image.asset("assets/images/twitter.png",
+                      fit: BoxFit.cover,
+                      height: 40),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _launchURL('https://www.youtube.com/@Astrokalp');
+                    },
+                    child: Image.asset("assets/images/youtube.png",
+                      fit: BoxFit.fitHeight,
+                      height: 40),
+                  ),
                 ],
               ),
               SizedBox(height: 10,),
@@ -411,5 +392,13 @@ class DrawerWidget extends StatelessWidget {
         ).tr(),
       ]),
     );
+  }
+
+  Future<void> _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

@@ -758,8 +758,6 @@ void initializeCallKitEventHandlers() {
         callAccept(event);
         break;
       case Event.actionCallDecline:
-        // Handle call end action
-
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('is_accepted', false);
         await prefs.setString('is_accepted_data', '');

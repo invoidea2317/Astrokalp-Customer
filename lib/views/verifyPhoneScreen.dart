@@ -1,9 +1,11 @@
 // ignore_for_file: deprecated_member_use, must_be_immutable
 
 import 'dart:io';
-
 import 'package:AstrowayCustomer/controllers/loginController.dart';
 import 'package:AstrowayCustomer/utils/images.dart';
+import 'package:AstrowayCustomer/utils/sizedboxes.dart';
+import 'package:AstrowayCustomer/views/settings/privacyPolicyScreen.dart';
+import 'package:AstrowayCustomer/views/settings/termsAndConditionScreen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,16 +15,53 @@ import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:otp_autofill/otp_autofill.dart';
 import '../widget/custom_button_widget.dart';
-class VerifyPhoneScreen extends StatelessWidget {
+
+
+class VerifyPhoneScreen extends StatefulWidget {
   final String phoneNumber;
   VerifyPhoneScreen(
       {Key? key, required this.phoneNumber,})
       : super(key: key);
+
+  @override
+  State<VerifyPhoneScreen> createState() => _VerifyPhoneScreenState();
+}
+
+class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
+
   final LoginController loginController = Get.find<LoginController>();
   final FirebaseAuth auth = FirebaseAuth.instance;
   final pinEditingControllerlogin = TextEditingController(text: '');
+  late OTPTextEditController otpController;
+  late OTPInteractor otpInteractor;
+
+  @override
+  void initState() {
+    super.initState();
+    otpInteractor = OTPInteractor();
+    otpController = OTPTextEditController(
+      codeLength: 6,
+      onCodeReceive: (code) {
+        print('Received OTP: $code');
+      },
+      otpInteractor: otpInteractor,
+    );
+    otpController.startListenUserConsent(
+          (code) {
+        final otpRegex = RegExp(r'(\d{6})');
+        return otpRegex.firstMatch(code!)?.group(1) ?? '';
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    otpController.stopListen();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -87,7 +126,7 @@ class VerifyPhoneScreen extends StatelessWidget {
                         fontSize: 14,),
                     ),
                     Text(
-                      'We Have Sent Verification Code to $phoneNumber',
+                      'We Have Sent Verification Code to ${widget.phoneNumber}',
                       maxLines: 2,
                       style: TextStyle(color: Colors.black.withOpacity(0.70,),
                       fontSize: 11,),
@@ -105,7 +144,7 @@ class VerifyPhoneScreen extends StatelessWidget {
                     bgColorBuilder: PinListenColorBuilder(
                         Colors.white, Colors.white),
                   ),
-                  controller: pinEditingControllerlogin,
+                  controller: otpController,
                   textInputAction: TextInputAction.done,
                   enabled: true,
                   keyboardType: TextInputType.number,
@@ -137,6 +176,52 @@ class VerifyPhoneScreen extends StatelessWidget {
                 //   borderRadius: BorderRadius.circular(10),
                 //   margin: EdgeInsets.only(right: 4),
                 // ),
+                sizedBoxDefault(),
+                Center(
+                  child: Text(textAlign: TextAlign.center,
+                    'By logging in, you agree to our ',
+                    style:
+                    TextStyle(color: Colors.black, fontSize: 11),
+                  ).tr(),
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(() => TermAndConditionScreen());
+                        },
+                        child: Text(' Terms of Service',
+                            style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: Theme.of(context).dividerColor)).tr(),
+                      ),
+                      Text(' and ',
+                          style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              color: Colors.black,
+                              fontSize: 11))
+                          .tr(),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(() => PrivacyPolicyScreen());
+                        },
+                        child: Text(
+                          ' Privacy Policy',
+                          style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Theme.of(context).dividerColor),
+                        ).tr(),
+                      ),
+
+                    ],
+                  ),
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -150,7 +235,7 @@ class VerifyPhoneScreen extends StatelessWidget {
                     Center(child: CircularProgressIndicator()) :
                     CustomButtonWidget(buttonText: 'Send Otp ',
                         onPressed: () {
-                              loginController.verifyLoginOtp(pinEditingControllerlogin.text);
+                              loginController.verifyLoginOtp(otpController.text);
                         },
                         suffixIcon: Icons.arrow_forward_outlined,
                         color: Theme.of(context).dividerColor,

@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-
+import 'package:AstrowayCustomer/utils/global.dart' as global;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../utils/images.dart';
@@ -57,7 +57,8 @@ class BlogScreen extends StatelessWidget {
           actions: [
             GestureDetector(
               onTap: () async {
-                splashController.createAstrologerShareLink();
+                global.showSnackBar('Coming soon','');
+                // splashController.createAstrologerShareLink();
               },
               child: Padding(
                 padding: const EdgeInsets.all(12.0),

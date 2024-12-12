@@ -22,6 +22,7 @@ import 'package:http/http.dart' as http;
 class LoginController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   SplashController splashController = Get.find<SplashController>();
+  TextEditingController pincodeController = TextEditingController();
   String validationId = "";
   String verificationIdBySentOtp = "";
   double second = 0;
@@ -452,13 +453,27 @@ class LoginController extends GetxController {
       request.fields.addAll({
         'mobile': phoneController.text,
       });
+
       http.StreamedResponse response = await request.send();
+
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
-        Get.to(() => VerifyPhoneScreen(
-          phoneNumber: phoneController.text.trim(),
-        ));
-        print('Response: $responseBody');
+
+        // Decode the JSON response
+        var data = jsonDecode(responseBody);
+
+        if (data['success'] != null) {
+          // Extract OTP
+          String otp = data['otp'].toString();
+          print('OTP: $otp'); // Print the OTP to the console
+          pincodeController.text = otp;
+          // Navigate to VerifyPhoneScreen and pass phone number
+          Get.to(() => VerifyPhoneScreen(
+            phoneNumber: phoneController.text.trim(),
+          ));
+        } else {
+          print('Failed to get OTP: ${data['success']}');
+        }
       } else {
         print('Error: ${response.reasonPhrase}');
       }
@@ -467,9 +482,9 @@ class LoginController extends GetxController {
     } finally {
       _isLoading = false;
       update();
-
     }
   }
+
 
 
   Future<void> verifyLoginOtp(String verifyOtp) async {

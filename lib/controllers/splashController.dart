@@ -16,6 +16,7 @@ import 'package:get/get.dart';
 import 'package:AstrowayCustomer/utils/global.dart' as global;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../views/astrologerProfile/astrologerProfile.dart';
 import '../views/bottomNavigationBarScreen.dart';
@@ -36,11 +37,24 @@ class SplashController extends GetxController {
   String currentLanguageCode = 'en';
   @override
   void onInit() {
+    print('splash');
     _inIt();
     super.onInit();
   }
 
+
+  // Future<void> openWhatsApp() async {
+  //   final url = Uri.parse("https://wa.me/9999999999?text=${Uri.encodeComponent('Eg: Msg ')}");
+  //
+  //   if (await canLaunchUrl(url)) {
+  //     await launchUrl(url, mode: LaunchMode.externalApplication);
+  //   } else {
+  //     print("Could not launch WhatsApp");
+  //   }
+  // }
+
   _inIt() async {
+
     await getSystemFlag();
     appName =
         global.getSystemFlagValueForLogin(global.systemFlagNameList.appName);
@@ -70,6 +84,7 @@ class SplashController extends GetxController {
                   global.user = currentUser!;
                   await getCurrentUserData();
                   await global.getCurrentUser();
+                  print('WidgetsBinding');
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     _loadSavedData();
                   });
@@ -171,16 +186,16 @@ class SplashController extends GetxController {
   }
 
   Future<void> _loadSavedData() async {
+    print('_loadSavedData');
     final prefs = await SharedPreferences.getInstance();
-
     bool? isacceptedcall = await prefs.getBool('is_accepted');
     print('is accepted or not $isacceptedcall');
     if (isacceptedcall == true) {
-      // Handle call end action
       String? dataaccepted = await prefs.getString('is_accepted_data');
       if (dataaccepted!.isNotEmpty) {
         await prefs.setBool('is_accepted', false);
         print('is accepted dataaccepted $dataaccepted}');
+        print('callAccept');
         callAccept(jsonDecode(dataaccepted));
         await prefs.setString('is_accepted_data', '');
       }
@@ -254,6 +269,7 @@ void callAccept(Map<String, dynamic> extraData) async {
 
   final callController = Get.find<CallController>();
   if (extraData['call_type'] == 10) {
+    print('call_type');
     await callController.acceptedCall(extraData["callId"]);
     Get.to(
       () => AcceptCallScreen(
@@ -277,4 +293,5 @@ void callAccept(Map<String, dynamic> extraData) async {
           end_time: extraData['call_duration'].toString(),
         ));
   }
+
 }

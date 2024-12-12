@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:AstrowayCustomer/utils/global.dart' as global;
 import 'package:intl/intl.dart';
 
+import '../widget/loading_widget.dart';
+
 class PanchangController extends GetxController {
   APIHelper apiHelper = APIHelper();
   PanchangModel? panchangList;
@@ -55,6 +57,8 @@ class PanchangController extends GetxController {
 
   getPanchangVedic(DateTime date)async
   {
+    LoadingDialog.showLoading(message: "Please wait...");
+    // global.showOnlyLoaderDialog(Get.context);
     try {
       await global.checkBody().then((result) async {
         if (result) {
@@ -76,6 +80,9 @@ class PanchangController extends GetxController {
       });
     } catch (e) {
       print('Exception in getPanchangDetail():' + e.toString());
+    } finally {
+      LoadingDialog.hideLoading();
+      // global.showOnlyLoaderDialog(Get.context);
     }
   }
 

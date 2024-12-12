@@ -107,6 +107,7 @@ class CallController extends GetxController
   }
 
   acceptedCall(int callId) async {
+    print('Call Accepet Check');
     try {
       await apiHelper.acceptCall(callId).then((result) {
         if (result.status == "200") {
@@ -170,6 +171,7 @@ class CallController extends GetxController
   }
 
   getAgoraResourceId(String cname, int uid) async {
+    print('getAgoraResourceId');
     try {
       await global.checkBody().then((result) async {
         if (result) {
@@ -206,6 +208,7 @@ class CallController extends GetxController
   // }
 
   agoraStartRecording(String cname, int uid, String token) async {
+    print('agoraStartRecording');
     try {
       await global.checkBody().then((result) async {
         if (result) {

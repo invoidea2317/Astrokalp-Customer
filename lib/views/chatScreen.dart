@@ -16,6 +16,7 @@ import 'package:AstrowayCustomer/views/astrologerProfile/astrologerProfile.dart'
 import 'package:AstrowayCustomer/views/callIntakeFormScreen.dart';
 import 'package:AstrowayCustomer/views/chat/incoming_chat_request.dart';
 import 'package:AstrowayCustomer/views/paymentInformationScreen.dart';
+import 'package:AstrowayCustomer/views/searchAstrologerScreen.dart';
 import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:AstrowayCustomer/widget/custom_button_widget.dart';
 import 'package:AstrowayCustomer/widget/drawerWidget.dart';
@@ -30,6 +31,8 @@ import 'package:AstrowayCustomer/utils/global.dart' as global;
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/homeController.dart';
+import '../utils/AppColors.dart';
+import '../utils/fonts.dart';
 import '../utils/sizedboxes.dart';
 
 
@@ -119,11 +122,60 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Column(
                 children: [
                   Container(
+                    color: Theme.of(context).cardColor,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(() => SearchAstrologerScreen());
+                      },
+                      child: SizedBox(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: FontSizes(context).width2(),
+                              vertical: FontSizes(context).height1()),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius:
+                              BorderRadius.circular(Dimensions.radius20),
+                              border: Border.all(color: colorGrey)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding:
+                                  EdgeInsets.all(Dimensions.paddingSize7),
+                                  height: Dimensions.fontSize40,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).dividerColor),
+                                  child: Icon(
+                                    Icons.search,
+                                    size: Dimensions.fontSize20,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                SizedBox(width: 2.w),
+                                Text(
+                                  'Search astrologers,Products and Services...',
+                                  style: Get.theme.primaryTextTheme.bodyLarge!
+                                      .copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 11,
+                                    color: Colors.black38,
+                                  ),
+                                ).tr()
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
                     padding: EdgeInsets.only(left: Dimensions.paddingSizeDefault),
                     height: 50,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.only(top: 10),
                       itemCount: chatController.categoryList.length + 1,
                       itemBuilder: (context, value) {
                         // Filter Tab
@@ -1104,6 +1156,7 @@ class TabViewWidget extends StatelessWidget {
                           onPressed: () async {
                             bool isLogin = await global.isLogin();
                             if (isLogin) {
+                              global.showOnlyLoaderDialog(context);
                               await bottomNavigationController
                                   .getAstrologerbyId(
                                   astrologerList[index].id);
@@ -1120,7 +1173,7 @@ class TabViewWidget extends StatelessWidget {
                                     false) {
                                   if (astrologerList[index].chatStatus ==
                                       "Online") {
-                                    global.showOnlyLoaderDialog(context);
+
 
                                     if (astrologerList[index].chatWaitTime !=
                                         null) {

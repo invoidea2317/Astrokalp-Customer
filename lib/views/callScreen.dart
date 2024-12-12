@@ -13,6 +13,7 @@ import 'package:AstrowayCustomer/utils/images.dart';
 import 'package:AstrowayCustomer/views/call/incoming_call_request.dart';
 import 'package:AstrowayCustomer/views/callIntakeFormScreen.dart';
 import 'package:AstrowayCustomer/views/paymentInformationScreen.dart';
+import 'package:AstrowayCustomer/views/searchAstrologerScreen.dart';
 import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:AstrowayCustomer/widget/drawerWidget.dart';
 import 'package:AstrowayCustomer/widget/language_widget.dart';
@@ -27,7 +28,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/follow_astrologer_controller.dart';
 import '../controllers/homeController.dart';
 import '../controllers/reviewController.dart';
+import '../utils/AppColors.dart';
 import '../utils/dimensions.dart';
+import '../utils/fonts.dart';
 import '../utils/sizedboxes.dart';
 import '../utils/text_styles.dart';
 import '../widget/custom_button_widget.dart';
@@ -129,12 +132,62 @@ class _CallScreenState extends State<CallScreen> {
               child: Column(
                 children: [
                   Container(
+                    color: Theme.of(context).cardColor,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(() => SearchAstrologerScreen());
+                      },
+                      child: SizedBox(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: FontSizes(context).width2(),
+                              vertical: FontSizes(context).height1()),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius:
+                              BorderRadius.circular(Dimensions.radius20),
+                              border: Border.all(color: colorGrey)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding:
+                                  EdgeInsets.all(Dimensions.paddingSize7),
+                                  height: Dimensions.fontSize40,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).dividerColor),
+                                  child: Icon(
+                                    Icons.search,
+                                    size: Dimensions.fontSize20,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                SizedBox(width: 2.w),
+                                Text(
+                                  'Search astrologers,Products and Services...',
+                                  style: Get.theme.primaryTextTheme.bodyLarge!
+                                      .copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 11,
+                                    color: Colors.black38,
+                                  ),
+                                ).tr()
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
                     padding:
                         EdgeInsets.only(left: Dimensions.paddingSizeDefault),
                     height: 50,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(top: 0),
                       itemCount: chatController.categoryList.length + 1,
                       itemBuilder: (context, value) {
                         // Filter Tab
@@ -601,22 +654,15 @@ class _CallScreenState extends State<CallScreen> {
                                       padding: EdgeInsets.zero,
                                       itemBuilder: (context, index) {
                                         return CheckboxListTile(
-                                          controlAffinity:
-                                              ListTileControlAffinity.leading,
+                                          controlAffinity: ListTileControlAffinity.leading,
                                           contentPadding: EdgeInsets.zero,
                                           activeColor: Colors.black,
-                                          value: skillController
-                                              .skillList[index].isSelected,
+                                          value: skillController.skillList[index].isSelected,
                                           onChanged: (value) {
-                                            skillController.skillList[index]
-                                                .isSelected = value!;
-                                            print('${skillController.skillList[index]
-                                              .isSelected}');
-                                            skillController.update();
+                                            skillController.skillList[index].isSelected = value!;
+                                            print('${skillController.skillList[index].isSelected}');skillController.update();
                                           },
-                                          title: Text(skillController
-                                                  .skillList[index].name)
-                                              .tr(),
+                                          title: Text(skillController.skillList[index].name).tr(),
                                         );
                                       }));
                             },
@@ -1906,7 +1952,9 @@ class TabViewAstrologer extends StatelessWidget {
 
   void _logedIn(context, isLogin, index, audio) async {
     if (isLogin) {
+
       //_checkAstrologerAvailability(index);
+      global.showOnlyLoaderDialog(context);
       await bottomNavigationController
           .getAstrologerbyId(astrologerList[index].id);
       print('charge${global.splashController.currentUser!.walletAmount! * 5}');
@@ -1917,7 +1965,7 @@ class TabViewAstrologer extends StatelessWidget {
             .checkAlreadyInReqForCall(astrologerList[index].id);
         if (bottomNavigationController.isUserAlreadyInCallReq == false) {
           if (astrologerList[index].callStatus == "Online") {
-            global.showOnlyLoaderDialog(context);
+            // global.showOnlyLoaderDialog(context);
             if (astrologerList[index].callWaitTime != null) {
               if (astrologerList[index]
                       .callWaitTime!

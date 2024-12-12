@@ -59,21 +59,17 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
 
   SplashController splashController = Get.find<SplashController>();
 
-  BottomNavigationController bottomNavigationController =
-      Get.find<BottomNavigationController>();
-
+  BottomNavigationController bottomNavigationController = Get.find<BottomNavigationController>();
   IntakeController callIntakeController = Get.find<IntakeController>();
   WalletController walletController = Get.find<WalletController>();
-
   CallController callController = Get.find<CallController>();
-
   ChatController chatController = Get.find<ChatController>();
 
   List time = [5, 10, 15, 20, 25, 30];
   int selectTime = 0;
   bool isChecked = false;
 
-  //final _initalValue=PhoneNumber(isoCode: 'IN');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -648,17 +644,20 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
                 // print("timezone:- ${callIntakeController.tzone}");
 
                 if (intakeController.isVarified) {
+                  print('isVarified');
                   global.showOnlyLoaderDialog(context);
                   await callIntakeController.addCallIntakeFormData();
                   if (widget.isFreeAvailable == true) {
+                    print('isFreeAvailable');
                     await intakeController.checkFreeSessionAvailable();
                     if (intakeController.isAddNewRequestByFreeuser == true) {
                       //! false for testing
+                      print('isAddNewRequestByFreeuser');
                       if (widget.type == "Call" || widget.type == "Videocall")
-                      {
-                        await callController.sendCallRequest(
+                      {await callController.sendCallRequest(
                             widget.astrologerId, true, widget.type, callIntakeController.freedefaultTime.toString());
                       } else {
+                        print('Below are my details:');
                         ChatController chatController =
                             Get.find<ChatController>();
                         DropDownController dropDownController =
@@ -672,6 +671,7 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
                             false);
 
                         if (callIntakeController.isEnterPartnerDetails) {
+                          print('isEnterPartnerDetails');
                           await chatController.sendMessage(
                               'Below are my partner details: \n\n'
                                   'Name: ${intakeController.partnerNameController.text},\nDOB: ${intakeController.partnerDobController.text},\nTOB: ${intakeController.partnerBirthController.text},\nPOB: ${intakeController.partnerPlaceController.text}'
@@ -685,6 +685,7 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
                             widget.astrologerId, true, callIntakeController.freedefaultTime.toString());
                       }
                     } else {
+                      print('You can not join multiple offers at same time');
                       global.showToast(
                           message:
                               'You can not join multiple offers at same time',
@@ -693,6 +694,7 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
                     }
                   }
                   else {
+                    print('2 widget.type == "Call');
                     if (widget.type == "Call" || widget.type == "Videocall") {
                       await callController.sendCallRequest(widget.astrologerId,
                           false, widget.type,
@@ -714,7 +716,7 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
 
                       if (callIntakeController.isEnterPartnerDetails) {
                         await chatController.sendMessage(
-                            'Below are my partner details: \n\n'
+                                'Below are my partner details: \n\n'
                                 'Name: ${intakeController.partnerNameController.text},\nDOB: ${intakeController.partnerDobController.text},\nTOB: ${intakeController.partnerBirthController.text},\nPOB: ${intakeController.partnerPlaceController.text}'
                                 '\n\n This is automated message to confirm that chat has started.'
                                 '',
@@ -895,7 +897,6 @@ class _CallIntakeFormScreenState extends State<CallIntakeFormScreen> {
   }
 
   dialogForchat(BuildContext context) {
-    // BuildContext context = Get.context!;
     showDialog(
       context: context,
       builder: (BuildContext context) {

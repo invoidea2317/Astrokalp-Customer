@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:AstrowayCustomer/utils/sizedboxes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,7 @@ class LoadingDialog {
         backgroundColor: Colors.transparent,
         elevation: 0,
         child: Center(
-          child: _LoadingWidget(),
+          child: CircularProgressIndicator(),
         ),
       ),
       barrierDismissible: false,
@@ -58,16 +59,21 @@ class __LoadingWidgetState extends State<_LoadingWidget> {
       decoration: BoxDecoration(color: Colors.white,
           borderRadius: BorderRadius.circular(Dimensions.radius10)
       ),
-      child: AnimatedOpacity(
-        opacity: _opacity,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-        child: Image.asset(
-          Images.icLogo, // Your logo asset
-          height: 80,
-          width: 80,
-        ),
+      child: Row(
+        children: [
+          CircularProgressIndicator()
+        ],
       ),
+      // child: AnimatedOpacity(
+      //   opacity: _opacity,
+      //   duration: const Duration(milliseconds: 300),
+      //   curve: Curves.easeInOut,
+      //   child: Image.asset(
+      //     Images.icLogo, // Your logo asset
+      //     height: 80,
+      //     width: 80,
+      //   ),
+      // ),
     );
   }
 }
