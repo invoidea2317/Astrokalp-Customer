@@ -1,5 +1,6 @@
 import 'package:AstrowayCustomer/views/astromall/productDetailScreen.dart';
 import 'package:AstrowayCustomer/views/searchByNameScreen.dart';
+import 'package:AstrowayCustomer/widget/customAppbarWidget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,20 +21,21 @@ class AstroProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(56),
-          child: CommonAppBar(
-            title: appbarTitle,
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Get.to(() => SearchByNameScreen(
-                          productCategoryId: productCategoryId,
-                        ));
-                  },
-                  icon: Icon(Icons.search, color: Colors.white))
-            ],
-          )),
+      appBar: CustomApp(title:appbarTitle,isBackButtonExist: true,),
+      // appBar: PreferredSize(
+      //     preferredSize: Size.fromHeight(56),
+      //     child: CommonAppBar(
+      //       title: appbarTitle,
+      //       actions: [
+      //         IconButton(
+      //             onPressed: () {
+      //               Get.to(() => SearchByNameScreen(
+      //                     productCategoryId: productCategoryId,
+      //                   ));
+      //             },
+      //             icon: Icon(Icons.search, color: Colors.white))
+      //       ],
+      //     )),
       body: RefreshIndicator(
         onRefresh: () async {
           astromallController.astroProduct.clear();
@@ -71,12 +73,13 @@ class AstroProductScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () async {
-                                    global.showOnlyLoaderDialog(context);
-                                    await astromallController.getproductById(astromallController.astroProduct[index].id);
-                                    global.hideLoader();
-                                    Get.to(() => ProductDetailScreen(
-                                          index: index,
-                                        ));
+                                   global.showToast(message: 'Payment Now available currently', textColor: Colors.black, bgColor: Colors.white);
+                                    // global.showOnlyLoaderDialog(context);
+                                    // await astromallController.getproductById(astromallController.astroProduct[index].id);
+                                    // global.hideLoader();
+                                    // Get.to(() => ProductDetailScreen(
+                                    //       index: index,
+                                    //     ));
                                   },
                                   child: Container(
                                     alignment: Alignment.bottomCenter,
@@ -109,12 +112,13 @@ class AstroProductScreen extends StatelessWidget {
                                               height: 30,
                                               child: TextButton(
                                                   onPressed: () async {
-                                                    global.showOnlyLoaderDialog(context);
-                                                    await astromallController.getproductById(astromallController.astroProduct[index].id);
-                                                    global.hideLoader();
-                                                    Get.to(() => ProductDetailScreen(
-                                                          index: index,
-                                                        ));
+                                                    global.showToast(message: 'Payment Now available currently', textColor: Colors.black, bgColor: Colors.white);
+                                                    // global.showOnlyLoaderDialog(context);
+                                                    // await astromallController.getproductById(astromallController.astroProduct[index].id);
+                                                    // global.hideLoader();
+                                                    // Get.to(() => ProductDetailScreen(
+                                                    //       index: index,
+                                                    //     ));
                                                   },
                                                   child: Text(
                                                     'Buy',

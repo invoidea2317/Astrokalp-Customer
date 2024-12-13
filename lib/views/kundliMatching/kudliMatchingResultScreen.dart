@@ -478,10 +478,10 @@ class KudliMatchingResultScreen extends StatelessWidget {
                                               // // ignore: unused_local_variable
                                               // String applink;
                                               // final DynamicLinkParameters parameters = DynamicLinkParameters(
-                                              //   uriPrefix: 'https://astrowaydiploy.page.link',
-                                              //   link: Uri.parse("https://astrowaydiploy.page.link/userProfile?screen=astroProfile"),
+                                              //   uriPrefix: 'https://astrokalp.page.link',
+                                              //   link: Uri.parse("https://astrokalp.page.link/userProfile?screen=astroProfile"),
                                               //   androidParameters: AndroidParameters(
-                                              //     packageName: 'com.astrowaydiploy.user',
+                                              //     packageName: 'com.astrokalp.user',
                                               //     minimumVersion: 1,
                                               //   ),
                                               // );
@@ -2879,10 +2879,10 @@ class KudliMatchingResultScreen extends StatelessWidget {
                                               // // ignore: unused_local_variable
                                               // String applink;
                                               // final DynamicLinkParameters parameters = DynamicLinkParameters(
-                                              //   uriPrefix: 'https://astrowaydiploy.page.link',
-                                              //   link: Uri.parse("https://astrowaydiploy.page.link/userProfile?screen=astroProfile"),
+                                              //   uriPrefix: 'https://astrokalp.page.link',
+                                              //   link: Uri.parse("https://astrokalp.page.link/userProfile?screen=astroProfile"),
                                               //   androidParameters: AndroidParameters(
-                                              //     packageName: 'com.astrowaydiploy.user',
+                                              //     packageName: 'com.astrokalp.user',
                                               //     minimumVersion: 1,
                                               //   ),
                                               // );

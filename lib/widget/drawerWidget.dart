@@ -248,7 +248,7 @@ class DrawerWidget extends StatelessWidget {
               //     onTap: () async {
               //       // if (Platform.isAndroid) {
               //       //   StoreRedirect.redirect(
-              //       //     androidAppId: "com.astrowaydiploy.user",
+              //       //     androidAppId: "com.astrokalp.user",
               //       //   );
               //       // }
               //     },
@@ -335,7 +335,7 @@ class DrawerWidget extends StatelessWidget {
                     child: Image.asset("assets/images/instagram.png",
                       fit: BoxFit.cover,
                       height: 40),
-                  ),
+                   ),
                   GestureDetector(
                    onTap: () {
                      _launchURL('https://x.com/astrokalp');

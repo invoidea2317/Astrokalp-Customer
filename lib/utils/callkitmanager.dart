@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-
 class CallKitManager {
   static const MethodChannel _channel =
       MethodChannel('com.astrowaydiploy.user/channel_test');

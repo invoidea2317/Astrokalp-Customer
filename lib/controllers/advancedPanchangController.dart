@@ -55,8 +55,7 @@ class PanchangController extends GetxController {
     }
   }
 
-  getPanchangVedic(DateTime date)async
-  {
+  getPanchangVedic(DateTime date)async {
     LoadingDialog.showLoading(message: "Please wait...");
     // global.showOnlyLoaderDialog(Get.context);
     try {

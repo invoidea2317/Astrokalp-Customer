@@ -1160,18 +1160,19 @@ class SearchAstrologerScreen extends StatelessWidget {
                                           itemBuilder: (context, index) {
                                             return InkWell(
                                               onTap: () async {
-                                                AstromallController
-                                                    astromallController =
-                                                    Get.find<AstromallController>();
-                                                global.showOnlyLoaderDialog(context);
-                                                print(
-                                                    'selected product id:- ${searchController.astroProduct[index].id}');
-                                                await astromallController
-                                                    .getproductById(searchController
-                                                        .astroProduct[index].id);
-                                                global.hideLoader();
-                                                Get.to(() => ProductDetailScreen(
-                                                    index: index));
+                                                global.showToast(message: 'Payment Now available currently', textColor: Colors.black, bgColor: Colors.white);
+                                                // AstromallController
+                                                //     astromallController =
+                                                //     Get.find<AstromallController>();
+                                                // global.showOnlyLoaderDialog(context);
+                                                // print(
+                                                //     'selected product id:- ${searchController.astroProduct[index].id}');
+                                                // await astromallController
+                                                //     .getproductById(searchController
+                                                //         .astroProduct[index].id);
+                                                // global.hideLoader();
+                                                // Get.to(() => ProductDetailScreen(
+                                                //     index: index));
                                               },
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,

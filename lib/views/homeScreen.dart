@@ -72,7 +72,9 @@ import '../theme/nativeTheme.dart';
 import '../utils/fonts.dart';
 import '../widget/videoPlayerWidget.dart';
 import 'CustomText.dart';
+import 'astromall/all_daan_view_screen.dart';
 import 'astromall/astroProductScreen.dart';
+import 'astromall/daan_product_screen.dart';
 import 'chatScreen.dart';
 import 'daily_horoscope/dailyHoroscopeScreen.dart';
 import 'home/components/horizontal_astrologer_view.dart';
@@ -112,8 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (isExit) {
           exit(0);
         }
-        return isExit;
-      },
+        return isExit;},
       child: Scaffold(
         backgroundColor: Colors.white,
         key: drawerKey,
@@ -332,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           await astromallController
                                               .getAstromallCategory(false);
                                           global.hideLoader();
-                                          Get.to(() => AstromallScreen());
+                                          Get.to(() => AstromallScreen(isBackButton: true,));
                                         }
                                       },
                                       child: CachedNetworkImage(
@@ -556,7 +557,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   //     ),
                   //   );
                   // }),
-
                   ///freeservice
                   Container(
                     padding: EdgeInsets.symmetric(vertical: Dimensions.paddingSize20),
@@ -2080,7 +2080,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               await astromallController
                                                   .getAstromallCategory(false);
                                               global.hideLoader();
-                                              Get.to(() => AstromallScreen());
+                                              Get.to(() => AstromallScreen(isBackButton: true,));
                                             },
                                             child: Text(
                                               'View All',
@@ -2191,6 +2191,282 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                   }),
+                  GetBuilder<AstromallController>(
+                      builder: (astromallController) {
+                        return astromallController.daanProducts.length == 0
+                            ? SizedBox()
+                            : SizedBox(
+                          height: 200,
+                          child: Card(
+                            elevation: 0,
+                            margin: EdgeInsets.only(top: 6),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.zero),
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.only(top: 10, bottom: 1),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Daan',
+                                                style: Get
+                                                    .theme
+                                                    .primaryTextTheme
+                                                    .titleMedium!
+                                                    .copyWith(
+                                                    fontWeight:
+                                                    FontWeight.w500),
+                                              ).tr(),
+                                            ],
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            Get.to(() => AllDaanViewScreen());
+                                            // final AstromallController
+                                            // astromallController =
+                                            // Get.find<
+                                            //     AstromallController>();
+                                            // astromallController.astroCategory
+                                            //     .clear();
+                                            // astromallController
+                                            //     .isAllDataLoaded = false;
+                                            // astromallController.update();
+                                            // global.showOnlyLoaderDialog(
+                                            //     context);
+                                            // await astromallController
+                                            //     .getAstromallCategory(false);
+                                            // global.hideLoader();
+                                            // Get.to(() => AstromallScreen());
+                                          },
+                                          child: Text(
+                                            'View All',
+                                            style: Get.theme.primaryTextTheme
+                                                .bodySmall!
+                                                .copyWith(
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.blue[500],
+                                            ),
+                                          ).tr(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: ListView.builder(
+                                        itemCount: astromallController
+                                            .daanProducts.length,
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        padding: EdgeInsets.only(
+                                            top: 10,
+                                            left: 10,
+                                            bottom: 2,
+                                            right: 10),
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () async {
+                                              Get.to(
+                                                    () => DaanProductDetailsScreen(slug: astromallController.daanProducts[index].slug,),
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 80,
+                                              margin: const EdgeInsets.only(
+                                                  top: 4, bottom: 1, right: 15),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Expanded(
+                                                      child: CircleAvatar(
+                                                        backgroundColor: Colors.white,
+                                                        radius: 35.sp,
+                                                        backgroundImage: NetworkImage(
+                                                            "${global.imgBaseurl}${astromallController.daanProducts[index].productImage}"),
+                                                      )),
+                                                  Container(
+                                                    color: Colors.white,
+                                                    width: Get.width,
+                                                    height: 45,
+                                                    alignment: Alignment.center,
+                                                    padding:
+                                                    const EdgeInsets.all(8),
+                                                    child: Text(
+                                                      maxLines: 2,
+                                                      astromallController
+                                                          .daanProducts[index]
+                                                          .name,
+                                                      textAlign: TextAlign.center,
+                                                      overflow:
+                                                      TextOverflow.ellipsis,
+                                                      style: Get
+                                                          .textTheme.bodyMedium!
+                                                          .copyWith(
+                                                          fontSize: 11,
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w500),
+                                                    ).tr(),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                  GetBuilder<AstromallController>(
+                      builder: (astromallController) {
+                        return astromallController.poojaProducts.length == 0
+                            ? SizedBox()
+                            : SizedBox(
+                          height: 200,
+                          child: Card(
+                            elevation: 0,
+                            margin: EdgeInsets.only(top: 6),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.zero),
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.only(top: 10, bottom: 1),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 5),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Pooja',
+                                                style: Get
+                                                    .theme
+                                                    .primaryTextTheme
+                                                    .titleMedium!
+                                                    .copyWith(
+                                                    fontWeight:
+                                                    FontWeight.w500),
+                                              ).tr(),
+                                            ],
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            Get.to(() => AllDaanViewScreen(isPooja: true,));
+                                          },
+                                          child: Text(
+                                            'View All',
+                                            style: Get.theme.primaryTextTheme
+                                                .bodySmall!
+                                                .copyWith(
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.blue[500],
+                                            ),
+                                          ).tr(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: ListView.builder(
+                                        itemCount: astromallController
+                                            .poojaProducts.length,
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        padding: EdgeInsets.only(
+                                            top: 10,
+                                            left: 10,
+                                            bottom: 2,
+                                            right: 10),
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () async {
+                                              Get.to(
+                                                    () => DaanProductDetailsScreen(slug: astromallController.poojaProducts[index].slug,isPooja: true,),
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 80,
+                                              margin: const EdgeInsets.only(
+                                                  top: 4, bottom: 1, right: 15),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Expanded(
+                                                      child: CircleAvatar(
+                                                        backgroundColor: Colors.white,
+                                                        radius: 35.sp,
+                                                        backgroundImage: NetworkImage(
+                                                            "${global.imgBaseurl}${astromallController.poojaProducts[index].productImage}"),
+                                                      )),
+                                                  Container(
+                                                    color: Colors.white,
+                                                    width: Get.width,
+                                                    height: 45,
+                                                    alignment: Alignment.center,
+                                                    padding:
+                                                    const EdgeInsets.all(8),
+                                                    child: Text(
+                                                      maxLines: 2,
+                                                      astromallController
+                                                          .poojaProducts[index]
+                                                          .name,
+                                                      textAlign: TextAlign.center,
+                                                      overflow:
+                                                      TextOverflow.ellipsis,
+                                                      style: Get
+                                                          .textTheme.bodyMedium!
+                                                          .copyWith(
+                                                          fontSize: 11,
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w500),
+                                                    ).tr(),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+
                   //---------- LATEST BLOG ----------------------------------------
                   SizedBox(
                     height: FontSizes(context).height1(),

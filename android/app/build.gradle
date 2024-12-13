@@ -67,7 +67,7 @@ dexOptions {
     }
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.astrowaydiploy.user"
+        applicationId "com.astrokalp.user"
         minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -108,7 +108,7 @@ dexOptions {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), ' proguard-rules.pro'
         }
     }
-    namespace 'com.astrowaydiploy.user'
+    namespace 'com.astrokalp.user'
 
 }
 

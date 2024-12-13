@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:AstrowayCustomer/model/astromall_category_model.dart';
 import 'package:AstrowayCustomer/model/astromall_product_model.dart';
 import 'package:AstrowayCustomer/model/user_address_model.dart';
 import 'package:AstrowayCustomer/utils/services/api_helper.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:AstrowayCustomer/utils/global.dart' as global;
+
+import '../model/daan_model.dart';
+import '../model/pooja_model.dart';
+import '../utils/global.dart';
 
 class AstromallController extends GetxController with GetSingleTickerProviderStateMixin {
   List astroCategory = <AstromallCategoryModel>[];
@@ -61,6 +67,9 @@ class AstromallController extends GetxController with GetSingleTickerProviderSta
 
   _init() async {
     paginateTask();
+    getDaanProducts();
+    getPoojaProducts();
+
   }
 
   updateScroll(bool value) {
@@ -186,6 +195,9 @@ class AstromallController extends GetxController with GetSingleTickerProviderSta
   }
 
   getAstromallProduct(int id, bool isProductLazyLoading) async {
+    global.showOnlyLoaderDialog(Get.context);
+    update();
+
     try {
       print('getAstromallProduct call');
       startIndexForProduct = 0;
@@ -220,6 +232,8 @@ class AstromallController extends GetxController with GetSingleTickerProviderSta
     } catch (e) {
       print("Exception in getAstromallProduct:-" + e.toString());
     }
+    global.hideLoader();
+    update();
   }
 
   getproductById(int id) async {
@@ -385,4 +399,193 @@ class AstromallController extends GetxController with GetSingleTickerProviderSta
       }
     });
   }
+
+  List daanProducts = <DaanModel>[];
+
+
+
+  Future<void> getDaanProducts() async {
+    try {
+      var headers = {
+        'Cookie': 'PHPSESSID=4hel67r0ilbcvijnbcm3tqt7v2',
+        'Content-Type': 'application/json',  // Add this if needed
+      };
+      var request = http.Request('POST', Uri.parse('https://invoidea.work/astrokalp/api/get-daan-products'));
+      request.headers.addAll(headers);
+      print('Request URL getDaanProducts: ${request.url}');
+      print('Request Headers getDaanProducts: ${request.headers}');
+      http.StreamedResponse response = await request.send();
+      print('Response Status Code getDaanProducts : ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        print('Response Body getDaanProducts : $responseBody');
+
+        var jsonData = json.decode(responseBody);
+
+        // Update the global daanProducts list with the parsed data
+        daanProducts = (jsonData['recordList'] as List)
+            .map((item) => DaanModel.fromJson(item))
+            .toList();
+
+        // Print the names of all the products in the list
+        print('Daan Products: ${daanProducts.map((e) => e.name).toList()}');
+        print(daanProducts.length);
+      } else {
+        print('Error: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      // Handle any errors during the request
+      print('Exception getDaanProducts: $e');
+    }
+  }
+  List daanProductDetails = <DaanModel>[];
+  Future<void> getDaanProductsDetails(String? slug) async {
+    global.showOnlyLoaderDialog(Get.context);
+    update();
+    try {
+      var headers = {
+        'Cookie': 'PHPSESSID=${getAuthorizationToken()}',
+        'Content-Type': 'application/json', // Add this if needed
+      };
+      var request = http.Request(
+          'POST', Uri.parse('https://invoidea.work/astrokalp/api/get-daan-products-details?slug=$slug'));
+      request.headers.addAll(headers);
+
+      print('Request URL getDaanProductsDetails: ${request.url}');
+      print('Request Headers getDaanProductsDetails: ${request.headers}');
+
+      http.StreamedResponse response = await request.send();
+      print('Response Status Code getDaanProductsDetails: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        print('Response Body getDaanProductsDetails: $responseBody');
+
+        var jsonData = json.decode(responseBody);
+
+        // Clear the list before filling it with fresh data
+        daanProductDetails.clear();
+
+        // Safely parse the list
+        if (jsonData['recordList'] != null && jsonData['recordList'] is List) {
+          daanProductDetails = (jsonData['recordList'] as List)
+              .map((item) => DaanModel.fromJson(item))
+              .toList();
+
+          // Print the names of all the products in the list
+          print('Daan getDaanProductsDetails: ${daanProductDetails.map((e) => e.name).toList()}');
+          print('Total products: ${daanProductDetails.length}');
+        } else {
+          print('Error: recordList is null or not a List');
+          daanProductDetails = [];
+        }
+      } else {
+        print('Error getDaanProductsDetails: ${response.reasonPhrase}');
+        daanProductDetails = []; // Ensure the list is empty on failure
+      }
+    } catch (e) {
+      // Handle any errors during the request
+      print('Exception getDaanProductsDetails: $e');
+      daanProductDetails = []; // Ensure the list is empty on exception
+    }
+    global.hideLoader();
+    update();
+  }
+
+
+
+  List poojaProducts = <PoojaModel>[];
+  Future<void> getPoojaProducts() async {
+    try {
+      var headers = {
+        'Cookie': 'PHPSESSID=${getAuthorizationToken()}',
+        'Content-Type': 'application/json',  // Add this if needed
+      };
+      var request = http.Request('POST', Uri.parse('${baseUrl}/get-puja-products'));
+      request.headers.addAll(headers);
+      print('Request URL poojaProducts: ${request.url}');
+      print('Request Headers poojaProducts: ${request.headers}');
+      http.StreamedResponse response = await request.send();
+      print('Response Status Code poojaProducts : ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        print('Response Body poojaProducts : $responseBody');
+        var jsonData = json.decode(responseBody);
+
+        poojaProducts = (jsonData['recordList'] as List)
+            .map((item) => PoojaModel.fromJson(item))
+            .toList();
+
+        print('poojaProducts Products: ${poojaProducts.map((e) => e.name).toList()}');
+        print(poojaProducts.length);
+      } else {
+        print('Error: poojaProducts ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      // Handle any errors during the request
+      print('Exception poojaProducts: $e');
+    }
+  }
+
+  List poojaProductDetails = <PoojaModel>[]; // Initialize as an empty list
+
+  Future<void> getPoojaProductsDetails(String? slug) async {
+    global.showOnlyLoaderDialog(Get.context);
+    update();
+    try {
+      var headers = {
+        'Cookie': 'PHPSESSID=9ho9sa1vl67rc39larcrp4mlo1; XSRF-TOKEN=eyJpdiI6Im1iWjhlTW1URGxpTktGM2prc1JvSGc9PSIsInZhbHVlIjoidlZobHdkcGs4RWNBYjhLOE1xZ1dwL3ZibnRkTHFJcUFYVVpXM3dMemhWV3M0ZnBGNlI3ZGNPUjNSS2k5WnRVbFhXUUVtWU1SNHVoMUNGN1F5UjdYQTBucXFLYUwwSVh2NjhpMjFmMytua1plcG1jRFEvVXBQdDRpbjBTM2Z3S3MiLCJtYWMiOiI1MDY4NTgxMTY3MmI4NjZhZDVmZjJhNDBmNDIxODQ5NDQyMTFjMzNkZjViMTZkZjUyZWViYmNkMDJjZTYxYmFhIiwidGFnIjoiIn0%3D; astrokalp_session=eyJpdiI6ImJjdmlMdXZzNDhqTk5yOGpOVVhxaFE9PSIsInZhbHVlIjoiejlsa1VqUUZqUENXWHRMeXM3NTVUOWRTVktPVWc5RjhXNkVRc25FZW5oeGloRjBSbC8wL25ZZnBreDVFSXNvSzZWUXJlYWxJZ3VCa0Vra1grWlZtMzhrRnVjTE1PV3dzbE9MaVNwK0lLR3M3OFc3NnBXb3p4U3IwSVdKVFVPd1QiLCJtYWMiOiI3MzNhZmU2NjM3Yzk3NDAxNDI3NTgxNjM5NzNiNWJkMTQ3Y2FjZjUxYjUxNGZjM2E5MDFiOWQxODNmZTgyNjAxIiwidGFnIjoiIn0%3D',
+        'Content-Type': 'application/json', // Add this if needed
+      };
+
+      var request = http.Request(
+          'POST', Uri.parse('https://invoidea.work/astrokalp/api/get-puja-products-details?slug=$slug'));
+      request.headers.addAll(headers);
+
+      print('Request URL poojaProductDetails: ${request.url}');
+      print('Request Headers poojaProductDetails: ${request.headers}');
+
+      http.StreamedResponse response = await request.send();
+      print('Response Status Code poojaProductDetails: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        print('Response Body poojaProductDetails: $responseBody');
+
+        var jsonData = json.decode(responseBody);
+
+        // Clear the list before populating it
+        poojaProductDetails.clear();
+
+        // Safely parse the list
+        if (jsonData['recordList'] != null && jsonData['recordList'] is List) {
+          poojaProductDetails = (jsonData['recordList'] as List)
+              .map((item) => PoojaModel.fromJson(item))
+              .toList();
+
+          // Print the names of all the products in the list
+          print('Pooja Product Names: ${poojaProductDetails.map((e) => e.name).toList()}');
+          print('Total poojaProductDetails: ${poojaProductDetails.length}');
+        } else {
+          print('Error: recordList is null or not a List');
+          poojaProductDetails = [];
+        }
+      } else {
+        print('Error poojaProductDetails: ${response.reasonPhrase}');
+        poojaProductDetails = [];
+      }
+    } catch (e) {
+      // Handle any errors during the request
+      print('Exception poojaProductDetails: $e');
+      poojaProductDetails = []; // Ensure the list is empty on exception
+    }
+    global.hideLoader();
+    update();
+  }
+
+
+
+
 }

@@ -108,7 +108,7 @@ int? localUid;
 int? localLiveUid;
 int? localLiveUid2;
 bool isHost = false;
-
+String loginToken = '';
 Future<void> callOnFcmApiSendPushNotifications({
   List<String?>? fcmTokem,
   String? subTitle,
@@ -139,6 +139,7 @@ Future<void> callOnFcmApiSendPushNotifications({
       'content-type': 'application/json',
       'Authorization': 'Bearer ${credentials.accessToken.data}'
     };
+    loginToken = credentials.accessToken.data;
     log("GENERATED TOKEN IS-> ${credentials.accessToken.data}");
     final data = {
       "message": {
@@ -179,6 +180,35 @@ Future<void> callOnFcmApiSendPushNotifications({
   } finally {
     client.close();
   }
+}
+
+
+Future<String?> getAuthorizationToken() async {
+  var accountCredentials = await loadCredentials();
+  var scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
+  var client = http.Client();
+  String? authorizationToken;
+
+  try {
+    // Obtain credentials
+    var credentials = await obtainAccessCredentialsViaServiceAccount(
+        ServiceAccountCredentials.fromJson(accountCredentials), scopes, client);
+
+    if (credentials == null) {
+      log('Failed to obtain credentials');
+      return null; // Return null if credentials couldn't be obtained
+    }
+
+    // Generate Authorization token
+    authorizationToken = 'Bearer ${credentials.accessToken.data}';
+    log("Authorization token is -> $authorizationToken");
+
+  } catch (e) {
+    print('Error obtaining Authorization token: $e');
+  } finally {
+    client.close();
+  }
+  return authorizationToken; // Return the Authorization token
 }
 
 Future<Map<String, dynamic>> loadCredentials() async {

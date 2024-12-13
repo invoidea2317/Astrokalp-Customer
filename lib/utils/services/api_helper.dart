@@ -49,6 +49,7 @@ import '../../controllers/splashController.dart';
 import '../../model/assistant_model.dart';
 import '../../model/astromallHistoryModel.dart';
 import '../../model/customer_support_review_model.dart';
+import '../../model/daan_model.dart';
 import '../../model/intake_model.dart';
 import '../../model/live_video_model.dart';
 import '../../model/login_model.dart';
@@ -3372,5 +3373,27 @@ class APIHelper {
       debugPrint('Exception in getWatchVideos(): $e');
     }
   }
+
+
+  Future<dynamic> getDaanProducts() async {
+    try {
+      final response = await http.post(
+        Uri.parse("$baseUrl/get-daan-products"),
+        headers: await global.getApiHeaders(true),
+      );
+      dynamic recordList;
+      if (response.statusCode == 200) {
+        recordList = List<DaanModel>.from(json
+            .decode(response.body)["recordList"]
+            .map((x) => DaanModel.fromJson(x)));
+      } else {
+        recordList = null;
+      }
+      return getAPIResult(response, recordList);
+    } catch (e) {
+      debugPrint('Exception in getAstromallCategory():' + e.toString());
+    }
+  }
+
 
 }

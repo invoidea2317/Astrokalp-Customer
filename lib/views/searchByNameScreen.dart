@@ -69,15 +69,16 @@ class SearchByNameScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () async {
-                      AstromallController astromallController =
-                          Get.find<AstromallController>();
-                      global.showOnlyLoaderDialog(context);
-                      await astromallController.getproductById(
-                          searchController.astroCategoryProduct[index].id);
-                      global.hideLoader();
-                      Get.to(() => ProductDetailScreen(
-                            index: index,
-                          ));
+                      global.showToast(message: 'Payment Now available currently', textColor: Colors.black, bgColor: Colors.white);
+                      // AstromallController astromallController =
+                      //     Get.find<AstromallController>();
+                      // global.showOnlyLoaderDialog(context);
+                      // await astromallController.getproductById(
+                      //     searchController.astroCategoryProduct[index].id);
+                      // global.hideLoader();
+                      // Get.to(() => ProductDetailScreen(
+                      //       index: index,
+                      //     ));
                     },
                     child: Container(
                       alignment: Alignment.bottomCenter,
@@ -117,16 +118,17 @@ class SearchByNameScreen extends StatelessWidget {
                                 height: 28,
                                 child: TextButton(
                                     onPressed: () async {
-                                      AstromallController astromallController =
-                                          Get.find<AstromallController>();
-                                      global.showOnlyLoaderDialog(context);
-                                      await astromallController.getproductById(
-                                          searchController
-                                              .astroCategoryProduct[index].id);
-                                      global.hideLoader();
-                                      Get.to(() => ProductDetailScreen(
-                                            index: index,
-                                          ));
+                                      global.showToast(message: 'Payment Now available currently', textColor: Colors.black, bgColor: Colors.white);
+                                      // AstromallController astromallController =
+                                      //     Get.find<AstromallController>();
+                                      // global.showOnlyLoaderDialog(context);
+                                      // await astromallController.getproductById(
+                                      //     searchController
+                                      //         .astroCategoryProduct[index].id);
+                                      // global.hideLoader();
+                                      // Get.to(() => ProductDetailScreen(
+                                      //       index: index,
+                                      //     ));
                                     },
                                     child: Text(
                                       'Buy',
