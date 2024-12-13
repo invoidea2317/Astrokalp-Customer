@@ -33,4 +33,5 @@ class Images {
   static const String icProfilePlaceholder = 'assets/images/no_customer_image.png';
   static const String icYellowPlay = 'assets/images/ic_yellow_video.png';
   static const String icAstrokalpLogo = 'assets/images/ic_astrokalp_logo.png';
+  static const String icMembershipBg = 'assets/images/ic_membership_image.png';
 }

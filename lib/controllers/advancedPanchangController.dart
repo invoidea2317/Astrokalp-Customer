@@ -57,6 +57,7 @@ class PanchangController extends GetxController {
 
   getPanchangVedic(DateTime date)async {
     LoadingDialog.showLoading(message: "Please wait...");
+    // update();
     // global.showOnlyLoaderDialog(Get.context);
     try {
       await global.checkBody().then((result) async {
@@ -81,6 +82,7 @@ class PanchangController extends GetxController {
       print('Exception in getPanchangDetail():' + e.toString());
     } finally {
       LoadingDialog.hideLoading();
+      // update();
       // global.showOnlyLoaderDialog(Get.context);
     }
   }

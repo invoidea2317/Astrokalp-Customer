@@ -653,7 +653,7 @@ Future<Map<String, String>> getApiHeaders(bool authorizationRequired) async {
     sp = await SharedPreferences.getInstance();
     String tokenType = sp!.getString("tokenType") ?? "Bearer";
     String token = sp!.getString("token") ?? "invalid token";
-    print('authentication token :- $token');
+    print('astrokalp :- $token');
     apiHeader.addAll({"Authorization": " $tokenType $token"});
   }
   apiHeader.addAll({"Content-Type": "application/json"});

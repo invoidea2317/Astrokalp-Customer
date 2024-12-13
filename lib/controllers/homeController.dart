@@ -11,11 +11,12 @@ import 'package:flutter/material.dart' as material;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
+import 'dart:convert';
 import '../model/language.dart';
 import 'package:AstrowayCustomer/utils/global.dart' as global;
-
+import 'package:http/http.dart' as http;
 import '../model/live_video_model.dart';
+import '../model/membership_plan_model.dart';
 
 class HomeController extends GetxController {
   List<Language> lan = [];
@@ -68,6 +69,7 @@ class HomeController extends GetxController {
         getLiveWebinarVideos(),
         getLiveVastuVideos(),
         getLiveRemedyVideos(),
+        // getMembershipPlans(),
 
         // getAstrologyTrendingReelsVideos(),
         // getAstrologyDailyHoroscopeVideos(),
@@ -767,6 +769,71 @@ class HomeController extends GetxController {
   }
 
   var watchVideoList = <WatchVideoModel>[];
+
+
+  List<MembershipPlanModel> membershipPlan = <MembershipPlanModel>[];
+
+  Future<void> getMembershipPlans() async {
+    global.showOnlyLoaderDialog(Get.context);
+    update();
+
+    try {
+      var headers = {
+        'Cookie': 'PHPSESSID=9ho9sa1vl67rc39larcrp4mlo1; XSRF-TOKEN=eyJpdiI6Im1iWjhlTW1URGxpTktGM2prc1JvSGc9PSIsInZhbHVlIjoidlZobHdkcGs4RWNBYjhLOE1xZ1dwL3ZibnRkTHFJcUFYVVpXM3dMemhWV3M0ZnBGNlI3ZGNPUjNSS2k5WnRVbFhXUUVtWU1SNHVoMUNGN1F5UjdYQTBucXFLYUwwSVh2NjhpMjFmMytua1plcG1jRFEvVXBQdDRpbjBTM2Z3S3MiLCJtYWMiOiI1MDY4NTgxMTY3MmI4NjZhZDVmZjJhNDBmNDIxODQ5NDQyMTFjMzNkZjViMTZkZjUyZWViYmNkMDJjZTYxYmFhIiwidGFnIjoiIn0%3D; astrokalp_session=eyJpdiI6ImJjdmlMdXZzNDhqTk5yOGpOVVhxaFE9PSIsInZhbHVlIjoiejlsa1VqUUZqUENXWHRMeXM3NTVUOWRTVktPVWc5RjhXNkVRc25FZW5oeGloRjBSbC8wL25ZZnBreDVFSXNvSzZWUXJlYWxJZ3VCa0Vra1grWlZtMzhrRnVjTE1PV3dzbE9MaVNwK0lLR3M3OFc3NnBXb3p4U3IwSVdKVFVPd1QiLCJtYWMiOiI3MzNhZmU2NjM3Yzk3NDAxNDI3NTgxNjM5NzNiNWJkMTQ3Y2FjZjUxYjUxNGZjM2E5MDFiOWQxODNmZTgyNjAxIiwidGFnIjoiIn0%3D',
+        'Content-Type': 'application/json',
+      };
+
+      var request = http.Request('GET', Uri.parse('https://invoidea.work/astrokalp/api/get-plans'));
+      request.headers.addAll(headers);
+
+      // Log the request URL and headers
+      print('Sending request to URL: ${request.url}');
+      print('Request headers: ${request.headers}');
+
+      // Send the request
+      http.StreamedResponse response = await request.send();
+
+      // Log the response status
+      print('Response status code: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+
+        // Log the raw response body
+        print('Response body: $responseBody');
+
+        var jsonData = json.decode(responseBody);
+
+        // Log the decoded JSON data
+        print('Decoded JSON data: $jsonData');
+
+        membershipPlan.clear();
+
+        // Ensure 'recordList' is an object and not a list, then map the response to the model
+        if (jsonData['recordList'] != null && jsonData['recordList'] is Map) {
+          var record = jsonData['recordList'];  // This should be a map, not a list
+          membershipPlan.add(MembershipPlanModel.fromJson(record));  // Assuming your model can handle this
+
+          // Log the membership plan
+          print('Membership Plan: ${membershipPlan.map((e) => e.planName).toList()}');
+        } else {
+          print('Error: recordList is null or not a Map');
+          membershipPlan = [];
+        }
+      } else {
+        print('Error: ${response.reasonPhrase}');
+        membershipPlan = [];
+      }
+    } catch (e) {
+      // Handle any errors during the request
+      print('Exception: $e');
+      membershipPlan = []; // Ensure the list is empty on exception
+    }
+
+    global.hideLoader();
+    update();
+  }
+
 
 
 

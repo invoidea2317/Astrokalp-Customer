@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1486553148",
+    "project_id": "astrokalp-eb483",
+    "storage_bucket": "astrokalp-eb483.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1486553148:android:08572be4a4f76c6c338339",
+        "android_client_info": {
+          "package_name": "com.astrokalp.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBo755fzox7kVUzy8G40hEciKWa_zkgKi0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

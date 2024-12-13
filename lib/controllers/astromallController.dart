@@ -588,4 +588,7 @@ class AstromallController extends GetxController with GetSingleTickerProviderSta
 
 
 
+
+
+
 }

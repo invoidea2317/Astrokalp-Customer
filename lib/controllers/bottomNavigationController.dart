@@ -702,8 +702,8 @@ class BottomNavigationController extends GetxController {
     }
 
     update();
-    String? fcmToken = await FirebaseMessaging.instance.getToken();
-    log('FcmToken : - $fcmToken');
+    // String? fcmToken = await FirebaseMessaging.instance.getToken();
+    // log('FcmToken : - $fcmToken');
   }
 
   getFristLiveAstrologer(int index) {
